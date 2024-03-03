@@ -87,7 +87,7 @@ public class Game {
         if(human.isListEmpty() || human.isListHasOnlyNonFlyAttackable() && computer.isListHasOnlyFlyable()) {
             System.out.println("컴퓨터가 승리하였습니다.");
         } else if (computer.isListEmpty() || human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyAttackable()) {
-            System.out.println("컴퓨터가 승리하였습니다.");
+            System.out.println("사용자가 승리하였습니다.");
         } else {
             System.out.println("무승부입니다.");
         }

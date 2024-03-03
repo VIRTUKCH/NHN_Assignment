@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import src.Interface.FlyAttackable;
 import src.Interface.Flyable;
 import src.Interface.NonFlyable;
 import src.abstractclass.Unit;
@@ -21,9 +23,9 @@ public class Human extends User {
         return true;
     }
 
-    public boolean isListHasOnlyNonFlyable() {
+    public boolean isListHasOnlyNonFlyAttackable() {
         for (Unit unit : list) {
-            if(unit instanceof Flyable) {
+            if(unit instanceof FlyAttackable) {
                 return false;
             }
         }
@@ -68,6 +70,9 @@ public class Human extends User {
         if(enemyUser instanceof Computer) {
             Unit teamUnit = this.list.get(teamIdx);
             try {
+                if(enemyTeamIdx > enemyUser.getList().size()) {
+                    throw new Exception();
+                }
                 teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
             } catch (Exception e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
                 System.out.println();

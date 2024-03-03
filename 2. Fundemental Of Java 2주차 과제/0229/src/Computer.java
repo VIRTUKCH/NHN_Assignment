@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import src.Interface.FlyAttackable;
 import src.Interface.Flyable;
 import src.Interface.NonFlyable;
 import src.abstractclass.Unit;
@@ -21,9 +22,9 @@ public class Computer extends User {
         return true;
     }
 
-    public boolean isListHasOnlyNonFlyable() {
+    public boolean isListHasOnlyNonFlyAttackable() {
         for (Unit unit : list) {
-            if(unit instanceof Flyable) {
+            if(unit instanceof FlyAttackable) {
                 return false;
             }
         }
@@ -42,7 +43,8 @@ public class Computer extends User {
         this.list = list;
     }
 
-    Computer(int number) { // 생성자의 역할은 멤버변수 초기화.
+    Computer() { // 생성자의 역할은 멤버변수 초기화.
+        int number = (int) (Math.random() * 3) + 1;
         list = UnitManager.getList(number);
     }
 
@@ -68,18 +70,12 @@ public class Computer extends User {
             while(true) {
                 try {
                     int teamIdx = (int) (Math.random() * this.getList().size()) + 1;
-                    System.out.println("this.getList().size() : " + this.getList().size());
-                    System.out.println("(int) (Math.random() * this.getList().size()) + 1 : " + (int) (Math.random() * this.getList().size()) + 1);
-                    System.out.println("teamidx : " + teamIdx);
-                    
                     int enemyTeamIdx = (int) (Math.random() * enemyUser.getList().size()) + 1;
-                    System.out.println("(int) (Math.random() * enemyUser.getList().size()) + 1 : " + (int) (Math.random() * enemyUser.getList().size()) + 1);
-                    System.out.println("enemyUser.getList().size() : " + enemyUser.getList().size());
-                    System.out.println("enemyTeamIdx : " + teamIdx);
-
+                    
                     Unit teamUnit = this.list.get(teamIdx);
                     teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
                 } catch (Exception e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
+                    e.printStackTrace();
                     System.out.println();
                     System.out.println("적절한 대상을 다시 공격해 주세요.");
                     System.out.println();

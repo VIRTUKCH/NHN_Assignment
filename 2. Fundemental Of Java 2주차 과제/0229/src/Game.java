@@ -1,5 +1,11 @@
 package src;
 
+import src.Interface.FlyAttackable;
+import src.Interface.Flyable;
+import src.Interface.NonFlyable;
+import src.abstractclass.Unit;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -9,9 +15,9 @@ public class Game {
             return true;
         } else if (computer.isListEmpty()) { // 2. 컴퓨터의 리스트가 모두 비었을 경우
             return true;
-        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyable()) {
+        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyAttackable()) { // 3. 한 쪽은 나는 것밖에 & 한 쪽은 안 나는 것밖에
             return true;
-        } else if (human.isListHasOnlyNonFlyable() && computer.isListHasOnlyFlyable()) {
+        } else if (human.isListHasOnlyNonFlyAttackable() && computer.isListHasOnlyFlyable()) {
             return true;
         } else {
             return false;
@@ -19,78 +25,72 @@ public class Game {
     }
 
     public static void main(String[] args) {
-
         java.lang.System.out.println();
 
         System.out.println("게임이 시작되었습니다.");
         System.out.println("1, 2, 3 중 하나를 입력하여 세 가지 종족 중 하나를 골라 주세요.");
-        System.out.print("1 : 프로토스 / 2 : 테란 / 3 : 저그 : ");
 
         Scanner sc = new Scanner(System.in);
         int number = 0;
 
-        // 1. 정상값을 입력할 때까지 입력 받기.
-        while (true) {
+        // 1. 정상값을 입력할 때까지 받기
+        boolean isValidInput = false;
+        while (!isValidInput) {
             try {
-                number = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("올바르지 않은 값이 입력되었습니다.");
-                System.out.println("1, 2, 3 중 하나를 입력해 주셔야 합니다.");
-                System.out.println("다시 입력하세요.");
                 System.out.print("1 : 프로토스 / 2 : 테란 / 3 : 저그 : ");
-                sc.nextLine();
-            } 
-            break;
+                number = Integer.parseInt(sc.nextLine().trim());
+                if (number >= 1 && number <= 3) { // 정상적으로 입력한 경우
+                    isValidInput = true;
+                } else {
+                    throw new IllegalArgumentException("1 미만 3 초과의 값을 입력하셨습니다.");
+                }
+            } catch (IllegalArgumentException iae) {
+                System.out.println(iae.getMessage());
+                System.out.println("다시 입력하세요");
+            } catch (InputMismatchException ime) {
+                System.out.println("숫자만 입력하셔야 합니다.");
+                System.out.println("다시 입력하세요.");
+            }
         }
 
-        // 2. 사용자의 객체를 만든다. (사용자는 LinkedList로 유닛을 가지고 있다.)
-        // List를 가지고 있는 건 Human이야.
-        // List를 한 번에 처리하고 싶은 거라면 => Human에게 number을 넘겨 줘야
-        // 그리고 그걸 초기화하는 건 UnitManager가 할 일이야.
+        // 2. 사용자의 객체를 만든다. - 리스트에 유닛 포함 중.
         Human human = new Human(number);
 
-        // 3. 컴퓨터의 객체를 만든다. (컴퓨터는 LinkedList로 유닛을 가지고 있다.)
-        int random = (int) (Math.random() * 3 + 1);
-        Computer computer = new Computer(random);
+        // 3. 컴퓨터의 객체를 만든다. - 리스트에 유닛 포함 중.
+        Computer computer = new Computer();
 
-        // 4. 적군과 아군의 유닛을 표시한다.
-        computer.printList();
-        human.printList();
-
-        // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다.
+        // 4. 유저에게 어떤 유닛으로, 어떤 유닛을 때릴지 물어본다.
         String input;
         StringTokenizer st;
-        sc.nextLine();
 
         while (!isGameOver(human, computer)) {
+            // 4-1. 일단 현재 상황 브리핑
             System.out.println("현재 상황입니다.");
             computer.printList();
             human.printList();
 
+            // 4-2. 때리라고 말하기.
             System.out.println("공격을 수행할 아군 유닛과 공격할 적군 유닛을 선택해주세요.");
             System.out.print("ex) 1 3 : ");
 
-            while (true) {
-                try {
-                    input = sc.nextLine();
-                    st = new StringTokenizer(input);
-                    int first = Integer.parseInt(st.nextToken());
-                    int second = Integer.parseInt(st.nextToken());
-                    human.orderAttack(computer, first, second);
-                } catch (Exception e) {
-                    System.out.println("올바르지 않은 값이 입력되었습니다.");
-                    System.out.println("다시 입력하세요.");
-                    System.out.print("ex) 1 3 : ");
-                    sc.nextLine();
-                }
+            // ---- 여기까지는 정상입 ----
 
-                if(isGameOver(human, computer)) {
-                    break;
-                }
-        
-                computer.orderAttack(human);
+            // 4-3. 입력 받기
+            int[] idx;
+            idx = getInput(sc, human, computer);
+
+            int humanIdx = idx[0];
+            int computerIdx = idx[1];
+
+
+            // 5. 실제로 공격하기. 근데 Flyable이면 다시 공격하게 만들어야 함.
+
+            human.orderAttack(computer, humanIdx, computerIdx);
+
+            if(isGameOver(human, computer)) {
                 break;
             }
+            computer.orderAttack(human);
         }
 
         // 6. 공격하면 적의 방어력을 깎는다.
@@ -108,5 +108,50 @@ public class Game {
 
         // 9. 끝났다@!~@!~~@!@!~@!~@!~
         sc.close();
+    }
+
+    private static int[] getInput(Scanner sc, Human human, Computer computer) {
+        String input;
+        StringTokenizer st;
+
+        int first = 0;
+        int second = 0;
+
+        boolean isValidInput = false;
+        while (!isValidInput) {
+            try {
+                input = sc.nextLine();
+                String[] strings;
+                strings = input.split(" +");
+                first = Integer.parseInt(strings[0].trim());
+                second = Integer.parseInt(strings[1].trim());
+
+                // 1. 인덱스에 존재하는 아군과, 인덱스에 존재하는 적군을 때렸는가?
+                if(first < 0 || first > human.getList().size() - 1) {
+                    throw new IllegalArgumentException("인덱스에 존재하지 않는 아군입니다.");
+                } else if (second < 0 || second > computer.getList().size() - 1) {
+                    throw new IllegalArgumentException("인덱스에 존재하지 않는 적군입니다.");
+                }
+
+                // 2. NonFlyable Unit, Flyattackable이 아닌 유닛이, Flyable 유닛을 때리려 했는가?
+                Unit ourUnit = human.getList().get(first);
+                Unit enemyUnit = computer.getList().get(second);
+
+                if((ourUnit instanceof NonFlyable) && !(ourUnit instanceof FlyAttackable) && (enemyUnit instanceof Flyable)) {
+                    throw new IllegalArgumentException("공중을 공격할 수 없는 유닛입니다.");
+                }
+
+                isValidInput = true; // 여기가 매우 핵심임
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                System.out.println("다시 입력하세요.");
+                System.out.print("ex) 1 3 : ");
+            } catch (Exception e) {
+                System.out.println("예상하지 못한 값이 입력되었습니다.");
+                System.out.println("다시 입력하세요.");
+                System.out.print("ex) 1 3 : ");
+            }
+        }
+        return new int[] {first, second};
     }
 }

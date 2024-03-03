@@ -23,10 +23,10 @@ public class Human extends User {
     }
 
     public void printHuman() {
+        Collections.sort(list);
         System.out.println("아군 : " + list.get(0).getTribe());
         Iterator<Unit> iterator = list.iterator();
         int i = 0;
-        Collections.sort(list);
         while (iterator.hasNext()) {
             System.out.println(String.valueOf(i++) + ". " + iterator.next());
         }

@@ -14,8 +14,8 @@ public class Game {
 
         // 1. 정상값을 입력할 때까지 입력 받기.
         while (true) {
-            number = sc.nextInt();
             try {
+                number = sc.nextInt();
                 if (number > 3 || number < 1) {
                     throw new IllegalArgumentException("1, 2, 3 중 하나를 입력해 주셔야 합니다.");
                 } else {
@@ -25,6 +25,7 @@ public class Game {
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 System.out.println("다시 입력하세요.");
+                System.out.print("1 : 프로토스 / 2 : 테란 / 3 : 저그 : ");
             }
         }
 
@@ -42,26 +43,28 @@ public class Game {
         computer.printComputer();
         human.printHuman();
 
-        String str;
-        StringTokenizer st;
+        // ---여기까지 완료했음---
 
-        // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다.
-        while (true) {
-            System.out.println("두 개의 정수를 띄어쓰기로 입력해 주세요");
-            System.out.print("ex) 1 3 : ");
-            st = new StringTokenizer(sc.nextLine());
-            int first = Integer.parseInt(st.nextToken());
-            int second = Integer.parseInt(st.nextToken());
-            if (str.equals("Hello World")) { // 잘못된 입력을 주면... ex) ArrayIndexOutOfBoundsException / 
-                try {
-                    throw new Exception("정상적이지 않은 입력입니다.");
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            } else {
-                break;
-            }
-        }
+        // String str;
+        // StringTokenizer st;
+
+        // // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다.
+        // while (true) {
+        //     System.out.println("두 개의 정수를 띄어쓰기로 입력해 주세요");
+        //     System.out.print("ex) 1 3 : ");
+        //     st = new StringTokenizer(sc.nextLine());
+        //     int first = Integer.parseInt(st.nextToken());
+        //     int second = Integer.parseInt(st.nextToken());
+        //     if (str.equals("Hello World")) { // 잘못된 입력을 주면... ex) ArrayIndexOutOfBoundsException / 
+        //         try {
+        //             throw new Exception("정상적이지 않은 입력입니다.");
+        //         } catch (Exception e) {
+        //             System.out.println(e.getMessage());
+        //         }
+        //     } else {
+        //         break;
+        //     }
+        // }
 
         // 6. 공격하면 적의 방어력을 깎는다.
         // 적군의 방어력이 0이 되면 List에서 제외시킨다.

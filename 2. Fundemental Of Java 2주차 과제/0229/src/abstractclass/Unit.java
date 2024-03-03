@@ -40,7 +40,6 @@ package src.abstractclass;
  * 하지만, 저그가 저그 종족의 유닛들을 '가지고 있다'고 보기에는 많이 어려울 것으로 보인다. 
  * 
  *
-
  */
 
 import src.Exception.UnAttackableUnitException;

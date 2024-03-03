@@ -5,11 +5,35 @@ import java.util.Iterator;
 import java.util.List;
 
 import src.Exception.UnAttackableUnitException;
+import src.Interface.Flyable;
+import src.Interface.NonFlyable;
 import src.abstractclass.Unit;
 import src.abstractclass.User;
 
 public class Computer extends User {
     private List<Unit> list;
+
+        public boolean isListHasOnlyFlyable() {
+        for (Unit unit : list) {
+            if(unit instanceof NonFlyable) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isListHasOnlyNonFlyable() {
+        for (Unit unit : list) {
+            if(unit instanceof Flyable) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isListEmpty() {
+        return this.list.isEmpty();
+    }
 
     public List<Unit> getList() {
         return this.list;
@@ -37,6 +61,7 @@ public class Computer extends User {
         while (iterator.hasNext()) {
             System.out.println(String.valueOf(i++) + ". " + iterator.next());
         }
+        System.out.println();
     }
 
     @Override
@@ -46,8 +71,10 @@ public class Computer extends User {
             try {
                 teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
             } catch (UnAttackableUnitException e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
+                System.out.println();
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                System.out.println("적절한 대상을 다시 공격해 주세요.");
+                System.out.println();
             } catch (Exception e) { // 리스트가 비었으면 어쩔 거야
                 e.printStackTrace();
             }
@@ -61,7 +88,7 @@ public class Computer extends User {
         while (iterator.hasNext()) {
             Unit unit = iterator.next();
             if(unit.getDefensePower() <= 0) {
-                list.remove(unit);
+                iterator.remove();
             }
         }
     }

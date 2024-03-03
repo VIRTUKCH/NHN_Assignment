@@ -51,7 +51,7 @@ public class Game {
         StringTokenizer st;
         sc.nextLine();
 
-        while (!isGameOver()) {
+        while (!isGameOver(human, computer)) {
             System.out.println("현재 상황입니다.");
             computer.printList();
             human.printList();
@@ -71,7 +71,7 @@ public class Game {
                 e.printStackTrace();
             }
 
-            if(isGameOver()) {
+            if(!isGameOver(human, computer)) {
                 break;
             }
 
@@ -99,7 +99,17 @@ public class Game {
         sc.close();
     }
 
-    private static boolean isGameOver() {
-        return false;
+    private static boolean isGameOver(Human human, Computer computer) {
+        if(human.isListEmpty()) { // 1. 휴먼의 리스트가 모두 비었을 경우
+            return true;
+        } else if (computer.isListEmpty()) { // 2. 컴퓨터의 리스트가 모두 비었을 경우
+            return true;
+        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyable()) {
+            return true;
+        } else if (human.isListHasOnlyNonFlyable() && computer.isListHasOnlyFlyable()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

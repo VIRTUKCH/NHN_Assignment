@@ -3,11 +3,11 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.Exception.UnExpectedException;
 import src.ProtossPackage.*;
-import src.TerranPackage.*;
-import src.ZergPackage.*;
 import src.abstractclass.*;
+import src.exception.UnExpectedException;
+import src.terran.*;
+import src.zerg.*;
 
 public final class UnitManager {
     

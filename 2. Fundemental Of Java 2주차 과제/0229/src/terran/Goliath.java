@@ -1,4 +1,4 @@
-package src.TerranPackage;
+package src.terran;
 
 import src.Interface.FlyAttackable;
 import src.Interface.NonFlyable;

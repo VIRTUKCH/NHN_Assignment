@@ -1,14 +1,14 @@
-package src.ProtossPackage;
+package src.terran;
 
 import src.Interface.Flyable;
-import src.abstractclass.Protoss;
+import src.abstractclass.Terran;
 import src.abstractclass.Unit;
 
-public class Consair extends Protoss implements Flyable {
-    public Consair() {
+public class Valkyrie extends Terran implements Flyable {
+    public Valkyrie() {
         this.offensePower = 4;
         this.defensePower = 12;
-        this.name = "Consair";
+        this.name = "Valkyrie";
     }
 
     @Override

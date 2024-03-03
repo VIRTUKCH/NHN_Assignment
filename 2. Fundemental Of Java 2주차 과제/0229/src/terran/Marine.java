@@ -1,14 +1,14 @@
-package src.TerranPackage;
+package src.terran;
 
 import src.Interface.NonFlyable;
 import src.abstractclass.Terran;
 import src.abstractclass.Unit;
 
-public class Tank extends Terran implements NonFlyable {
-    public Tank() {
-        this.offensePower = 7;
-        this.defensePower = 15;
-        this.name = "Tank";
+public class Marine extends Terran implements NonFlyable {
+    public Marine() {
+        this.offensePower = 3;
+        this.defensePower = 10;
+        this.name = "Marine";
     }
 
     @Override

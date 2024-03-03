@@ -1,14 +1,14 @@
-package src.TerranPackage;
+package src.terran;
 
 import src.Interface.Flyable;
 import src.abstractclass.Terran;
 import src.abstractclass.Unit;
 
-public class Valkyrie extends Terran implements Flyable {
-    public Valkyrie() {
-        this.offensePower = 4;
-        this.defensePower = 12;
-        this.name = "Valkyrie";
+public class BattleCruzer extends Terran implements Flyable {
+    public BattleCruzer() {
+        this.offensePower = 20;
+        this.defensePower = 30;
+        this.name = "BattleCruzer";
     }
 
     @Override

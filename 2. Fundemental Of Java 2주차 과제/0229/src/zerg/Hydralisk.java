@@ -1,4 +1,4 @@
-package src.ZergPackage;
+package src.zerg;
 
 import src.Interface.FlyAttackable;
 import src.Interface.NonFlyable;

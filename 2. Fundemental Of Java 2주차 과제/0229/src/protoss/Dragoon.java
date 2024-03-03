@@ -1,4 +1,4 @@
-package src.ProtossPackage;
+package src.protoss;
 
 import src.Interface.FlyAttackable;
 import src.Interface.NonFlyable;

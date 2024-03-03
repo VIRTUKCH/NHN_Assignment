@@ -1,4 +1,4 @@
-package src.Exception;
+package src.exception;
 
 public class UnAttackableUnitException extends Exception {
     public UnAttackableUnitException(String message) { 

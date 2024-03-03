@@ -1,4 +1,4 @@
-package src.TerranPackage;
+package src.terran;
 
 import src.Interface.Flyable;
 import src.abstractclass.Terran;

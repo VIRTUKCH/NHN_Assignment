@@ -1,4 +1,4 @@
-package src.ZergPackage;
+package src.zerg;
 
 import src.Interface.Flyable;
 import src.abstractclass.Unit;

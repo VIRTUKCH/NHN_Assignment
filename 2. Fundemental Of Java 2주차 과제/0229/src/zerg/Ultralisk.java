@@ -1,14 +1,14 @@
-package src.ProtossPackage;
+package src.zerg;
 
 import src.Interface.NonFlyable;
-import src.abstractclass.Protoss;
 import src.abstractclass.Unit;
+import src.abstractclass.Zerg;
 
-public class Zealot extends Protoss implements NonFlyable {
-    public Zealot() {
+public class Ultralisk extends Zerg implements NonFlyable {
+    public Ultralisk() {
         this.offensePower = 5;
-        this.defensePower = 20;
-        this.name = "Zealot";
+        this.defensePower = 15;
+        this.name = "Ultralisk";
     }
 
     @Override

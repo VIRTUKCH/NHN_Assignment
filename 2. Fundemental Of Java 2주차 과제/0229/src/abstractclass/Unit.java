@@ -41,12 +41,6 @@ package src.abstractclass;
  * 
  *
  */
-
-import src.Exception.UnAttackableUnitException;
-import src.Interface.FlyAttackable;
-import src.Interface.Flyable;
-import src.Interface.NonFlyable;
-
 public abstract class Unit implements Comparable<Unit> {
     protected int offensePower;
     protected int defensePower;

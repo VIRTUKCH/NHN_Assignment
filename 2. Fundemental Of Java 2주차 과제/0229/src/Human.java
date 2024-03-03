@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import src.Interface.FlyAttackable;
-import src.Interface.Flyable;
 import src.Interface.NonFlyable;
 import src.abstractclass.Unit;
 import src.abstractclass.User;
@@ -65,6 +64,8 @@ public class Human extends User {
     public void orderAttack(User enemyUser, int teamIdx, int enemyTeamIdx) {
         Unit teamUnit = this.list.get(teamIdx);
         teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
+        enemyUser.checkDiedUnitAndPop();
+        Collections.sort(enemyUser.getList());
     }
 
     @Override

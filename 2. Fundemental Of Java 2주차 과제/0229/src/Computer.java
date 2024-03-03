@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import src.Interface.FlyAttackable;
-import src.Interface.Flyable;
 import src.Interface.NonFlyable;
 import src.abstractclass.Unit;
 import src.abstractclass.User;
@@ -50,6 +49,7 @@ public class Computer extends User {
 
     @Override
     public void printList() {
+        Collections.sort(list);
         System.out.println("[적군] : " + list.get(0).getTribe());
 
         Iterator<Unit> iterator = list.iterator();
@@ -60,9 +60,11 @@ public class Computer extends User {
         System.out.println();
     }
 
-    public void orderAttack(User enemyUser, int teamIdx, int enemyTeamIdx) {
-        Unit teamUnit = this.list.get(teamIdx);
-        teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
+    public void orderAttack(User enemyUser, int computerIdx, int humanIdx) {
+        Unit teamUnit = this.list.get(computerIdx);
+        teamUnit.attack(enemyUser.getList().get(humanIdx));
+        enemyUser.checkDiedUnitAndPop();
+        Collections.sort(enemyUser.getList());
     }
 
     @Override

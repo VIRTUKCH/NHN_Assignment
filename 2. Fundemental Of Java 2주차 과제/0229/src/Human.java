@@ -1,8 +1,6 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import src.Exception.UnAttackableUnitException;
@@ -34,13 +32,7 @@ public class Human extends User {
 
     @Override
     public void printList() {
-        Collections.sort(list); // sort는 iterator 생성 이전에 해야 함. 그렇지 않으면 java.util.ConcurrentModificationException
-        System.out.println("아군 : " + list.get(0).getTribe());
-        Iterator<Unit> iterator = list.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            System.out.println(String.valueOf(i++) + ". " + iterator.next());
-        }
+        super.printList();
     }
 
     @Override

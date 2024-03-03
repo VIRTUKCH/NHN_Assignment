@@ -46,8 +46,14 @@ public class Game {
         // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다. - 예외 처리는 나중에..
         String input;
         StringTokenizer st;
+        sc.nextLine();
 
-        while (true) {
+        while (!isGameOver()) {
+            System.out.println("현재 상황입니다.");
+            computer.printList();
+            human.printList();
+
+
             System.out.println("공격을 수행할 아군 유닛과 공격할 적군 유닛을 선택해주세요.");
             System.out.print("ex) 1 3 : ");
             input = sc.nextLine();
@@ -56,17 +62,21 @@ public class Game {
             int first = Integer.parseInt(st.nextToken());
             int second = Integer.parseInt(st.nextToken());
 
-            if(isGameOver()) {
-                break;
-            }
-
             try {
                 human.orderAttack(computer, first, second);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            computer.orderAttack(human, first, second);
+            if(isGameOver()) {
+                break;
+            }
+
+            try {
+                computer.orderAttack(human, first, second);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // 6. 공격하면 적의 방어력을 깎는다.
@@ -87,7 +97,6 @@ public class Game {
     }
 
     private static boolean isGameOver() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isGameOver'");
+        return false;
     }
 }

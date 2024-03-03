@@ -1,9 +1,7 @@
 package src;
 
-import src.Interface.FlyAttackable;
-import src.Interface.Flyable;
-import src.Interface.NonFlyable;
-import src.abstractclass.Unit;
+import src.Interface.*;
+import src.abstractclass.*;
 
 import java.util.*;
 
@@ -15,7 +13,7 @@ public class Game {
         Scanner sc = new Scanner(System.in);
         int number = 0;
 
-        // 1. 정상값을 입력할 때까지 받기
+        // 1. 정상값을 입력할 때까지 받기Game.java is a non-project file, only syntax errors are reported
         boolean isValidInput = false;
         while (!isValidInput) {
             try {

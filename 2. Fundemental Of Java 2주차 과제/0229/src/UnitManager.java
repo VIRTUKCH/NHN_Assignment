@@ -56,8 +56,8 @@ public final class UnitManager {
                 } else if(random == 5) {
                     list.add(new Wraith());
                 }
-            return list;
             }
+            return list;
         }
         
         else if (number == 3) { // 저그

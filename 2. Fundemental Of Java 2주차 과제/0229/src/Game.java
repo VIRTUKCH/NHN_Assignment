@@ -8,19 +8,7 @@ import src.abstractclass.Unit;
 import java.util.*;
 
 public class Game {
-    private static boolean isGameOver(Human human, Computer computer) {
-        if(human.isListEmpty()) { // 1. 휴먼의 리스트가 모두 비었을 경우
-            return true;
-        } else if (computer.isListEmpty()) { // 2. 컴퓨터의 리스트가 모두 비었을 경우
-            return true;
-        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyAttackable()) { // 3. 한 쪽은 나는 것밖에 & 한 쪽은 안 나는 것밖에
-            return true;
-        } else if (human.isListHasOnlyNonFlyAttackable() && computer.isListHasOnlyFlyable()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     public static void main(String[] args) {
         System.out.println("게임이 시작되었습니다.");
@@ -91,8 +79,20 @@ public class Game {
             // 7-2. 실제로 공격하기 - 예외값은 다 처리했음. 기능만 구현하면 됨.
             computer.orderAttack(human, computerIdx, humanIdx);
         }
+        printWinner(human, computer);
 
         sc.close();
+    }
+
+    private static void printWinner(Human human, Computer computer) {
+        // 1. 컴퓨터가 승리
+        if(human.isListEmpty() || human.isListHasOnlyNonFlyAttackable() && computer.isListHasOnlyFlyable()) {
+            System.out.println("인간이 승리하였습니다.");
+        } else if (computer.isListEmpty() || human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyAttackable()) {
+            System.out.println("컴퓨터가 승리하였습니다.");
+        } else {
+            System.out.println("무승부입니다.");
+        }
     }
 
     private static int[] checkComputerRandomInput(Scanner sc, Human human, Computer computer) {
@@ -162,5 +162,19 @@ public class Game {
             }
         }
         return new int[] {first, second};
+    }
+
+    private static boolean isGameOver(Human human, Computer computer) {
+        if(human.isListEmpty()) { // 1. 휴먼의 리스트가 모두 비었을 경우
+            return true;
+        } else if (computer.isListEmpty()) { // 2. 컴퓨터의 리스트가 모두 비었을 경우
+            return true;
+        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyAttackable()) { // 3. 한 쪽은 나는 것밖에 & 한 쪽은 안 나는 것밖에
+            return true;
+        } else if (human.isListHasOnlyNonFlyAttackable() && computer.isListHasOnlyFlyable()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

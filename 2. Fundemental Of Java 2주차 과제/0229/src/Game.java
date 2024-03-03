@@ -8,8 +8,6 @@ import src.abstractclass.Unit;
 import java.util.*;
 
 public class Game {
-
-
     public static void main(String[] args) {
         System.out.println("게임이 시작되었습니다.");
         System.out.println("1, 2, 3 중 하나를 입력하여 세 가지 종족 중 하나를 골라 주세요.");
@@ -87,12 +85,15 @@ public class Game {
     private static void printWinner(Human human, Computer computer) {
         // 1. 컴퓨터가 승리
         if(human.isListEmpty() || human.isListHasOnlyNonFlyAttackable() && computer.isListHasOnlyFlyable()) {
-            System.out.println("인간이 승리하였습니다.");
+            System.out.println("컴퓨터가 승리하였습니다.");
         } else if (computer.isListEmpty() || human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyAttackable()) {
             System.out.println("컴퓨터가 승리하였습니다.");
         } else {
             System.out.println("무승부입니다.");
         }
+        System.out.println("[승리 조건]");
+        System.out.println("1. 상대 유닛 전멸");
+        System.out.println("2. 한 팀의 유닛이 공중 유닛을 때릴 수 없는 유닛밖에 남지 않았을 때, 다른 팀의 유닛이 공중 유닛만 가지고 있는 경우.");
     }
 
     private static int[] checkComputerRandomInput(Scanner sc, Human human, Computer computer) {

@@ -4,25 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.Exception.UnExpectedException;
-import src.ProtossPackage.Consair;
-import src.ProtossPackage.Dragoon;
-import src.ProtossPackage.HighTempler;
-import src.ProtossPackage.Scout;
-import src.ProtossPackage.Zealot;
-import src.TerranPackage.Goliath;
-import src.TerranPackage.Marine;
-import src.TerranPackage.Tank;
-import src.TerranPackage.Valkyrie;
-import src.TerranPackage.Wraith;
-import src.ZergPackage.Guardian;
-import src.ZergPackage.Hydralisk;
-import src.ZergPackage.Mutalisk;
-import src.ZergPackage.Ultralisk;
-import src.ZergPackage.Zergling;
-import src.abstractclass.Protoss;
-import src.abstractclass.Terran;
-import src.abstractclass.Unit;
-import src.abstractclass.Zerg;
+import src.ProtossPackage.*;
+import src.TerranPackage.*;
+import src.ZergPackage.*;
+import src.abstractclass.*;
 
 public final class UnitManager {
     
@@ -38,28 +23,58 @@ public final class UnitManager {
         int random = 0;
 
         if (number == 1) { // 프로토스
-            Protoss[] protossArray = new Protoss[] { new Consair(), new Dragoon(), new HighTempler(), new Scout(), new Zealot() };
+            // Protoss[] protossArray = new Protoss[] { new Consair(), new Dragoon(), new HighTempler(), new Scout(), new Zealot() };
             for (int i = 0; i < NUMBER_OF_PROTOSS_OBJECT; i++) {
-                random = (int) (Math.random() * NUMBER_OF_TYPE);
-                list.add(protossArray[random]);
+                random = (int) (Math.random() * NUMBER_OF_TYPE) + 1;
+                if(random == 1) {
+                    list.add(new Consair());
+                } else if(random == 2) {
+                    list.add(new Dragoon());
+                } else if(random == 3) {
+                    list.add(new HighTempler());
+                } else if(random == 4){
+                    list.add(new Scout());
+                } else if(random == 5) {
+                    list.add(new Zealot());
+                }
             }
             return list;
         }
         
         else if (number == 2) { // 테란
-            Terran[] terranArray = new Terran[] { new Goliath(), new Marine(), new Tank(), new Valkyrie(), new Wraith() };
+            // Terran[] terranArray = new Terran[] { new Goliath(), new Marine(), new Tank(), new Valkyrie(), new Wraith() };
             for (int i = 0; i < NUMBER_OF_TERRAN_OBJECT; i++) {
-                random = (int) (Math.random() * NUMBER_OF_TYPE);
-                list.add(terranArray[random]);
-            }
+                random = (int) (Math.random() * NUMBER_OF_TYPE) + 1;
+                if(random == 1) {
+                    list.add(new Goliath());
+                } else if(random == 2) {
+                    list.add(new Marine());
+                } else if(random == 3) {
+                    list.add(new Tank());
+                } else if(random == 4){
+                    list.add(new Valkyrie());
+                } else if(random == 5) {
+                    list.add(new Wraith());
+                }
             return list;
+            }
         }
         
         else if (number == 3) { // 저그
-            Zerg[] zergArray = new Zerg[] { new Guardian(), new Hydralisk(), new Mutalisk(), new Ultralisk(), new Zergling() };
+            // Zerg[] zergArray = new Zerg[] { new Guardian(), new Hydralisk(), new Mutalisk(), new Ultralisk(), new Zergling() };
             for (int i = 0; i < NUMBER_OF_ZERG_OBJECT; i++) {
-                random = (int) (Math.random() * NUMBER_OF_TYPE);
-                list.add(zergArray[random]);
+                random = (int) (Math.random() * NUMBER_OF_TYPE) + 1;
+                if(random == 1) {
+                    list.add(new Guardian());
+                } else if(random == 2) {
+                    list.add(new Hydralisk());
+                } else if(random == 3) {
+                    list.add(new Mutalisk());
+                } else if(random == 4){
+                    list.add(new Ultralisk());
+                } else if(random == 5) {
+                    list.add(new Zergling());
+                }
             }
             return list;
         }

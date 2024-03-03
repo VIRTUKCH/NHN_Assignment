@@ -1,7 +1,7 @@
 # 주석입니다.
 
 # 디렉토리를 무시합니다.
-Assighnment/out/
+Assignnment/out/
 
 # 디렉토리의 하위 디렉토리까지 모두 무시합니다.
 out/**

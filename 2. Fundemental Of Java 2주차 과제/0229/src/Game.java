@@ -75,7 +75,7 @@ public class Game {
 
             // ---- 여기까지는 정상입 ----
 
-            // 4-3. 입력 받기
+            // 4-3. 입력 받기 : 인덱스를 벗어나거나, NonFlyable && !FlyAttackable -> Flyable을 때리는 경우 다시 받게 했음.
             int[] idx;
             idx = getInput(sc, human, computer);
 
@@ -83,31 +83,56 @@ public class Game {
             int computerIdx = idx[1];
 
 
-            // 5. 실제로 공격하기. 근데 Flyable이면 다시 공격하게 만들어야 함.
-
+            // 5. 실제로 공격하기 - 그냥 입 닫고 공격만 하면 됨.
             human.orderAttack(computer, humanIdx, computerIdx);
+            System.out.println("플레이어 공격 성공!");
 
+            // 6. 이랬는데 중간에 게임이 끝나버렸으면 끝내
             if(isGameOver(human, computer)) {
                 break;
             }
-            computer.orderAttack(human);
+
+            // 7. 컴퓨터 공격하기
+            // 7-1 컴퓨터의 무작위 인덱스가 유효한지 검사
+            idx = checkComputerRandomInput(sc, human, computer);
+
+            humanIdx = idx[0];
+            computerIdx = idx[1];
+
+            // 7-2. 실제로 공격하기 - 예외값은 다 처리했음. 기능만 구현하면 됨.
+            computer.orderAttack(human, computerIdx, humanIdx);
+            System.out.println("컴퓨터 공격 성공!");
         }
 
-        // 6. 공격하면 적의 방어력을 깎는다.
-        // 적군의 방어력이 0이 되면 List에서 제외시킨다.
-        // 결과 출력
-
-        // 6. 컴퓨터는 무작위로 유저 유닛을 공격한다. + 공격하면 유저 유닛의 방어력을 깎는다.
-
-        // 아군의 방어력이 0이 되면 Linked List에서 소멸시킨다.
-        // 결과 출력
-
-        // 7. 아군이나 적군 중 유닛이 모두 파괴되었다면, 게임을 종료한다. (while(종료 조건)))
-
-        // 8. 게임이 종료되었다면, 결과를 출력하고, 승자를 발표한다.
-
-        // 9. 끝났다@!~@!~~@!@!~@!~@!~
         sc.close();
+    }
+
+    private static int[] checkComputerRandomInput(Scanner sc, Human human, Computer computer) {
+        String input;
+        StringTokenizer st;
+
+        int indexOfHumanUnitList = 0;
+        int indexOfComputerUnitList = 0;
+
+        boolean isValidInput = false;
+        while (!isValidInput) {
+            indexOfComputerUnitList = (int) (Math.random() * computer.getList().size());
+            indexOfHumanUnitList = (int) (Math.random() * human.getList().size());
+            System.out.println("indexOfComputerUnitList = " + indexOfComputerUnitList);
+            System.out.println("indexOfHumanUnitList = " + indexOfHumanUnitList);
+
+            // 2. NonFlyable Unit, Flyattackable이 아닌 유닛이, Flyable 유닛을 때리려 했는가?
+            Unit computerUnit = human.getList().get(indexOfComputerUnitList);
+            Unit userUnit = computer.getList().get(indexOfHumanUnitList);
+
+            isValidInput = true;
+
+            if ((computerUnit instanceof NonFlyable) && !(computerUnit instanceof FlyAttackable) && (userUnit instanceof Flyable)) {
+                isValidInput = false;
+                System.out.println("다시뽑기");
+            }
+        }
+        return new int[] {indexOfComputerUnitList, indexOfHumanUnitList};
     }
 
     private static int[] getInput(Scanner sc, Human human, Computer computer) {

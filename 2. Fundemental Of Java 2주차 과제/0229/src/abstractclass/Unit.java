@@ -88,13 +88,8 @@ public abstract class Unit implements Comparable<Unit> {
     protected Unit() {
     }
 
-    public void attack(Unit unit) throws Exception {
-        // 공중 유닛을 때리려고 하는데, 나는 못 날면서 + 공중 때리지도 못하면
-        if (unit instanceof Flyable && this instanceof NonFlyable && !(this instanceof FlyAttackable)) {
-            throw new UnAttackableUnitException("공격할 수 없는 유닛입니다.");
-        } else {
-            unit.setDefensePower(unit.getDefensePower() - this.offensePower);
-        }
+    public void attack(Unit unit) {
+        unit.setDefensePower(unit.getDefensePower() - this.offensePower);
     }
 
     @Override

@@ -51,12 +51,8 @@ public class Human extends User {
 
     @Override
     public void printList() {
-        Collections.sort(list); // sort는 iterator 생성 이전에 해야 함. 그렇지 않으면 java.util.ConcurrentModificationException
-        if(this instanceof Human) {
-            System.out.println("[아군] : " + list.get(0).getTribe());
-        } else {
-            System.out.println("[적군] : " + list.get(0).getTribe());
-        }
+        Collections.sort(list);
+        System.out.println("[아군] : " + list.get(0).getTribe());
 
         Iterator<Unit> iterator = list.iterator();
         int i = 0;
@@ -67,21 +63,8 @@ public class Human extends User {
     }
 
     public void orderAttack(User enemyUser, int teamIdx, int enemyTeamIdx) {
-        if(enemyUser instanceof Computer) {
-            Unit teamUnit = this.list.get(teamIdx);
-            try {
-                if(enemyTeamIdx > enemyUser.getList().size()) {
-                    throw new Exception();
-                }
-                teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
-            } catch (Exception e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
-                System.out.println();
-                System.out.println(e.getMessage());
-                System.out.println("적절한 대상을 다시 공격해 주세요.");
-                System.out.println();
-            }
-        }
-        enemyUser.checkDiedUnitAndPop();
+        Unit teamUnit = this.list.get(teamIdx);
+        teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
     }
 
     @Override

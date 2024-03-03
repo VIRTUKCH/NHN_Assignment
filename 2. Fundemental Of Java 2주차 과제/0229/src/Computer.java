@@ -50,12 +50,7 @@ public class Computer extends User {
 
     @Override
     public void printList() {
-        Collections.sort(list); // sort는 iterator 생성 이전에 해야 함. 그렇지 않으면 java.util.ConcurrentModificationException
-        if(this instanceof Computer) {
-            System.out.println("[적군] : " + list.get(0).getTribe());
-        } else {
-            System.out.println("[아군] : " + list.get(0).getTribe());
-        }
+        System.out.println("[적군] : " + list.get(0).getTribe());
 
         Iterator<Unit> iterator = list.iterator();
         int i = 0;
@@ -65,29 +60,14 @@ public class Computer extends User {
         System.out.println();
     }
 
-    public void orderAttack(User enemyUser) {
-        if(enemyUser instanceof Human) {
-            while(true) {
-                try {
-                    int teamIdx = (int) (Math.random() * this.getList().size()) + 1;
-                    int enemyTeamIdx = (int) (Math.random() * enemyUser.getList().size()) + 1;
-                    
-                    Unit teamUnit = this.list.get(teamIdx);
-                    teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
-                } catch (Exception e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
-                    e.printStackTrace();
-                    System.out.println();
-                    System.out.println("적절한 대상을 다시 공격해 주세요.");
-                    System.out.println();
-                }
-                break;
-            }
-        }
-        enemyUser.checkDiedUnitAndPop();
+    public void orderAttack(User enemyUser, int teamIdx, int enemyTeamIdx) {
+        Unit teamUnit = this.list.get(teamIdx);
+        teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
     }
 
     @Override
     public void checkDiedUnitAndPop() {
+        Collections.sort(list);
         Iterator<Unit> iterator = list.iterator();
         while (iterator.hasNext()) {
             Unit unit = iterator.next();

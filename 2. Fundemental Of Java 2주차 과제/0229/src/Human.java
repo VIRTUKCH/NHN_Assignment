@@ -1,18 +1,13 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import src.Exception.UnAttackableUnitException;
 import src.abstractclass.Unit;
 import src.abstractclass.User;
-
-/*
- * 최대한 확장성이 좋게 만들어야 한다.
- * 분리할 수 있다면, 최대한 분리해 보자.
- * 그러나, 의미 없는 값의 이동같은 분리는 하면 안 된다.
- * + 통합할 수 있으면 최대한 통합해 보자.
- */
 
 public class Human extends User {
     private List<Unit> list;
@@ -32,7 +27,18 @@ public class Human extends User {
 
     @Override
     public void printList() {
-        super.printList();
+        Collections.sort(list); // sort는 iterator 생성 이전에 해야 함. 그렇지 않으면 java.util.ConcurrentModificationException
+        if(this instanceof Human) {
+            System.out.println("[아군] : " + list.get(0).getTribe());
+        } else {
+            System.out.println("[적군] : " + list.get(0).getTribe());
+        }
+
+        Iterator<Unit> iterator = list.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            System.out.println(String.valueOf(i++) + ". " + iterator.next());
+        }
     }
 
     @Override

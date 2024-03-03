@@ -5,6 +5,9 @@ import java.util.StringTokenizer;
 
 public class Game {
     public static void main(String[] args) {
+
+        java.lang.System.out.println();
+
         System.out.println("게임이 시작되었습니다.");
         System.out.println("1, 2, 3 중 하나를 입력하여 세 가지 종족 중 하나를 골라 주세요.");
         System.out.print("1 : 프로토스 / 2 : 테란 / 3 : 저그 : ");

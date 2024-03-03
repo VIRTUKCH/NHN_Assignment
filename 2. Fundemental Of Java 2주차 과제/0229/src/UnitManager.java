@@ -13,10 +13,15 @@ public final class UnitManager {
     
     private UnitManager() {}
 
-    static final int NUMBER_OF_PROTOSS_OBJECT = 4;
-    static final int NUMBER_OF_TERRAN_OBJECT = 5;
-    static final int NUMBER_OF_ZERG_OBJECT = 8;
-    static final int NUMBER_OF_TYPE = 5;
+    // static final int NUMBER_OF_PROTOSS_OBJECT = 4;
+    // static final int NUMBER_OF_TERRAN_OBJECT = 5;
+    // static final int NUMBER_OF_ZERG_OBJECT = 8;
+    // static final int NUMBER_OF_TYPE = 5;
+
+    static final int NUMBER_OF_PROTOSS_OBJECT = 5;
+    static final int NUMBER_OF_TERRAN_OBJECT = 6;
+    static final int NUMBER_OF_ZERG_OBJECT = 9;
+    static final int NUMBER_OF_TYPE = 6;
 
     public static List<Unit> getList(int number) {
         List<Unit> list = new ArrayList<>();
@@ -36,6 +41,8 @@ public final class UnitManager {
                     list.add(new Scout());
                 } else if(random == 5) {
                     list.add(new Zealot());
+                } else if(random == 6) {
+                    list.add(new Carrier());
                 }
             }
             return list;
@@ -55,6 +62,8 @@ public final class UnitManager {
                     list.add(new Valkyrie());
                 } else if(random == 5) {
                     list.add(new Wraith());
+                } else if(random == 6) {
+                    list.add(new BattleCruzer());
                 }
             }
             return list;
@@ -74,6 +83,8 @@ public final class UnitManager {
                     list.add(new Ultralisk());
                 } else if(random == 5) {
                     list.add(new Zergling());
+                } else if(random == 6) {
+                    list.add(new Queen());
                 }
             }
             return list;

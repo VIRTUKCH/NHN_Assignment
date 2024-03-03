@@ -23,7 +23,7 @@ public class Human extends User {
     }
 
     public void printHuman() {
-        Collections.sort(list);
+        Collections.sort(list); // sort는 iterator 생성 이전에 해야 함. 그렇지 않으면 java.util.ConcurrentModificationException
         System.out.println("아군 : " + list.get(0).getTribe());
         Iterator<Unit> iterator = list.iterator();
         int i = 0;

@@ -54,5 +54,17 @@ public class Human extends User {
                 e.printStackTrace();
             }
         }
+        checkDiedUnitAndPop();
+    }
+
+    @Override
+    public void checkDiedUnitAndPop() {
+        Iterator<Unit> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Unit unit = iterator.next();
+            if(unit.getDefensePower() <= 0) {
+                list.remove(unit);
+            }
+        }
     }
 }

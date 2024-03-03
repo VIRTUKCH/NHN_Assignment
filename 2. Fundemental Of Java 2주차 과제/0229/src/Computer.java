@@ -20,7 +20,6 @@ public class Computer extends User {
     }
 
     Computer(int number) { // 생성자의 역할은 멤버변수 초기화.
-        // list = new ArrayList<>();
         list = UnitManager.getList(number);
     }
 
@@ -51,6 +50,18 @@ public class Computer extends User {
                 e.printStackTrace();
             } catch (Exception e) { // 리스트가 비었으면 어쩔 거야
                 e.printStackTrace();
+            }
+        }
+        checkDiedUnitAndPop();
+    }
+
+    @Override
+    public void checkDiedUnitAndPop() {
+        Iterator<Unit> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Unit unit = iterator.next();
+            if(unit.getDefensePower() <= 0) {
+                list.remove(unit);
             }
         }
     }

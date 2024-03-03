@@ -14,8 +14,6 @@ public abstract class User {
     }
 
     abstract public void printList(); 
-    
-    abstract public void orderAttack(User enemyUser, int teamIdx, int enemyTeamIdx);
 
     abstract public void checkDiedUnitAndPop();
 }

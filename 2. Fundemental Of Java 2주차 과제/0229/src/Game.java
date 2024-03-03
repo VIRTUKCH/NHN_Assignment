@@ -4,6 +4,20 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Game {
+    private static boolean isGameOver(Human human, Computer computer) {
+        if(human.isListEmpty()) { // 1. 휴먼의 리스트가 모두 비었을 경우
+            return true;
+        } else if (computer.isListEmpty()) { // 2. 컴퓨터의 리스트가 모두 비었을 경우
+            return true;
+        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyable()) {
+            return true;
+        } else if (human.isListHasOnlyNonFlyable() && computer.isListHasOnlyFlyable()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
 
         java.lang.System.out.println();
@@ -19,17 +33,14 @@ public class Game {
         while (true) {
             try {
                 number = sc.nextInt();
-                if (number > 3 || number < 1) {
-                    throw new IllegalArgumentException("1, 2, 3 중 하나를 입력해 주셔야 합니다.");
-                } else {
-                    break;
-                }
-
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("올바르지 않은 값이 입력되었습니다.");
+                System.out.println("1, 2, 3 중 하나를 입력해 주셔야 합니다.");
                 System.out.println("다시 입력하세요.");
                 System.out.print("1 : 프로토스 / 2 : 테란 / 3 : 저그 : ");
-            }
+                sc.nextLine();
+            } 
+            break;
         }
 
         // 2. 사용자의 객체를 만든다. (사용자는 LinkedList로 유닛을 가지고 있다.)
@@ -46,7 +57,7 @@ public class Game {
         computer.printList();
         human.printList();
 
-        // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다. - 예외 처리는 나중에..
+        // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다.
         String input;
         StringTokenizer st;
         sc.nextLine();
@@ -56,29 +67,29 @@ public class Game {
             computer.printList();
             human.printList();
 
-
             System.out.println("공격을 수행할 아군 유닛과 공격할 적군 유닛을 선택해주세요.");
             System.out.print("ex) 1 3 : ");
-            input = sc.nextLine();
 
-            st = new StringTokenizer(input);
-            int first = Integer.parseInt(st.nextToken());
-            int second = Integer.parseInt(st.nextToken());
+            while (true) {
+                try {
+                    input = sc.nextLine();
+                    st = new StringTokenizer(input);
+                    int first = Integer.parseInt(st.nextToken());
+                    int second = Integer.parseInt(st.nextToken());
+                    human.orderAttack(computer, first, second);
+                } catch (Exception e) {
+                    System.out.println("올바르지 않은 값이 입력되었습니다.");
+                    System.out.println("다시 입력하세요.");
+                    System.out.print("ex) 1 3 : ");
+                    sc.nextLine();
+                }
 
-            try {
-                human.orderAttack(computer, first, second);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if(!isGameOver(human, computer)) {
+                if(isGameOver(human, computer)) {
+                    break;
+                }
+        
+                computer.orderAttack(human);
                 break;
-            }
-
-            try {
-                computer.orderAttack(human, first, second);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
 
@@ -97,19 +108,5 @@ public class Game {
 
         // 9. 끝났다@!~@!~~@!@!~@!~@!~
         sc.close();
-    }
-
-    private static boolean isGameOver(Human human, Computer computer) {
-        if(human.isListEmpty()) { // 1. 휴먼의 리스트가 모두 비었을 경우
-            return true;
-        } else if (computer.isListEmpty()) { // 2. 컴퓨터의 리스트가 모두 비었을 경우
-            return true;
-        } else if (human.isListHasOnlyFlyable() && computer.isListHasOnlyNonFlyable()) {
-            return true;
-        } else if (human.isListHasOnlyNonFlyable() && computer.isListHasOnlyFlyable()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

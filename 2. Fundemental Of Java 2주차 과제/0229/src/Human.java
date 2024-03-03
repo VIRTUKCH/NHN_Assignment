@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import src.Exception.UnAttackableUnitException;
 import src.Interface.Flyable;
 import src.Interface.NonFlyable;
 import src.abstractclass.Unit;
@@ -66,22 +64,19 @@ public class Human extends User {
         System.out.println();
     }
 
-    @Override
     public void orderAttack(User enemyUser, int teamIdx, int enemyTeamIdx) {
         if(enemyUser instanceof Computer) {
             Unit teamUnit = this.list.get(teamIdx);
             try {
                 teamUnit.attack(enemyUser.getList().get(enemyTeamIdx));
-            } catch (UnAttackableUnitException e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
+            } catch (Exception e) { // 공중 유닛 못 때리는데 때린다고 하면 어쩔 거야.
                 System.out.println();
                 System.out.println(e.getMessage());
                 System.out.println("적절한 대상을 다시 공격해 주세요.");
                 System.out.println();
-            } catch (Exception e) { // 리스트가 비었으면 어쩔 거야
-                e.printStackTrace();
             }
         }
-        checkDiedUnitAndPop();
+        enemyUser.checkDiedUnitAndPop();
     }
 
     @Override

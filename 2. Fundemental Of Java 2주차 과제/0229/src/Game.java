@@ -40,31 +40,34 @@ public class Game {
         Computer computer = new Computer(random);
 
         // 4. 적군과 아군의 유닛을 표시한다.
-        computer.printComputer();
-        human.printHuman();
+        computer.printList();
+        human.printList();
 
-        // ---여기까지 완료했음---
+        // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다. - 예외 처리는 나중에..
+        String input;
+        StringTokenizer st;
 
-        // String str;
-        // StringTokenizer st;
+        while (true) {
+            System.out.println("공격을 수행할 아군 유닛과 공격할 적군 유닛을 선택해주세요.");
+            System.out.print("ex) 1 3 : ");
+            input = sc.nextLine();
 
-        // // 5. 유저에게 공격을 실행할 유닛과 공격받을 적군 유닛을 선택하게 한다.
-        // while (true) {
-        //     System.out.println("두 개의 정수를 띄어쓰기로 입력해 주세요");
-        //     System.out.print("ex) 1 3 : ");
-        //     st = new StringTokenizer(sc.nextLine());
-        //     int first = Integer.parseInt(st.nextToken());
-        //     int second = Integer.parseInt(st.nextToken());
-        //     if (str.equals("Hello World")) { // 잘못된 입력을 주면... ex) ArrayIndexOutOfBoundsException / 
-        //         try {
-        //             throw new Exception("정상적이지 않은 입력입니다.");
-        //         } catch (Exception e) {
-        //             System.out.println(e.getMessage());
-        //         }
-        //     } else {
-        //         break;
-        //     }
-        // }
+            st = new StringTokenizer(input);
+            int first = Integer.parseInt(st.nextToken());
+            int second = Integer.parseInt(st.nextToken());
+
+            if(isGameOver()) {
+                break;
+            }
+
+            try {
+                human.orderAttack(computer, first, second);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            computer.orderAttack(human, first, second);
+        }
 
         // 6. 공격하면 적의 방어력을 깎는다.
         // 적군의 방어력이 0이 되면 List에서 제외시킨다.
@@ -81,5 +84,10 @@ public class Game {
 
         // 9. 끝났다@!~@!~~@!@!~@!~@!~
         sc.close();
+    }
+
+    private static boolean isGameOver() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isGameOver'");
     }
 }

@@ -10,12 +10,21 @@ import src.abstractclass.User;
 public class Computer extends User {
     private List<Unit> list;
 
+    public List<Unit> getList() {
+        return this.list;
+    }
+
+    public void setList(List<Unit> list) {
+        this.list = list;
+    }
+
     Computer(int number) { // 생성자의 역할은 멤버변수 초기화.
         // list = new ArrayList<>();
         list = UnitManager.getList(number);
     }
 
-    public void printComputer() {
+    @Override
+    public void printList() {
         Collections.sort(list); // sort는 iterator 생성 이전에 해야 함. 그렇지 않으면 java.util.ConcurrentModificationException
         System.out.println("적군 : " + list.get(0).getTribe());
         Iterator<Unit> iterator = list.iterator();

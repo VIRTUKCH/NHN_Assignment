@@ -3,7 +3,7 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.ProtossPackage.*;
+import src.protoss.*;
 import src.abstractclass.*;
 import src.exception.UnExpectedException;
 import src.terran.*;

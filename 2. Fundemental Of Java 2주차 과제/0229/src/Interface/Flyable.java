@@ -1,4 +1,4 @@
-package src.interface;
+package src.Interface;
 /*
  * 1. Flyable 인터페이스의 주요 메서드는 fly()여야 한다고 생각한다.
  * => 그렇지 않으면, 

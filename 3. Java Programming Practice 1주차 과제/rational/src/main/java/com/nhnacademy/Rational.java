@@ -34,7 +34,8 @@ public class Rational {
     /**
      * @param numerator
      * @param denominator
-     * @throws ArithmeticException : 분모가 0인 경우
+     * @throws ArithmeticException 분모가 0인 경우
+     * @throws OutOfBoundsException 분모가 Integer.MAX_VALUE를 넘을 경우
      */
     public Rational(long numerator, long denominator) {
         if (denominator == 0) {

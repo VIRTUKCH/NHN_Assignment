@@ -17,10 +17,9 @@ public class Rational {
 
     // 로그에 이름을 주면 특정한 로그만 가져올 수 있다.
     // getSimpleName을 하면 클래스 이름만 나옴.
-    // Logger logger = LogManager.getLogger(this.getClass().getName());
-
+    Logger logger = LogManager.getLogger(this.getClass().getName());
     // 이렇게 하면 static하게 관리할 수 있음.
-    static Logger logger = LogManager.getLogger(Rational.class.getName());
+    // static Logger logger = LogManager.getLogger(Rational.class.getName());
 
     public long getNumerator() {
         return this.numerator;
@@ -41,7 +40,7 @@ public class Rational {
     public Rational(int n) {
         numerator = n;
         denominator = 1;
-        
+        logger.trace("new rational : [{}/{}]", numerator, denominator);
     }
 
     /**

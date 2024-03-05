@@ -2,6 +2,10 @@ package com.nhnacademy;
 
 // '모든' Integer 범위의 테스트 케이스를 통과하기 위해서는 => Long 멤버 변수가 필수적인 것 같다.
 // 그렇게 따지면 무조건 BigInteger을 해야 하는 거 아닐까?
+
+/**
+ * @author VIRTUKCH
+ */
 public class Rational {
     long numerator;
     long denominator;
@@ -27,6 +31,11 @@ public class Rational {
         denominator = 1;
     }
 
+    /**
+     * @param numerator
+     * @param denominator
+     * @throws ArithmeticException : 분모가 0인 경우
+     */
     public Rational(long numerator, long denominator) {
         if (denominator == 0) {
             throw new ArithmeticException();

@@ -1,5 +1,21 @@
 package com.nhnacademy;
 
+/*
+ * <궁금한 점>
+ * 1. '모든' Integer 범위의 테스트 케이스를 통과하기 위해서는
+ * => Long 멤버 변수가 필수적인 것 같다.
+ * => 그러려면 당연하게 모든 클래스에서 BigInteger을 사용해야 하는 것 아닐까?
+ * 
+ * 2. 그럼에도 불구하고, 내부적으로 long을 사용한다는 건 무슨 소리일까??
+ * => 메모리가 소중한 상황에서 처리하는 방법인 걸까?
+ * 
+ * 3. Object에 null을 넣으려고 하니 JUnit이 막던데, 어떻게 처리해야 할까?
+ * 
+ * 4. OverFlow가 날 수도 있다. 그건 그럴 수 있는데, JUnit이 그걸 어떻게 알았을까?
+ * 
+ * 5. reciprocal 메서드는 어떻게 처리해야 하는 걸까? 해결하긴 했지만, 1/32 확률로 에러가 날 수도..
+ */
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;

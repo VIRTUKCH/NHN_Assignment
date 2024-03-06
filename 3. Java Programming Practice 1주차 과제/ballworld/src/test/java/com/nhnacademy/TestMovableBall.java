@@ -17,17 +17,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class TestMovableBall {
     @Test
-    void testConstructor() {
+    void testConstructor() { // movableBall의 생성자 테스트.
         assertDoesNotThrow(() -> {
             MovableBall ball = new MovableBall(1, 1, 1, Color.BLACK);
-
-            assertEquals(MovableBall.DEFAULT_DX, ball.getDX());
-            assertEquals(MovableBall.DEFAULT_DY, ball.getDY());
+            assertEquals(MovableBall.DEFAULT_DX, ball.getDX()); // dx는 별개로 추가하지는 않았음. - 그래서 DEFAULT_DX와 같음.
+            assertEquals(MovableBall.DEFAULT_DY, ball.getDY()); // assertEquals()는 두 값이 서로 일치하는지 확인함.
         });
     }
 
     @ParameterizedTest
-    @MethodSource("deltaProvider")
+    @MethodSource("deltaProvider") // dx를 setter를 통해 setting하고, assertEqulas 메서드를 통해 바뀌었는지 확인하는 테스트 코드.
     void testDeltaXY(int x, int y, int radius, int dx, int dy) {
         assertDoesNotThrow(() -> {
             MovableBall ball = new MovableBall(x, y, radius, Color.RED);
@@ -61,7 +60,7 @@ class TestMovableBall {
             int currentX = x;
             int currentY = y;
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++) { // 반복적으로 움직이고 그 결과를 확인.
                 ball.move();
                 currentX += dx;
                 currentY += dy;

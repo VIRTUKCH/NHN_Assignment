@@ -1,9 +1,13 @@
 import java.awt.*;
-
+/*
+ * 파라미터로 넘겨주지 않으면 안 되는 것
+ * 1. 현재 위치
+ * 2. 길이
+ * 3. 왼쪽으로 갈지, 오른쪽으로 갈지 (각도로 대체할 수 있다.)
+ */
 public class RecursiveTree {
     static final double LEN = 0.7;
     public static class MyCanvas extends Canvas {
-
         @Override
         public void paint(Graphics g) {
             super.paint(g);

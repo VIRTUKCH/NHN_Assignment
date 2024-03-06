@@ -1,14 +1,25 @@
 import javax.swing.*;
 import java.awt.*;
-
+/*
+ *      y축
+      |
+      |
+      |
+      |
+------|------ x축
+      |
+      |
+      |
+      |
+ */
 public class RecursiveTriangle extends JPanel {
 
     // paintComponent 메서드는 화면에 그릴 내용을 지정합니다.
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int[] first = new int[] { 0, getHeight() }; // 맨 위, 최우측
-        int[] second = new int[] { getWidth(), getHeight() }; // 맨 아래, 최우측
-        int[] third = new int[] { getWidth() / 2, getHeight() / 2 }; // fist와 second의 중간
+        int[] first = new int[] { 0, getHeight() }; // 왼쪽 아래
+        int[] second = new int[] { getWidth(), getHeight() }; // 오른쪽 아래
+        int[] third = new int[] { getWidth() / 2, getHeight() / 3 }; // 완전 중간
 
         drawTriangle(g, first[0], first[1], second[0], second[1], third[0], third[1]);
     }

@@ -23,12 +23,9 @@ public class BoundedBall extends MovableBall {
     }
 
     /*
-     * 왜 부자연스러운가?
-     * : dx, dy의 크기가 공마다 다르기 때문.
-     * => 단위 시간 당 변화율의 값을 해결될 수 있는 문제이다.
-     * 
-     * - 아래쪽으로 갈수록 y좌표는 커지고
-     * - 오른쪽으로 갈수록 x좌표는 커진다.
+     * Q. 공마다 벽이 다른 듯한 느낌을 받는 이유는 무엇일까?
+     * A. dx, dy의 크기가 공마다 다르기 때문이다.
+     * 단위 시간 당 움직이는 속도의 크기에 따라, bounce() 메서드를 호출하는 공의 좌표가 다르다.
      */
     boolean isOutOfBounds() {
         if (x + radius >= FRAME_WIDTH) { // 1. 우측 충돌 - 반만 담궈도 됨

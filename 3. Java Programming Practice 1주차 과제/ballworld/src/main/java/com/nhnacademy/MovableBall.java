@@ -3,31 +3,37 @@ package com.nhnacademy;
 import java.awt.Color;
 
 public class MovableBall extends PaintableBall {
-    int dx = 0;
-    int dy = 0;
+    public static final int DEFAULT_DX = 0;
+    public static final int DEFAULT_DY = 0;
+
+    int dx = DEFAULT_DX;
+    int dy = DEFAULT_DY;
 
     public MovableBall(int x, int y, int radius, Color color) {
         super(x, y, radius, color);
     }
 
-    public int getDx() {
+    public int getDX() {
         return this.dx;
     }
 
-    public void setDx(int dx) {
+    public void setDX(int dx) {
         this.dx = dx;
     }
 
-    public int getDy() {
+    public int getDY() {
         return this.dy;
     }
 
-    public void setDy(int dy) {
+    public void setDY(int dy) {
         this.dy = dy;
     }
 
     public void move() {
-        moveTo(getX() + getDx(), getY() + getDy());
+        try {
+            moveTo(getX() + getDX(), getY() + getDY());
+        } catch (IllegalArgumentException e) {
+        }
     }
 
     public void moveTo(int x, int y) { // 서터를 불러서 처리

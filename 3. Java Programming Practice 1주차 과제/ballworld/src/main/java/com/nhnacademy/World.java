@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class World extends JPanel {
-    List<Ball> ballList = new LinkedList<>(); // 볼을 링크드 리스트를 사용하여 관리함.
+    List<Ball> ballList = new LinkedList<>();
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
     /**

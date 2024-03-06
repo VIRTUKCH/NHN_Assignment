@@ -4,29 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Ball {
+    static int count = 0;
+    int id = ++count;
     int x;
     int y;
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
     int radius;
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
@@ -49,7 +30,29 @@ public class Ball {
         logger.trace("Ball created : {}, {}, {}", x, y, radius);
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    void setX(int x) {
+        this.x = x;
+    }
+
+    void setY(int y) {
+        this.y = y;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
 
     @Override
     public String toString() {

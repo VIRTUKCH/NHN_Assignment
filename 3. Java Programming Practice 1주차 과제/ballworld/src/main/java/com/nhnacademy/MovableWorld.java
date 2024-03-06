@@ -1,48 +1,47 @@
 package com.nhnacademy;
 
 public class MovableWorld extends World {
-    static final int DEFUALT_MAX_MOVE_COUNT = 10;
+    int moveCount;
+    int maxMoveCount = 0;
 
-    private int moveCount;
-    private int maxMoveCount = DEFUALT_MAX_MOVE_COUNT;
-
-    void reset() {
-        this.moveCount = 0;
+    public void reset() {
+        moveCount = 0;
     }
 
-    void move() {
-        if(moveCount < maxMoveCount) {
-            for (Ball ball : ballList) {
-                if(ball instanceof MovableBall) {
+    public void move() {
+        if ((getMaxMoveCount() == 0) || (getMoveCount() < getMaxMoveCount())) {
+            for (int i = 0; i < getCount(); i++) {
+                Ball ball = get(i);
+                if (ball instanceof MovableBall) {
                     ((MovableBall) ball).move();
                 }
-                this.moveCount++;
             }
-        }
-        repaint();
-    }
 
-    void run() {
-        if(maxMoveCount == 0) {
-            while (moveCount < Integer.MAX_VALUE) {
-                move();
-            }
-        } else {
-            while (moveCount < maxMoveCount) {
-                move();
-            }
+            moveCount++;
+            repaint();
         }
     }
 
-    int getMovementCount() {
-        return this.moveCount;
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            move();
+        }
     }
 
-    int getMaxMoveCount() {
-        return this.maxMoveCount;
+    public int getMoveCount() {
+        return moveCount;
     }
 
-    void setMaxMoveCount(int count) {
-        this.maxMoveCount = count;
+    public int getMaxMoveCount() {
+        return maxMoveCount;
     }
+
+    public void setMaxMoveCount(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        maxMoveCount = count;
+    }
+
 }

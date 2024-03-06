@@ -14,6 +14,7 @@ public class TestWorld {
     static final int BALL_COUNT = 10;
     static final int MIN_DELTA = 10;
     static final int MAX_DELTA = 30;
+    
     static final Color[] COLOR_TABLE = {
             Color.BLACK,
             Color.RED,
@@ -35,12 +36,15 @@ public class TestWorld {
 
         while (world.getCount() < BALL_COUNT) {
             try {
-                MovableBall ball = new MovableBall(random.nextInt(FRAME_WIDTH), random.nextInt(FRAME_HEIGHT),
+                BoundedBall ball = new BoundedBall(random.nextInt(FRAME_WIDTH), random.nextInt(FRAME_HEIGHT),
                         MIN_RADIUS + random.nextInt(MAX_RADIUS - MIN_RADIUS + 1),
                         COLOR_TABLE[random.nextInt(COLOR_TABLE.length)]);
 
-                int dx = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1);
+                // int dx = MIN_DELTA + random.nextInt(MAX_DELTA - MIN_DELTA + 1); // 변수명을 보면 이게 맞는 식 아닐까?
+                // int dy = MIN_DELTA + random.nextInt(MAX_DELTA - MIN_DELTA + 1); // 변수명을 보면 이게 맞는 식 아닐까?
+                int dx = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1); // 그래도 속도는 이게 더 자연스럽다.
                 int dy = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1);
+                
 
                 ball.setDX(dx);
                 ball.setDY(dy);

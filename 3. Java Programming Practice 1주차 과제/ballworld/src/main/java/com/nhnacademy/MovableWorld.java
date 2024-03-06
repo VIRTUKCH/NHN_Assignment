@@ -3,6 +3,7 @@ package com.nhnacademy;
 public class MovableWorld extends World {
     int moveCount;
     int maxMoveCount = 0;
+    int dt = 60;
 
     public void reset() {
         moveCount = 0;
@@ -16,7 +17,6 @@ public class MovableWorld extends World {
                     ((MovableBall) ball).move();
                 }
             }
-
             moveCount++;
             repaint();
         }
@@ -25,6 +25,11 @@ public class MovableWorld extends World {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             move();
+            try {
+                Thread.sleep(dt);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -36,11 +41,18 @@ public class MovableWorld extends World {
         return maxMoveCount;
     }
 
+    public int getDt() {
+        return this.dt;
+    }
+
+    public void setDt(int dt) {
+        this.dt = dt;
+    }
+
     public void setMaxMoveCount(int count) {
         if (count < 0) {
             throw new IllegalArgumentException();
         }
-
         maxMoveCount = count;
     }
 

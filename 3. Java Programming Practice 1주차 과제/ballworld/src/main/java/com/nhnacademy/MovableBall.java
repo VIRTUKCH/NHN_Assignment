@@ -6,10 +6,10 @@ public class MovableBall extends PaintableBall {
     public static final int DEFAULT_DX = 0;
     public static final int DEFAULT_DY = 0;
 
-    int dx = DEFAULT_DX;
-    int dy = DEFAULT_DY;
+    int dx = DEFAULT_DX; // 단위 시간 당 x값의 변화량
+    int dy = DEFAULT_DY; // 단위 시간 당 y값의 변화량
 
-    public MovableBall(int x, int y, int radius, Color color) {
+    public MovableBall(int x, int y, int radius, Color color) { // dx, dy는 생성자를 통해 초기화하지 않고, 세터를 통해 받음.
         super(x, y, radius, color);
     }
 
@@ -33,6 +33,7 @@ public class MovableBall extends PaintableBall {
         try {
             moveTo(getX() + getDX(), getY() + getDY());
         } catch (IllegalArgumentException e) {
+            System.out.println("위치 재조정");
         }
     }
 

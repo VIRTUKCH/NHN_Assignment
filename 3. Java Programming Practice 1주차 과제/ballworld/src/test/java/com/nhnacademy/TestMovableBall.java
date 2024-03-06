@@ -82,22 +82,15 @@ class TestMovableBall {
         );
     }
 
-    // MovableBall ball;
-    // int startX = 0;
-    // int startY = 0;
-    // int deltaX = 10;
-    // int deltaY = 10;
+    // static int startX = 0;
+    // static int startY = 0;
+    // static int deltaX = 10;
+    // static int deltaY = 10;
+    // static MovableBall ball = new MovableBall(startX, deltaY, 10, Color.RED);
 
-    // @BeforeEach
-    // void beforTestRepeatedMove() {
-    //     ball = new MovableBall(startX, startY, 10, Color.RED);
-    //     ball.setDx(deltaX);
-    //     ball.setDy(deltaY);
-    // }
-
-    // @RepeatedTest(10)
-    // void testRepeatedMove(RepetitionInfo repetitionInfo) {
-    //     assertEquals(startX + deltaX * repetitionInfo.getCurrentRepetition(), ball.getX());
-    //     assertEquals(startX + deltaY * repetitionInfo.getCurrentRepetition(), ball.getY());
+    // @BeforeAll
+    // static void testRepeatedMove(RepetitionInfo RepetitionInfo) {
+    //     ball.move();
+    //     assertEquals(startX + deltaX, null);
     // }
 }

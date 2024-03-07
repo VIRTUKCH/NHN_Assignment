@@ -2,7 +2,19 @@ package com.nhnacademy;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-
+/*
+ * [BoundedBall이 하는 일]
+ * 1. 얘도 Ball이 가지고 있는 Rectangle처럼, Rectangle을 가지고 있음.
+ * 2. 근데 이름은 bounds이고, 얘는 공의 크기가 아니라 *'공이 움직일 수 있는 범위'를 표현함.
+ * 
+ * 3. 이친구에게 move하도록 시키면 (오버라이딩)
+ * 1) 일단 움직인 다음에 (조상 메서드의 move() 메서드 호출)
+ * 2) 자신이 움직일 수 있는 범위 (bounds)를 벗어난다면
+ * 3) bounce() 메서드를 호출함
+ * 4) bounce() 메서드는 내가 박은 벽에 따라서 방향을 바꿔주는 메서드임
+ * 
+ * 4. 이게 전부임.
+ */
 public class BoundedBall extends MovableBall {
     Rectangle bounds;
 

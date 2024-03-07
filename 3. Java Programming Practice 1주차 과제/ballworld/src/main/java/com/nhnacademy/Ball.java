@@ -5,6 +5,14 @@ import java.awt.Rectangle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/*
+ * [Ball 클래스가 하는 일]
+ * region을 가짐 -> getX, getY와 같은 원의 중점을 계산하는 일은 region을 통해서 한다.
+ * 아이디 관리
+ * 생성 관리 - 반지름이 0보다 작거나, 원이 너무 커서 정수 표현을 벗어나면 예외 처리. (생성자)
+ * toString() 메서드 -> (x, y, radius) 형식으로 출력하게 만들어 줌.
+ * 이게 그냥 전부야
+ */
 public class Ball {
     static int getRegionCallCount = 0;
     static int count = 0;

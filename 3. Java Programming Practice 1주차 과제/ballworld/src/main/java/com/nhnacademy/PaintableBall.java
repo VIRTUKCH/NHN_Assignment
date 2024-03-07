@@ -2,7 +2,10 @@ package com.nhnacademy;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
+/*
+ * [PaintableBall이 하는 일]
+ * - 색깔 가지는 게 전부임.
+ */
 public class PaintableBall extends Ball {
     public static final Color DEFAULT_COLOR = Color.BLACK;
 

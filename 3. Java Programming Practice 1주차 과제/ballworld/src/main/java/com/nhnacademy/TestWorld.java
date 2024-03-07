@@ -5,7 +5,12 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-
+/*
+ * 각종 Ball, 각종 World를 테스트하기 위한 클래스.
+ * Ball을 바꿔 끼울 수도 있고, World를 바꿔 끼울 수도 있음.
+ * 편하게 통합 관리하기 위해서 상수가 좀 많은 편.
+ * 어떤 곳에 어떤 상수가 들어가야 할지 정확하게 알고 있다면 => 상수 만들어서 넣어도 좋다.
+ */
 public class TestWorld {
     static final int FRAME_WIDTH = 500;
     static final int FRAME_HEIGHT = 400;

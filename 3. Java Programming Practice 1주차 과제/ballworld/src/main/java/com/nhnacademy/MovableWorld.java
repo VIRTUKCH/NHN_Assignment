@@ -1,9 +1,12 @@
 package com.nhnacademy;
 
 /*
- * 1. 기본적으로 World 클래스는 Ball을 List로 관리하고 있음.
- * 2. MoveableWorld는 dt를 정의할 뿐임.
- * 3. 그리고, n번만 이동할 수 있도록 maxMoveCount를 만들었으나 지금은 안 씀.
+ * 1. 기본적으로 World 클래스는 Ball을 List로 관리하고 있음. + 판넬에 집어 넣는 것.
+ * 2. MovableWorld 클래스는 World라는 클래스를 상속 받은 친구임.
+ * 3. MovableWorld가 World의 기존 기능에서 추가하고 있는 것?
+ * : (각 볼이 동시에 움직이게 만든다는 전제 하에) 몇 번 움직였는지, 최대 몇 번까지 움직이게 할 건지 통합해서 관리하는 기능
+ * 4. 또한, MoveableWorld는 dt를 정의할 뿐임 (단위 시간을 가지고 있다.)
+ * 5. 처음에는 각 공을 모두 통합 관리하기 위해 n번만 이동할 수 있도록 maxMoveCount를 만들었으나 지금은 딱히 쓰지는 않음.
  */
 public class MovableWorld extends World {
     static final int DEFAULT_DT = 10;

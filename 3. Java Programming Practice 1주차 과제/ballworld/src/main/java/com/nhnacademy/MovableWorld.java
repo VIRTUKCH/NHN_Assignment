@@ -1,9 +1,21 @@
 package com.nhnacademy;
 
 public class MovableWorld extends World {
+    static final int DEFAULT_DT = 10;
     int moveCount;
     int maxMoveCount = 0;
-    int dt = 60;
+    int dt = DEFAULT_DT;
+
+    public void setDT(int dt) {
+        if (dt < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.dt = dt;
+    }
+
+    public int getDT() {
+        return dt;
+    }
 
     public void reset() {
         moveCount = 0;
@@ -15,8 +27,17 @@ public class MovableWorld extends World {
                 Ball ball = get(i);
                 if (ball instanceof MovableBall) {
                     ((MovableBall) ball).move();
+
+                    for (int j = 0; j < getCount(); j++) {
+                        Ball otherBall = get(j);
+
+                        if ((ball != otherBall) && (ball.getRegion().intersects(otherBall.getRegion()))) {
+                            logger.info("ball({})와 ball({})이 충돌하였습니다.", ball.getId(), otherBall.getId());
+                        }
+                    }
                 }
             }
+
             moveCount++;
             repaint();
         }
@@ -26,7 +47,7 @@ public class MovableWorld extends World {
         while (!Thread.currentThread().isInterrupted()) {
             move();
             try {
-                Thread.sleep(dt);
+                Thread.sleep(getDT());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -41,18 +62,11 @@ public class MovableWorld extends World {
         return maxMoveCount;
     }
 
-    public int getDt() {
-        return this.dt;
-    }
-
-    public void setDt(int dt) {
-        this.dt = dt;
-    }
-
     public void setMaxMoveCount(int count) {
         if (count < 0) {
             throw new IllegalArgumentException();
         }
+
         maxMoveCount = count;
     }
 

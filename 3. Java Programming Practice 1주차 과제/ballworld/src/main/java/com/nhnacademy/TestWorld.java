@@ -11,10 +11,10 @@ public class TestWorld {
     static final int FRAME_HEIGHT = 400;
     static final int MIN_RADIUS = 20;
     static final int MAX_RADIUS = 50;
-    static final int BALL_COUNT = 10;
+    static final int BALL_COUNT = 5;
     static final int MIN_DELTA = 10;
     static final int MAX_DELTA = 30;
-    
+    static final int MAX_MOVE_COUNT = 0;
     static final Color[] COLOR_TABLE = {
             Color.BLACK,
             Color.RED,
@@ -40,11 +40,8 @@ public class TestWorld {
                         MIN_RADIUS + random.nextInt(MAX_RADIUS - MIN_RADIUS + 1),
                         COLOR_TABLE[random.nextInt(COLOR_TABLE.length)]);
 
-                // int dx = MIN_DELTA + random.nextInt(MAX_DELTA - MIN_DELTA + 1); // 변수명을 보면 이게 맞는 식 아닐까?
-                // int dy = MIN_DELTA + random.nextInt(MAX_DELTA - MIN_DELTA + 1); // 변수명을 보면 이게 맞는 식 아닐까?
-                int dx = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1); // 그래도 속도는 이게 더 자연스럽다.
+                int dx = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1);
                 int dy = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1);
-                
 
                 ball.setDX(dx);
                 ball.setDY(dy);
@@ -57,7 +54,8 @@ public class TestWorld {
 
         frame.setVisible(true);
 
-        world.setMaxMoveCount(250);
+        world.setMaxMoveCount(MAX_MOVE_COUNT);
+        world.setDT(100);
         world.run();
     }
 }

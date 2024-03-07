@@ -1,5 +1,10 @@
 package com.nhnacademy;
 
+/*
+ * 1. 기본적으로 World 클래스는 Ball을 List로 관리하고 있음.
+ * 2. MoveableWorld는 dt를 정의할 뿐임.
+ * 3. 그리고, n번만 이동할 수 있도록 maxMoveCount를 만들었으나 지금은 안 씀.
+ */
 public class MovableWorld extends World {
     static final int DEFAULT_DT = 10;
     int moveCount;

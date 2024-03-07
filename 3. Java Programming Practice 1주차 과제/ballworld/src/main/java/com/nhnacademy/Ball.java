@@ -12,7 +12,7 @@ public class Ball {
     int x;
     int y;
     int radius;
-    Rectangle region;
+    Rectangle region; // 볼의 테두리를 나타낸다.
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
     public Ball(int x, int y, int radius) {

@@ -27,7 +27,7 @@ public class MovableWorld extends World {
     }
 
     public void move() {
-        if ((getMaxMoveCount() == 0) || (getMoveCount() < getMaxMoveCount())) {
+        if ((getMaxMoveCount() == 0) || (getMoveCount() < getMaxMoveCount())) { // 이거는 최대 이동수 제한할 때 시절
             for (int i = 0; i < getCount(); i++) {
                 Ball ball = get(i);
                 if (ball instanceof MovableBall) {

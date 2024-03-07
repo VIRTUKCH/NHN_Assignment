@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.Test;
 
-class TestVector {
+public class TestVector {
  
     @Test
-    void testConstructor() {
+    public void testConstructor() {
         assertDoesNotThrow(() -> {
             int dx = 100;
             int dy = -100;
@@ -20,7 +20,7 @@ class TestVector {
     }
 
     @Test
-    void testSet() {
+    public void testSet() {
         assertDoesNotThrow(() -> {
             Vector targetVector = new Vector(100, -100);
             Vector otherVector = new Vector(0, 0);

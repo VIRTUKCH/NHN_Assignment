@@ -48,9 +48,8 @@ public class MovableWorld extends World {
                     }
                 }
             }
-
             moveCount++;
-            repaint();
+            repaint(); // 애들 다 움직이게 해 뒀으니 다시 그립시다 -> 최종 권한이 MovableWorld에게 있다.
         }
     }
 

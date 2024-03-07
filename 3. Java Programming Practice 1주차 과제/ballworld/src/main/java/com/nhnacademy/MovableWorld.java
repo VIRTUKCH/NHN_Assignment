@@ -30,7 +30,7 @@ public class MovableWorld extends World {
     }
 
     public void move() {
-        if ((getMaxMoveCount() == 0) || (getMoveCount() < getMaxMoveCount())) { // 이거는 최대 이동수 제한할 때 시절
+        if ((getMaxMoveCount() == 0) || (getMoveCount() < getMaxMoveCount())) {
             for (int i = 0; i < getCount(); i++) {
                 Ball ball = get(i);
                 if (ball instanceof MovableBall) {
@@ -48,8 +48,9 @@ public class MovableWorld extends World {
                     }
                 }
             }
+
             moveCount++;
-            repaint(); // 애들 다 움직이게 해 뒀으니 다시 그립시다 -> 최종 권한이 MovableWorld에게 있다.
+            repaint();
         }
     }
 

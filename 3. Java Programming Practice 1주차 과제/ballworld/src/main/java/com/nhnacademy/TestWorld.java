@@ -12,16 +12,22 @@ import javax.swing.WindowConstants;
  * 어떤 곳에 어떤 상수가 들어가야 할지 정확하게 알고 있다면 => 상수 만들어서 넣어도 좋다.
  */
 public class TestWorld {
-    static final int FRAME_WIDTH = 500;
+    static final int FRAME_WIDTH = 500; // 프레임의 사이즈 -> JFrame을 상속 받은 건 World, MovableWorld임. 그리고 그걸 관리하는 게 TestWorld
     static final int FRAME_HEIGHT = 400;
-    static final int MIN_RADIUS = 10;
-    static final int MAX_RADIUS = 50;
-    static final int FIXED_BALL_COUNT = 0;
-    static final int BOUNDED_BALL_COUNT = 5;
-    static final int MIN_DELTA = 5;
-    static final int MAX_DELTA = 7;
-    static final int MAX_MOVE_COUNT = 0;
-    static final int DT = 10;
+
+    static final int MIN_RADIUS = 10; // 최소 반지름 -> 볼 생성의 권한은 TestWorld에게 있다.
+    static final int MAX_RADIUS = 50; // 최대 반지름
+    
+    static final int FIXED_BALL_COUNT = 0; // 못 움직이는 볼
+    static final int BOUNDED_BALL_COUNT = 5; // 움직이는 볼
+
+    static final int MIN_DELTA = 5; // 속도 제한
+    static final int MAX_DELTA = 7; // 속도 제한
+
+    static final int MAX_MOVE_COUNT = 0; // 끝이 없는 반복문
+
+    static final int DT = 10; // 속도 제한
+
     static final Color[] COLOR_TABLE = {
             Color.BLACK,
             Color.RED,
@@ -41,7 +47,7 @@ public class TestWorld {
 
         Random random = new Random();
 
-        while (world.getCount() < FIXED_BALL_COUNT) {
+        while (world.getCount() < FIXED_BALL_COUNT) { // 공 더하기
             try {
                 PaintableBall ball = new PaintableBall(random.nextInt(FRAME_WIDTH),
                         random.nextInt(FRAME_HEIGHT),
@@ -50,10 +56,11 @@ public class TestWorld {
 
                 world.add(ball);
             } catch (IllegalArgumentException ignore) {
+                //
             }
         }
 
-        while (world.getCount() < FIXED_BALL_COUNT + BOUNDED_BALL_COUNT) {
+        while (world.getCount() < FIXED_BALL_COUNT + BOUNDED_BALL_COUNT) { // 공 돌리기
             try {
                 BoundedBall ball = new BoundedBall(random.nextInt(FRAME_WIDTH), random.nextInt(FRAME_HEIGHT),
                         MIN_RADIUS + random.nextInt(MAX_RADIUS - MIN_RADIUS + 1),

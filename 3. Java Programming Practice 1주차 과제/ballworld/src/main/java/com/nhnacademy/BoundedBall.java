@@ -41,12 +41,12 @@ public class BoundedBall extends MovableBall {
         if ((getX() - getRadius() < getBounds().getMinX())
                 || (getX() + getRadius() > getBounds().getMaxX())) {
 
-            setDX(-getDX());
+            setDx(-getDx());
         }
 
         if ((getY() - getRadius() < getBounds().getMinY())
                 || (getY() + getRadius() > getBounds().getMaxY())) {
-            setDY(-getDY());
+            setDy(-getDy());
         }
     }
 }

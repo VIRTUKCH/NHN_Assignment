@@ -9,8 +9,6 @@ public class Ball {
     static int getRegionCallCount = 0;
     static int count = 0;
     int id = ++count;
-    int x;
-    int y;
     int radius;
     Rectangle region; // 볼의 테두리를 나타낸다.
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
@@ -27,8 +25,6 @@ public class Ball {
             throw new IllegalArgumentException("볼이 정수 공간을 벗어납니다.");
         }
 
-        this.x = x;
-        this.y = y;
         this.radius = radius;
         region = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
         logger.trace("Ball created : {}, {}, {}", x, y, radius);
@@ -39,21 +35,11 @@ public class Ball {
     }
 
     public int getX() {
-        return x;
+        return (int) this.region.getWidth() / 2;
     }
 
     public int getY() {
-        return y;
-    }
-
-    void setX(int x) {
-        this.x = x;
-        region.setLocation(getX() - getRadius(), getY() - getRadius());
-    }
-
-    void setY(int y) {
-        this.y = y;
-        region.setLocation(getX() - getRadius(), getY() - getRadius());
+        return (int) this.region.getHeight() / 2;
     }
 
     public int getRadius() {
@@ -62,6 +48,14 @@ public class Ball {
 
     public Rectangle getRegion() {
         return region;
+    }
+
+    void setX(int x) {
+        region.setLocation(getX() - getRadius(), getY() - getRadius());
+    }
+
+    void setY(int y) {
+        region.setLocation(getX() - getRadius(), getY() - getRadius());
     }
 
     @Override

@@ -43,8 +43,8 @@ public class TestWorld {
                 int dx = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1);
                 int dy = MIN_DELTA - random.nextInt(MAX_DELTA - MIN_DELTA + 1);
 
-                ball.setDX(dx);
-                ball.setDY(dy);
+                ball.setDx(dx);
+                ball.setDy(dy);
 
                 world.add(ball);
             } catch (IllegalArgumentException ignore) {

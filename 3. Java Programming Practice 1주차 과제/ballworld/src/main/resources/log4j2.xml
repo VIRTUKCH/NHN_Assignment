@@ -21,7 +21,8 @@
     <Loggers>
         <Root level="trace">
             <AppenderRef ref="console"/>
-            <!-- 콘솔에서 출력하지 않고, 파일에 저장하려면 ref를 바꾸고 실행할 때 옵션을 줘야 한다고 함. -->
+            <!-- <AppenderRef ref="file"/> -->
+            <!-- 파일에 출력하기에는 양이 너무 많다. 한 번 실행하면 2500줄 생겨버림 -->
         </Root>
     </Loggers>
 </Configuration>

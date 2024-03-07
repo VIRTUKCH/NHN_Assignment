@@ -27,18 +27,19 @@ public class BoundedBall extends MovableBall {
      * A. dx, dy의 크기가 공마다 다르기 때문이다.
      * 단위 시간 당 움직이는 속도의 크기에 따라, bounce() 메서드를 호출하는 공의 좌표가 다르다.
      */
-    boolean isOutOfBounds() {
-        if (x + radius >= FRAME_WIDTH) { // 1. 우측 충돌 - 반만 담궈도 됨
-            return true;
-        } else if (x - radius <= 0) { // 2. 좌측 충돌 - 반지름 만큼 거리 남았는데도 튕겨버림
-            return true;
-        } else if (y + radius >= FRAME_HEIGHT) { // 3. 하단 충돌 - 맵에서 사라져야 인정됨.
-            return true;
-        } else if (y - radius <= 0) { // 4. 상단 충돌
-            return true;
-        } else {
-            return false;
-        }
+    boolean isOutOfBounds() { // 피드백 : 최대한 간단하게 작성해라.
+        // if (x + radius >= FRAME_WIDTH) { // 1. 우측 충돌 - 반만 담궈도 됨
+        //     return true;
+        // } else if (x - radius <= 0) { // 2. 좌측 충돌 - 반지름 만큼 거리 남았는데도 튕겨버림
+        //     return true;
+        // } else if (y + radius >= FRAME_HEIGHT) { // 3. 하단 충돌 - 맵에서 사라져야 인정됨.
+        //     return true;
+        // } else if (y - radius <= 0) { // 4. 상단 충돌
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return (x + radius >= FRAME_WIDTH) || (x - radius <= 0) || (y + radius >= FRAME_HEIGHT) || (y - radius <= 0);
     }
 
     public void move() {
@@ -48,11 +49,11 @@ public class BoundedBall extends MovableBall {
         }
     }
 
-    void bounce() {
+    void bounce() { // 피드백 : 게터, 세터를 사용하자.
         if (x - radius <= 0 || x + radius >= FRAME_WIDTH) {
-            dx = -dx;
+            setDX(-getDX());
         } else if (y - radius <= 0 || y + radius >= FRAME_HEIGHT) {
-            dy = -dy;
+            setDY(-getDY());
         }
     }
 }

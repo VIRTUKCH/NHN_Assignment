@@ -13,7 +13,7 @@ import java.awt.Rectangle;
  * 3) bounce() 메서드를 호출함
  * 4) bounce() 메서드는 내가 박은 벽에 따라서 방향을 바꿔주는 메서드임
  * 
- * 4. 이게 전부임.
+ * 4. 다른 공과 충돌하는 기능도 있음.
  */
 public class BoundedBall extends MovableBall {
     Rectangle bounds;
@@ -59,6 +59,18 @@ public class BoundedBall extends MovableBall {
         if ((getY() - getRadius() < getBounds().getMinY()) // 3. 상단 벽을 뚫거나
                 || (getY() + getRadius() > getBounds().getMaxY())) { // 4. 하단 벽을 뚫었으면
             setDy(-getDy()); // dy 방향 바꿔줘
+        }
+    }
+
+    public void bounce(Ball other) {
+        Rectangle intersection = getRegion().intersection(other.getRegion());
+
+        if (getRegion().getHeight() != intersection.getHeight()) {
+            setDy(-getDy());
+        }
+
+        if (getRegion().getWidth() != intersection.getWidth()) {
+            setDx(-getDx());
         }
     }
 }

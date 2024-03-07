@@ -33,10 +33,12 @@ public class Ball {
     }
 
     public int getX() {
+        // return (int) this.region.getWidth() / 2; // 여기서 공이 움직이지 않았나 봐요
         return (int) region.getCenterX();
     }
 
     public int getY() {
+        // return (int) this.region.getHeight() / 2; // 이래서 공이 움직이지 않았나 봐요
         return (int) region.getCenterY();
     }
 

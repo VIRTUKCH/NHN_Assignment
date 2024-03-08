@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.List;
 
 public class BounceableBall extends MovableBall implements Bounceable {
-
     public BounceableBall(Point location, int radius, Color color) {
         super(location, radius, color);
     }
@@ -21,15 +20,17 @@ public class BounceableBall extends MovableBall implements Bounceable {
 
     public void bounce(Bounded other) {
         if (isCollision(other.getBounds())) {
-            Bounds intersection = getBounds().intersection(other.getBounds());
+            // 1. 겹치는 부위 파악
+            Bounds intersection = getBounds().intersection(other.getBounds()); 
 
+            // 2. 벡터 얻어오기
             Vector newMotion = getMotion();
 
             if ((getBounds().getHeight() != intersection.getHeight())
                     && (other.getHeight() != intersection.getHeight())) {
 
                 if (getMinY() < other.getMinY()) {
-                    setLocation(new Point(getX(), other.getMinY() - getRadius()));
+                    this.location.setLocation(new Point(getX(), other.getMinY() - getRadius()));
                 } else {
                     setLocation(new Point(getX(), other.getMaxY() + getRadius()));
                 }

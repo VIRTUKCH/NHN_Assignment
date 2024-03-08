@@ -15,11 +15,7 @@ public class Vector {
         this.dx = dx;
         this.dy = dy;
     }
-
-    public Vector(Vector other) {
-        dx = other.getDX();
-        dy = other.getDY();
-    }
+    // dx/dy을 위한 getter₩
 
     public int getDX() {
         return dx;

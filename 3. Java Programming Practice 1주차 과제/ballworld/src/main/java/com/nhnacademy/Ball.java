@@ -5,7 +5,19 @@ import java.awt.Rectangle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Ball implements Regionable {
+/*
+ * <Ball은>
+ * 1. id, Rectangle, count를 멤버 변수로 가지고 있음.
+ * 2. Regionable 인터페이스는 좌표로 나타내기 위한 메서드들
+ * 3. 좌표는 Rectangle을 통해 나타내고 있고, 참조 변수의 이름은 region.
+ * 
+ * <Ball의 기능>
+ * 1. 아이디, x, y좌표(Region) 등을 가지고 있음
+ * 2. 반지름을 나타낼 수 있는데, Rectangle의 width/2를 내부적으로 return함.
+ * 실제로 radius라는 멤버 변수를 가지고 있지은 않음.
+ */
+
+public class Ball implements Regionable { // Regionable 인터페이스는
     static int getRegionCallCount = 0;
     static int count = 0;
     int id = ++count;
@@ -28,16 +40,26 @@ public class Ball implements Regionable {
         logger.trace("Ball created : {}, {}, {}", x, y, radius);
     }
 
+    // -- 아래는 Regionable 인터페이스의 메서드를 오버라이딩 함 --
+
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public int getX() {
         return (int) region.getCenterX();
     }
 
+    @Override
     public int getY() {
         return (int) region.getCenterY();
+    }
+
+    @Override
+    public Rectangle getRegion() {
+        return region;
     }
 
     void setX(int x) {
@@ -50,10 +72,6 @@ public class Ball implements Regionable {
 
     public int getRadius() {
         return (int) region.getWidth() / 2;
-    }
-
-    public Rectangle getRegion() {
-        return region;
     }
 
     @Override

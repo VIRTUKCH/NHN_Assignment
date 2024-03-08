@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 /*
  * [BoundedBall이 하는 일]
  * 1. 얘도 Ball이 가지고 있는 Rectangle처럼, Rectangle을 가지고 있음.
+ * 
  * 2. 근데 이름은 bounds이고, 얘는 공의 크기가 아니라 *'공이 움직일 수 있는 범위'를 표현함.
  * 
  * 3. 이친구에게 move하도록 시키면 (오버라이딩)

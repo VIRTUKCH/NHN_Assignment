@@ -14,8 +14,8 @@ public class TestVector {
             int dy = -100;
             Vector vector = new Vector(dx, dy);
 
-            assertEquals(dx, vector.getDx());
-            assertEquals(dy, vector.getDy());
+            assertEquals(dx, vector.getDX());
+            assertEquals(dy, vector.getDY());
         });
     }
 

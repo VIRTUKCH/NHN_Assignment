@@ -12,12 +12,12 @@ import org.apache.logging.log4j.Logger;
  * 1. 기본적으로 World 클래스는 Ball을 List로 관리하고 있음.
  * 2. 판넬 세상에 집어 넣는 것. 딱 거기까지만 하는 게 World 클래스의 역할임.
  */
+
  public class World extends JPanel {
     List<Ball> ballList = new LinkedList<>();
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
     /**
-     *
      * @param ball
      * @throw IllegalArgumentException 공간을 벗어나거나, null인 경우, 볼간 충돌된 경우
      */

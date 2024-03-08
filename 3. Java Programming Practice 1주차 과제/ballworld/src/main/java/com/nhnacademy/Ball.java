@@ -1,26 +1,20 @@
 package com.nhnacademy;
 
-import java.awt.Rectangle;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/*
- * [Ball 클래스가 하는 일]
- * region을 가짐 -> getX, getY와 같은 원의 중점을 계산하는 일은 region을 통해서 한다.
- * 아이디 관리
- * 생성 관리 - 반지름이 0보다 작거나, 원이 너무 커서 정수 표현을 벗어나면 예외 처리. (생성자)
- * toString() 메서드 -> (x, y, radius) 형식으로 출력하게 만들어 줌.
- * 이게 그냥 전부야
- */
-public class Ball {
-    static int getRegionCallCount = 0;
-    static int count = 0;
-    int id = ++count;
-    Rectangle region; // 볼의 테두리를 나타낸다.
-    Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+public class Ball implements Bounded {
+    final String id = UUID.randomUUID().toString();
+    final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+    final Bounds bounds;
 
-    public Ball(int x, int y, int radius) {
+    public Ball(Point point, int radius) { // 내부적으로 아래 생성자를 부른다.
+        this(point.getX(), point.getY(), radius);
+    }
+
+    public Ball(int x, int y, int radius) { // 모든 생성은 이 메서드를 지나야만 한다.
         if (radius <= 0) {
             throw new IllegalArgumentException("반지름은 0보다 커야 합니다.");
         }
@@ -32,42 +26,63 @@ public class Ball {
             throw new IllegalArgumentException("볼이 정수 공간을 벗어납니다.");
         }
 
-        region = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
+        bounds = new Bounds(x - radius, y - radius, 2 * radius, 2 * radius); // 바운드는 공의 테두리
         logger.trace("Ball created : {}, {}, {}", x, y, radius);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getX() {
-        // return (int) this.region.getWidth() / 2; // 여기서 공이 움직이지 않았나 봐요
-        return (int) region.getCenterX();
-    }
-
-    public int getY() {
-        // return (int) this.region.getHeight() / 2; // 이래서 공이 움직이지 않았나 봐요
-        return (int) region.getCenterY();
-    }
-
-    void setX(int x) {
-        region.setLocation(x - getRadius(), getY() - getRadius());
-    }
-
-    void setY(int y) {
-        region.setLocation(getX() - getRadius(), y - getRadius());
-    }
-
-    public int getRadius() {
-        return (int) region.getWidth() / 2;
-    }
-
-    public Rectangle getRegion() {
-        return region;
+    @Override
+    public Bounds getBounds() {
+        return this.bounds;
+        // return new Bounds(bounds); // 왜 이게 중요한지 잘 모르겠음
     }
 
     @Override
-    public String toString() {
-        return String.format("(%d,%d,%d)", getX(), getY(), getRadius());
+    public int getMinX() {
+        return bounds.getMinX();
+    }
+
+    @Override
+    public int getMaxX() {
+        return bounds.getMaxX();
+    }
+
+    @Override
+    public int getCenterX() {
+        return bounds.getCenterX();
+    }
+
+    @Override
+    public int getMinY() {
+        return bounds.getMinY();
+    }
+
+    @Override
+    public int getMaxY() {
+        return bounds.getMaxY();
+    }
+
+    @Override
+    public int getCenterY() {
+        return bounds.getCenterY();
+    }
+
+    @Override
+    public int getWidth() {
+        return bounds.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return bounds.getHeight();
+    }
+
+    @Override
+    public boolean isCollision(Bounds other) {
+        return this.bounds.isCollision(other);
+    }
+
+    @Override
+    public boolean isInclude(Bounds other) {
+        return this.bounds.isInclude(other);
     }
 }

@@ -69,7 +69,6 @@ public class MovableWorld extends World {
         if (count < 0) {
             throw new IllegalArgumentException();
         }
-
         maxMoveCount = count;
     }
 

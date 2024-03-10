@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
  */
 
 // Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
-public class Ball implements Regionable { // Regionable 인터페이스는
+public class Ball implements Regionable {
     static int getRegionCallCount = 0;
     static int count = 0;
     int id = ++count;

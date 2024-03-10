@@ -13,16 +13,16 @@ import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+// World 클래스는 Regionable한 타입들을 몰아서 관리할 수 있는 List를 가지고 있다.
+// +) 마우스 리스너의 클릭 메서드를 구현해서, 클릭하면 공도 나온다.
 public class World extends JPanel implements MouseListener {
-    List<Regionable> regionableList = new LinkedList<>();
+    List<Regionable> regionableList = new LinkedList<>(); // 좌표로 관리할 수 있으면 Regionable 타입
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
     Random random = new Random();
 
     public World() {
         super();
-
         addMouseListener(this);
-
     }
 
     /**
@@ -72,7 +72,7 @@ public class World extends JPanel implements MouseListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        
+
         for (Regionable object : regionableList) {
             if (object instanceof Paintable) {
                 ((Paintable) object).paint(g);

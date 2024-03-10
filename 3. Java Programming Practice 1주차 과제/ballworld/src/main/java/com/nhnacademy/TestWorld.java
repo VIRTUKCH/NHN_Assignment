@@ -62,6 +62,7 @@ public class TestWorld {
 
                 world.add(ball);
             } catch (IllegalArgumentException ignore) {
+                //
             }
         }
 

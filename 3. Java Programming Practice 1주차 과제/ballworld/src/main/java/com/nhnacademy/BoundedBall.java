@@ -13,6 +13,8 @@ import java.awt.Rectangle;
  * : intersection이라는 '교집합 사각형'을 이용해 어느 방향으로 bounce 되어야 하는지에 대해 결정함.
  * 
  */
+
+// Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public class BoundedBall extends MovableBall implements Bounded {
 
     public BoundedBall(int x, int y, int radius, Color color) {

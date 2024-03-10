@@ -7,6 +7,8 @@ import java.awt.Rectangle;
  * 2. x, y좌표를 얻어올 수 있는 기능이 있고
  * 3. Rectangle을 얻어 올 수 있는 기능이 있음.
  */
+
+ // Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public interface Regionable {
     public int getId();
 

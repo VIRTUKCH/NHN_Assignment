@@ -1,5 +1,6 @@
 package com.nhnacademy;
 
+// dx와 dy를 한 데 모아 연산하기 위한 클래스
 public class Vector {
     // dx , dy 변수
     int dx;

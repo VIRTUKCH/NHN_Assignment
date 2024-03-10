@@ -19,6 +19,8 @@ import java.awt.Graphics;
  * <기능>
  * - Paint(Graphics g) : 색을 설정하고, 칠하고, Rect를 표현하는 등의 절차를 통해 Frame 위에 올릴 준비를 완료함.
  */
+
+ // Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public class PaintableBall extends Ball implements Paintable {
     public static final Color DEFAULT_COLOR = Color.BLACK;
 

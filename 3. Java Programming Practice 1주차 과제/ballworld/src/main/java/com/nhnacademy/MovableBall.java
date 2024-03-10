@@ -15,6 +15,7 @@ import java.awt.Color;
  * 단, 내부적으로 moveTo() 메서드를 이용해서 dx, dy 만큼 이동하게 구현하였음.
  */
 
+ // Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public class MovableBall extends PaintableBall implements Movable {
     public static final int DEFAULT_DX = 0;
     public static final int DEFAULT_DY = 0;

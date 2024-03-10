@@ -35,12 +35,12 @@ public class World extends JPanel implements MouseListener {
             throw new IllegalArgumentException();
         }
 
-        // if ((object.getX() - object.getRegion().getWidth() / 2 < 0)
-        // || (object.getX() + object.getRegion().getWidth() / 2 > getWidth())
-        // || (object.getRegion().getMinY() < 0)
-        // || (object.getRegion().getMaxY() > getHeight())) {
-        // throw new IllegalArgumentException();
-        // }
+        if ((object.getX() - object.getRegion().getWidth() / 2 < 0)
+                || (object.getX() + object.getRegion().getWidth() / 2 > getWidth())
+                || (object.getRegion().getMinY() < 0)
+                || (object.getRegion().getMaxY() > getHeight())) {
+            throw new IllegalArgumentException();
+        }
 
         for (Regionable item : regionableList) {
             if (((object instanceof Bounded) || (item instanceof Bounded))
@@ -72,7 +72,7 @@ public class World extends JPanel implements MouseListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
+        
         for (Regionable object : regionableList) {
             if (object instanceof Paintable) {
                 ((Paintable) object).paint(g);

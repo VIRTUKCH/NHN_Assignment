@@ -2,6 +2,7 @@ package com.nhnacademy;
 
 import java.awt.Color;
 
+// Box(Regionable) -> PaintalbeBox(Paintable) -> MovableBox(Movable) -> BoundedBox(Bounded)
 public class MovableBox extends PaintableBox implements Movable {
     public static final int DEFAULT_DX = 0;
     public static final int DEFAULT_DY = 0;

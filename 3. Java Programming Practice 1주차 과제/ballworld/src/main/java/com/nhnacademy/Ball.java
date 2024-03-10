@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
  * 실제로 radius라는 멤버 변수를 가지고 있지은 않음.
  */
 
+// Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public class Ball implements Regionable { // Regionable 인터페이스는
     static int getRegionCallCount = 0;
     static int count = 0;

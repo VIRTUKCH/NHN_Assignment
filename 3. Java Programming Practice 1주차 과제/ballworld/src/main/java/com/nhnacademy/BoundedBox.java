@@ -3,6 +3,7 @@ package com.nhnacademy;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+// Box(Regionable) -> PaintalbeBox(Paintable) -> MovableBox(Movable) -> BoundedBox(Bounded)
 public class BoundedBox extends MovableBox implements Bounded {
 
     public BoundedBox(int x, int y, int width, int height, Color color) {

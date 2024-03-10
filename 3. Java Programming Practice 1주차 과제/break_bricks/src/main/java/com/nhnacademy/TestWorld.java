@@ -58,7 +58,7 @@ public class TestWorld {
         int i = MAX_WIDTH;
         while (world.getCount() < FIXED_BALL_COUNT + FIXED_BOX_COUNT) {
             try {
-                world.add(new BrittleBox(
+                world.add(new ScoreBox(
                         i, 60,
                         MIN_WIDTH + random.nextInt(MAX_WIDTH - MIN_WIDTH + 1),
                         MIN_HEIGHT + random.nextInt(MAX_HEIGHT - MIN_HEIGHT + 1),

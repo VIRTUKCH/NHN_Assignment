@@ -1,6 +1,25 @@
 package com.nhnacademy;
 
-// Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public interface Bounded {
-    void bounce(Regionable other);
+    public Bounds getBounds();
+
+    public int getMinX();
+
+    public int getMaxX();
+
+    public int getCenterX();
+
+    public int getMinY();
+
+    public int getMaxY();
+
+    public int getCenterY();
+
+    public int getWidth();
+
+    public int getHeight();
+
+    public boolean isCollision(Bounds other);
+
+    public boolean isInclude(Bounds other);
 }

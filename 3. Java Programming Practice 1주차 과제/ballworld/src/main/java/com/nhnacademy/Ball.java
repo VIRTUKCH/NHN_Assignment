@@ -1,29 +1,18 @@
 package com.nhnacademy;
 
-import java.awt.Rectangle;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/*
- * <Ball은>
- * 1. id, Rectangle, count를 멤버 변수로 가지고 있음.
- * 2. Regionable 인터페이스는 좌표로 나타내기 위한 메서드들
- * 3. 좌표는 Rectangle을 통해 나타내고 있고, 참조 변수의 이름은 region.
- * 
- * <Ball의 기능>
- * 1. 아이디, x, y좌표(Region) 등을 가지고 있음
- * 2. 반지름을 나타낼 수 있는데, Rectangle의 width/2를 내부적으로 return함.
- * 실제로 radius라는 멤버 변수를 가지고 있지은 않음.
- */
+public class Ball implements Bounded {
+    final String id = UUID.randomUUID().toString();
+    final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+    final Bounds bounds;
 
-// Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
-public class Ball implements Regionable {
-    static int getRegionCallCount = 0;
-    static int count = 0;
-    int id = ++count;
-    Rectangle region;
-    Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+    public Ball(Point location, int radius) {
+        this(location.getX(), location.getY(), radius);
+    }
 
     public Ball(int x, int y, int radius) {
         if (radius <= 0) {
@@ -37,46 +26,80 @@ public class Ball implements Regionable {
             throw new IllegalArgumentException("볼이 정수 공간을 벗어납니다.");
         }
 
-        region = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
+        bounds = new Bounds(x - radius, y - radius, 2 * radius, 2 * radius);
         logger.trace("Ball created : {}, {}, {}", x, y, radius);
     }
 
-    // -- 아래는 Regionable 인터페이스의 메서드를 오버라이딩 함 --
-
-    @Override
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    @Override
     public int getX() {
-        return (int) region.getCenterX();
+        return bounds.getCenterX();
     }
 
-    @Override
+    public int getMinX() {
+        return bounds.getMinX();
+    }
+
+    public int getCenterX() {
+        return bounds.getCenterX();
+    }
+
+    public int getMaxX() {
+        return bounds.getMaxX();
+    }
+
     public int getY() {
-        return (int) region.getCenterY();
+        return bounds.getCenterY();
     }
 
-    @Override
-    public Rectangle getRegion() {
-        return region;
+    public int getMinY() {
+        return bounds.getMinY();
     }
 
-    void setX(int x) {
-        region.setLocation(x - getRadius(), getY() - getRadius());
+    public int getCenterY() {
+        return bounds.getCenterY();
     }
 
-    void setY(int y) {
-        region.setLocation(getX() - getRadius(), y - getRadius());
+    public int getMaxY() {
+        return bounds.getMaxY();
+    }
+
+    public int getWidth() {
+        return bounds.getWidth();
+    }
+
+    public int getHeight() {
+        return bounds.getHeight();
+    }
+
+    public Point getLocation() {
+        return new Point(bounds.getCenterX(), bounds.getCenterY());
+    }
+
+    void setLocation(Point location) {
+        bounds.setLocation(location.getX() - getRadius(), location.getY() - getRadius());
     }
 
     public int getRadius() {
-        return (int) region.getWidth() / 2;
+        return bounds.getWidth() / 2;
+    }
+
+    public Bounds getBounds() {
+        return new Bounds(bounds);
+    }
+
+    public boolean isCollision(Bounds other) {
+        return bounds.isCollision(other);
+    }
+
+    public boolean isInclude(Bounds other) {
+        return bounds.isInclude(other);
     }
 
     @Override
     public String toString() {
-        return String.format("(%d,%d,%d)", getX(), getY(), getRadius());
+        return String.format("(%d,%d, %d)", getX(), getY(), getRadius());
     }
 }

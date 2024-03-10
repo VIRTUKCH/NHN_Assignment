@@ -2,44 +2,43 @@ package com.nhnacademy;
 
 import java.awt.Color;
 
-// Box(Regionable) -> PaintalbeBox(Paintable) -> MovableBox(Movable) -> BoundedBox(Bounded)
 public class MovableBox extends PaintableBox implements Movable {
     public static final int DEFAULT_DX = 0;
     public static final int DEFAULT_DY = 0;
 
     final Vector motion = new Vector();
 
+    public MovableBox(Point location, int width, int height, Color color) {
+        this(location.getX(), location.getY(), width, height, color);
+    }
+
     public MovableBox(int x, int y, int width, int height, Color color) {
         super(x, y, width, height, color);
     }
 
     public Vector getMotion() {
-        return motion;
+        return new Vector(motion);
     }
 
-    public int getDX() {
-        return motion.getDX();
+    public void setMotion(int dx, int dy) {
+        motion.set(dx, dy);
     }
 
-    public int getDY() {
-        return motion.getDY();
-    }
-
-    public void setDX(int dx) {
-        motion.setDX(dx);
-    }
-
-    public void setDY(int dy) {
-        motion.setDY(dy);
+    public void setMotion(Vector newMotion) {
+        motion.set(newMotion);
     }
 
     public void move() {
-        moveTo(getX() + getDX(), getY() + getDY());
-        logger.trace("{} : {}, {}, {}, {}", getId(), getX(), getY(), getRegion().getX(), getRegion().getY());
+        move(motion);
     }
 
-    public void moveTo(int x, int y) {
-        setX(x);
-        setY(y);
+    public void move(Vector motion) {
+        Point origin = getLocation();
+        origin.translate(motion);
+        setLocation(origin);
+    }
+
+    public void moveTo(Point location) {
+        setLocation(location);
     }
 }

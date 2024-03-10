@@ -1,9 +1,16 @@
 package com.nhnacademy;
 
-// Ball(Regionable) -> PaintalbeBall(Paintable) -> MovableBall(Movable) -> BoundedBall(Bounded)
 public interface Movable {
-    /** 
-     * object에 단위 시간만큼 이동을 지시합니다.
-    */
-    public void move();  
+
+    public Vector getMotion();
+
+    public void setMotion(int dx, int dy);
+
+    public void setMotion(Vector newMotion);
+
+    public void move();
+
+    public void move(Vector motion);
+
+    public void moveTo(Point location);
 }

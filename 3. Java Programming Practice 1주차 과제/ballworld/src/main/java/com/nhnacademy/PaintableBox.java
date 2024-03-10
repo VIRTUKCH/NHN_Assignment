@@ -3,14 +3,21 @@ package com.nhnacademy;
 import java.awt.Color;
 import java.awt.Graphics;
 
-// Box(Regionable) -> PaintalbeBox(Paintable) -> MovableBox(Movable) -> BoundedBox(Bounded)
 public class PaintableBox extends Box implements Paintable {
     public static final Color DEFAULT_COLOR = Color.BLACK;
 
     Color color;
 
+    public PaintableBox(Point location, int width, int height) {
+        this(location.getX(), location.getY(), width, height);
+    }
+
     public PaintableBox(int x, int y, int width, int height) {
         this(x, y, width, height, DEFAULT_COLOR);
+    }
+
+    public PaintableBox(Point location, int width, int height, Color color) {
+        this(location.getX(), location.getY(), width, height, color);
     }
 
     public PaintableBox(int x, int y, int width, int height, Color color) {
@@ -48,8 +55,11 @@ public class PaintableBox extends Box implements Paintable {
         Color originalColor = g.getColor();
 
         g.setColor(getColor());
-        g.fillRect((int) getRegion().getX(), (int) getRegion().getY(), (int) getRegion().getWidth(),
-                (int) getRegion().getHeight());
+        g.fillRect(getBounds().getMinX(), getBounds().getMinY(),
+                getBounds().getWidth(), getBounds().getHeight());
+        g.setColor(Color.GRAY);
+        g.drawRect(getBounds().getMinX(), getBounds().getMinY(),
+                getBounds().getWidth(), getBounds().getHeight());
 
         g.setColor(originalColor);
     }

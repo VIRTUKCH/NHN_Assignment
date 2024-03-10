@@ -1,75 +1,101 @@
 package com.nhnacademy;
 
-import java.awt.Rectangle;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/*
- * Regionable 인터페이스는
- * 1. 아이디를 얻어 올 수 있는 기능이 있고
- * 2. x, y좌표를 얻어올 수 있는 기능이 있고
- * 3. Rectangle을 얻어 올 수 있는 기능이 있음.
- */
+public class Box implements Bounded {
+    final String id = UUID.randomUUID().toString();
+    final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+    final Bounds bounds;
 
- 
-public class Box implements Regionable {
-    static int getRegionCallCount = 0;
-    static int count = 0;
-    int id = ++count;
-    Rectangle region;
-    Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+    public Box(Point location, int width, int height) {
+        this(location.getX(), location.getY(), width, height);
+    }
 
     public Box(int x, int y, int width, int height) {
         if ((width <= 0) || (height <= 0)) {
-            throw new IllegalArgumentException("0보다 커야 합니다.");
+            throw new IllegalArgumentException("반지름은 0보다 커야 합니다.");
         }
 
         if ((x + (long) width / 2 > Integer.MAX_VALUE)
                 || (x - (long) width / 2 < Integer.MIN_VALUE)
                 || (y + (long) height / 2 > Integer.MAX_VALUE)
                 || (y - (long) height / 2 < Integer.MIN_VALUE)) {
-            throw new IllegalArgumentException("박스가 정수 공간을 벗어납니다.");
+            throw new IllegalArgumentException("볼이 정수 공간을 벗어납니다.");
         }
 
-        region = new Rectangle(x - width / 2, y - height / 2, width, height);
-        logger.trace("Box created :{}, {}, {}, {}", x, y, width, height);
+        bounds = new Bounds(x - width / 2, y - height / 2, width / 2 * 2, height / 2 * 2);
+        logger.trace("Box created : {}, {}, {}, {}", x, y, width, height);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     public int getX() {
-        return (int) region.getCenterX();
+        return bounds.getCenterX();
+    }
+
+    public int getMinX() {
+        return bounds.getMinX();
+    }
+
+    public int getCenterX() {
+        return bounds.getCenterX();
+    }
+
+    public int getMaxX() {
+        return bounds.getMaxX();
     }
 
     public int getY() {
-        return (int) region.getCenterY();
+        return bounds.getCenterY();
     }
 
-    void setX(int x) {
-        region.setLocation(x - getWidth() / 2, getY() - getHeight() / 2);
+    public int getMinY() {
+        return bounds.getMinY();
     }
 
-    void setY(int y) {
-        region.setLocation(getX() - getWidth() / 2, y - getHeight() / 2);
+    public int getCenterY() {
+        return bounds.getCenterY();
+    }
+
+    public int getMaxY() {
+        return bounds.getMaxY();
     }
 
     public int getWidth() {
-        return (int) region.getWidth();
+        return bounds.getWidth();
     }
 
     public int getHeight() {
-        return (int) region.getHeight();
+        return bounds.getHeight();
     }
 
-    public Rectangle getRegion() {
-        return region;
+    public Point getLocation() {
+        return new Point(bounds.getCenterX(), bounds.getCenterY());
+    }
+
+    void setLocation(Point location) {
+        bounds.setLocation(location.getX() - getWidth() / 2, location.getY() - getHeight() / 2);
+    }
+
+    public Bounds getBounds() {
+        return new Bounds(bounds);
+    }
+
+    public boolean isCollision(Bounds other) {
+        return bounds.isCollision(other);
+    }
+
+    public boolean isInclude(Bounds other) {
+        return bounds.isInclude(other);
     }
 
     @Override
     public String toString() {
-        return String.format("(%d,%d,%d,%d)", getX(), getY(), getWidth(), getHeight());
+        return String.format("(%d,%d, %d, %d)", getX(), getY(), getWidth(), getHeight());
     }
 }

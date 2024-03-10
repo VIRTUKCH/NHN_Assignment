@@ -1,6 +1,5 @@
 package com.nhnacademy;
 
-// dx와 dy를 한 데 모아 연산하기 위한 클래스
 public class Vector {
     // dx , dy 변수
     int dx;
@@ -16,7 +15,11 @@ public class Vector {
         this.dx = dx;
         this.dy = dy;
     }
-    // dx/dy을 위한 getter₩
+
+    public Vector(Vector other) {
+        dx = other.getDX();
+        dy = other.getDY();
+    }
 
     public int getDX() {
         return dx;

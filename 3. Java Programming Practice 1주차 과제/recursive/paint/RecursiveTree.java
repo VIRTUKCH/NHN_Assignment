@@ -1,3 +1,5 @@
+package paint;
+
 import java.awt.*;
 /*
  * 파라미터로 넘겨주지 않으면 안 되는 것

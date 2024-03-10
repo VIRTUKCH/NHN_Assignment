@@ -1,3 +1,5 @@
+package paint;
+
 import javax.swing.*;
 import java.awt.*;
 /*
@@ -15,6 +17,7 @@ import java.awt.*;
 public class RecursiveTriangle extends JPanel {
 
     // paintComponent 메서드는 화면에 그릴 내용을 지정합니다.
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         int[] first = new int[] { 0, getHeight() }; // 왼쪽 아래
@@ -43,7 +46,7 @@ public class RecursiveTriangle extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800, 800);
         frame.add(new RecursiveTriangle());
         frame.setVisible(true);

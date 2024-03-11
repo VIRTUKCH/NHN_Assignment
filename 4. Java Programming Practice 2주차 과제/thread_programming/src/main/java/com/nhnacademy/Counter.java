@@ -2,6 +2,7 @@ package com.nhnacademy;
 
 import java.time.LocalTime;
 
+// 그냥 쓰레드를 쓴 예시임
 public class Counter {
     String name;
     int count;
@@ -34,7 +35,5 @@ public class Counter {
         counter1.run(); // counter1을 다 쓰고
         counter2.run(); // 그 다음에 counter2가 나옴.
         System.out.println("end : " + LocalTime.now());
-
-        // 두 쓰레드가 돌아가면서 숫자를 찍어내지 못하고, counter1을 다 쓰고 나서 counter2의 run()이 실행됨. 어찌 보면 당연한 결과. start()를 써야 그렇지.
     }
 }

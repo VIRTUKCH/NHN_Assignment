@@ -61,22 +61,26 @@ public class RunnableCounter implements Runnable {
 
     /*
      * InteruptedException -> sleep()을 할 때 무조건 써야 함.
-     * Thread가 자고 있으면 Interrupt를 받을 수 없기 때문임. 그래서 catch문으로 깨워서 -> 굳이굳이 다시 깨워서 interrupt를 걸어 주는 것.
+     * Thread가 자고 있으면 Interrupt를 받을 수 없기 때문임. 그래서 catch문으로 깨워서 -> 굳이굳이 다시 깨워서
+     * interrupt를 걸어 주는 것.
      */
     public void run() {
         while (!this.getThread().isInterrupted() && this.count < this.maxCount) {
             try {
                 Thread.sleep(1000);
                 // InterruptedException은 스레드가 대기(waiting), 수면(sleeping), 또는 작업 중(blocked)일 때, 다른
-                // 스레드가 현재 스레드를 중단(interrupt)하려고 시도할 때 발생하는 예외
-            } catch (InterruptedException e) { // checked Exception -> 컴파일할 때 문제가 생길 수 있음.
-                Thread.currentThread().interrupt(); // 현재 돌아가고 있는 쓰레드를 -> interrupt하라.
+                // 스레드가 현재 스레드를 중단(interrupt)하려고 시도할 때 발생하는 예외 => 이 경우에 깨워서 끊게 만들어야 함.
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // 현재 돌아가고 있는 쓰레드를 -> 깨워서 -> interrupt를 걸자.
             }
             this.count += 1;
             System.out.println(this.name + " : " + this.count);
 
-            if(this.getCount() > 5) {
-                this.stop();
+            if (this.getCount() > 5) {
+                stop();
+                // 두 코드는 다르다
+                // this.thread.interrupt(); // 이건 RunnableCounter의 쓰레드에게 interrupt를 준 것.
+                // Thread.currentThread().interrupt(); // 이건 main의 쓰레드에게 interrupt를 준 것.
             }
         }
     }
@@ -86,14 +90,14 @@ public class RunnableCounter implements Runnable {
         RunnableCounter[] counters = new RunnableCounter[10]; // counters는 RunnableCounter 타입의 배열일 뿐.
         for (int i = 0; i < 10; i++) {
             counters[i] = new RunnableCounter("counter" + (i), 10); // counters는 각각의 쓰레드를 가진다.
-            counters[i].getThread().start(); // 각각의 쓰레드를 작동시킨다.
+            counters[i].start();
         }
 
-        boolean isAllStopped = false;
+        boolean isAllStopped = false; // 하나라도 멈췄나요?
         while (!isAllStopped) {
-            for (int i = 0; i < counters.length; i++) {
-                if(!counters[i].getThread().isAlive()) {
-                    isAllStopped = true;
+            for (int i = 0; i < counters.length; i++) { //
+                if (!counters[i].getThread().isAlive()) { // 하나라도 살아있지 않다면
+                    isAllStopped = true; // while문 끊어서 엔드 표시하자.
                 }
             }
         }
@@ -105,7 +109,7 @@ public class RunnableCounter implements Runnable {
          * 
          * Runnable 인터페이스는 붙이나 안 붙이나 똑같다.
          * 당연히 그런 게, Runnable은 Run 가능한 타입이라는 거지, Thread가 적용된다는 거다.
-         * 그러므로, 쓰레드를 따로 만들어 주고, 그 안에 만들어 줘야 의미가 생기게 된다.
+         * 그러므로, 쓰레드를 따로 만들어 줘야 의미가 생기게 된다.
          * 
          * Runnable한 객체는 쓰레드의 생성자에 매개변수로 들어간다.
          * Runnable하다는 표현을 좀 더 생각해 보면 되겠다.

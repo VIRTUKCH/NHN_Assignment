@@ -12,11 +12,8 @@ public class Main {
 
         // Consumer 객체 생성 및 쓰레드 시작
         for (int i = 0; i < 100; i++) {
-            // Consumer consumer = new Consumer(String.valueOf(i), store);
-            // consumer.start();
+            Consumer consumer = new Consumer(String.valueOf(i), store);
+            consumer.start();
         }
-
-        Consumer consumer = new Consumer(String.valueOf("1"), store);
-        consumer.start();
     }
 }

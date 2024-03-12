@@ -14,8 +14,6 @@ public class Consumer implements Runnable {
     Store store;
     Thread thread;
 
-    int randomSecond;
-
     public Consumer(String name, Store store) {
         this.name = name;
         this.store = store;

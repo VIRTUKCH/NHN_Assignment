@@ -23,7 +23,7 @@ public class Store {
     }
 
     public synchronized void enter() throws InterruptedException {
-        while(currentCustomers <= MAX_CUSTOMER) {
+        while(currentCustomers >= MAX_CUSTOMER) {
             wait();
         }
         currentCustomers++;
@@ -53,5 +53,6 @@ public class Store {
         }
         productList.add(new Product());
         System.out.println("물건 납품, 남은 물건 수: " + productList.size());
+        notifyAll();
     } // 소비자한테는 어떻게 알리지? 팔리고 나면 빈 공간을 생산자한테는 어떻게 알리지?
 }

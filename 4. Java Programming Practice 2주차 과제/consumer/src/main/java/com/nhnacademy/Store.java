@@ -1,11 +1,11 @@
 /*
-1. 매장은 물건을 납품 받아서 판매한다. - buy()
-2. 매장에는 최대 10개의 물건만 전시할 수 있다. - buy()
+1. 매장은 물건을 납품 받아서 판매한다. - sell()
+2. 매장에는 최대 10개의 물건만 전시할 수 있다. - sell()
 3. 매장은 최대 5명까지만 동시 입장 가능하다. - enter()
-4. 매장에서 물건 구매는 동시에 1명만 가능하다. - sell()
+4. 매장에서 물건 구매는 동시에 1명만 가능하다. - buy()
 5. 매장에서 물건 판매 후 빈 공간에 생기면 생산자에게 알려 준다. - sell()
 6. 매장에서 물건 납품은 동시에 1명만 가능하다. - buy()
-7. 매장에서 물건이 들어오면 소비자에게 알려 준다.
+7. 매장에서 물건이 들어오면 소비자에게 알려 준다. - buy()
 */
 package com.nhnacademy;
 
@@ -15,58 +15,43 @@ import java.util.Queue;
 public class Store {
     private static final int MAX_PRODUCTS = 10;
     private static final int MAX_CUSTOMER = 5;
-    private int customer;
+    private int currentCustomers;
     private Queue<Product> productList;
-
-    public int getProductListSize() {
-        return this.productList.size();
-    }
 
     public Store() {
         productList = new LinkedList<>();
-        for (int i = 0; i < MAX_PRODUCTS; i++) {
-            productList.add(new Product()); // 일단 10개 미리 박아두기
-        }
     }
 
-    // 최대 5명까지 '동시' 입장 가능하다
-    public void enter() {
-        if(customer > MAX_CUSTOMER) {
-            try {
-                Thread.currentThread().wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        } else {
-            customer++;
+    public synchronized void enter() throws InterruptedException {
+        while(currentCustomers <= MAX_CUSTOMER) {
+            wait();
         }
+        currentCustomers++;
+        System.out.println("고객 입장, 현재 고객 수: " + currentCustomers);
     }
 
-    // 고객이 나감
+    // 사고 나서 나가세요
     public void exit() {
-        customer--;
+        currentCustomers--;
+        System.out.println("고객 퇴장, 현재 고객 수: " + currentCustomers);
     }
 
-    // 납품 받는 메서드
-    public synchronized void buy(Product product) {
-        // 1. 물건 납품은 동시에 1명만 가능하다.
-        // 2. 최대 10개의 물건만 전시할 수 있다.
-        if (productList.size() < MAX_PRODUCTS) {
-            productList.add(product);
-            // 3. 매장에서 물건이 들어오면 소비자에게 알린다.
-            System.out.println("새 물건이 생겼습니다.");
+    // 고객한테 팔기
+    public synchronized void buy() throws InterruptedException {
+        while(productList.isEmpty()) { // 1. 살 거 없으면 사지 말고 기다리세요
+            wait();
         }
+        productList.poll(); // 2. 사세요
+        System.out.println("물건 구매, 남은 물건 수: " + productList.size());
+        notifyAll(); // 3. 샀으니까 -> 나간다는 걸 의미 -> 고객한테 알리기 -> notifyAll()
     }
 
-    // 물건 파는 메서드
-    public synchronized void sell() {
-        if (!productList.isEmpty()) {
-            // 1. 물건 구매는 동시에 1명만 가능하다.
-            Product product = productList.poll();
-            System.out.println("Product sold: " + product);
-            // 2. 물건 판매 후에 빈 공간이 생기면 생산자에게 알려준다.
-        } else {
-            System.out.println("물건이 없습니다.");
+    // 납품 받기 : 한 명만 가능 + 빈 공간 생산자 알림 + 물건 들어오면 소비자 알림
+    public synchronized void sell() throws InterruptedException {
+        while(productList.size() == MAX_PRODUCTS) { // 납품자 기다리게 하기
+            wait();
         }
-    }       
+        productList.add(new Product());
+        System.out.println("물건 납품, 남은 물건 수: " + productList.size());
+    } // 소비자한테는 어떻게 알리지? 팔리고 나면 빈 공간을 생산자한테는 어떻게 알리지?
 }

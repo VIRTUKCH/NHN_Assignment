@@ -20,14 +20,14 @@ public class Producer implements Runnable {
     // 1초에서 10초 간격으로 물건을 채운다.
     @Override
     public void run() {
-        while (store.getProductListSize() <= 10) {
-            randomSecond = ThreadLocalRandom.current().nextInt(1, 11);
-            try {
-                Thread.sleep(randomSecond * 1000); // 생성된 시간만큼 대기
-                store.buy(new Product()); // Store의 매장에 물건을 추가하는 buy 메서드 호출
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // 인터럽트 처리 후, 현재 스레드도 인터럽트 상태 설정
+        try {
+            while(true) {
+                store.sell();
+                randomSecond = ThreadLocalRandom.current().nextInt(1, 11);
+                Thread.sleep(randomSecond);
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

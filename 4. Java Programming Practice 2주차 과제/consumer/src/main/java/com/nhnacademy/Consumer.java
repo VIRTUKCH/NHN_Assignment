@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Consumer implements Runnable {
     String name;
-
     Store store;
     Thread thread;
 
@@ -25,14 +24,18 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
-        // 1. 입장하자 - 입장 컨트롤은 스토어에서 알아서 해주세요
-        store.enter();
-        
-        // 2. 물건 사자
-        randomSecond = ThreadLocalRandom.current().nextInt(1, 11);
-        store.sell();
-
-        // 3. 나가자
-        store.exit();
+        try {
+            // 1. 입장하자 - 입장 컨트롤은 스토어에서 알아서 해주세요
+            store.enter();
+            
+            // 2. 물건 사자
+            randomSecond = ThreadLocalRandom.current().nextInt(1, 11);
+            store.sell();
+    
+            // 3. 나가자
+            store.exit();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

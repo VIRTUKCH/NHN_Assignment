@@ -3,12 +3,12 @@ package com.nhnacademy;
 import java.util.concurrent.ThreadLocalRandom;
 
 /*
- * 1. 생산자는 매장에 물건이 부족하지 않도록 채워둔다.
- * 2. 물건은 1~10초 간격으로 채운다.
- * 3. Thread내에서 난수 생성을 위해서는 ThreadLocalRandom.current().nextInt()를 사용하면 된다.
+ * M명의 생산자는 N개의 품목을 납품할 수 있다.
+ * 생산자는 1종 이상의 품목 납품이 가능하다.
+ * 생산자가 품목을 납품하기 전까지는 어떤 품목인지 알 수 없다.
+ * 납품시 해당 품목이 최대 갯수만큼 있을 경우, 일정시간 대기 후에도 납품이 어려운 경우 포기한다.
  */
 
-// 물건이 부족하지 않도록 채워 둔다.
 public class Producer implements Runnable {
     Store store;
     int randomSecond;

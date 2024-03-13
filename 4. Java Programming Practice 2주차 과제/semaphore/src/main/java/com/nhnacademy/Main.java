@@ -42,5 +42,12 @@ public class Main {
         for (int i = 0; i < MAX_CONSUMER_ALLOWED; i++) {
             consumerThreadPool.submit(new Consumer(String.valueOf(i), store));
         }
+
+        //------------------------------------------------------------
+        
+        // 4. 5분 뒤 종료하기
+        Thread.sleep(300000);
+        producerThreadPool.shutdown();
+        consumerThreadPool.shutdown();
     }
 }

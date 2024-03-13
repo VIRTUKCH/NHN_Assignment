@@ -2,7 +2,7 @@
  * <마트>
  * N개의 품목 매장이 있다. // 구현 완료
  * 품목마다 최대 갯수가 지정되어 있다. // 구현 완료
- * 폼목별로 세마포어를 이용해 관리한다. // 대강 구현 완료
+ * 폼목별로 세마포어를 이용해 관리한다. // 리팩토링 필요.
  * 생산자와 소비자 모두 thread pool을 이용해 동시 입장 수를 관리하라. // 구현 완료
  * 5분간만 오픈하라. // 구현 완료
  * 
@@ -36,7 +36,6 @@ public class Store {
     private static final int MAX_CUSTOMER = 5;
     private int currentCustomers;
 
-    private int numberOfCategory; // 품목의 개수
     private List<Queue<Product>> productLists; // 품목을 모아서 관리하는 리스트
     private List<Integer> maxProductsList;
 
@@ -46,8 +45,9 @@ public class Store {
     // ------------------------------멤버변수------------------------------
 
     public Store(int numberOfCategory) {
+        // 0. 기본 초기화
         this.maxProductsList = new ArrayList<>(); // 품목 별 최대 개수를 관리하는 리스트
-        this.numberOfCategory = numberOfCategory; // 품목의 개수
+        productLists = new ArrayList<>();
 
         // 1. 품목 별로 링크드 리스트 만들고
         for (int i = 0; i < numberOfCategory; i++) {
@@ -138,7 +138,7 @@ public class Store {
     }
 
     private boolean isExistOneItemPerCategory() { // 아무런 아이템도 없습니까?
-        for (Queue queue : productLists) {
+        for (Queue<Product> queue : productLists) {
             if (queue.isEmpty()) { // 비어 있는 품목이 단 하나라도 존재한다면
                 return false;
             }

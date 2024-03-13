@@ -39,7 +39,7 @@ public class Main {
         ExecutorService consumerThreadPool = Executors.newFixedThreadPool(MAX_CONSUMER_ALLOWED); // 소비자 쓰레드 풀
 
         // 3-2) 소비자 쓰레드 풀에 소비자 제출하기. => 쓰레드 풀이 알아서 작업을 진행해 주니, 따로 start()를 호출하지는 않아도 됨.
-        for (int i = 0; i < MAX_CONSUMER_ALLOWED; i++) {
+        for (int i = 0; i < 100; i++) {
             consumerThreadPool.submit(new Consumer(String.valueOf(i), store));
         }
 

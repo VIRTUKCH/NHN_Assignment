@@ -6,7 +6,7 @@
  * 납품시 해당 품목이 최대 갯수만큼 있을 경우, 일정시간 대기 후에도 납품이 어려운 경우 포기한다. // 일단 다섯 개 동시에 납품하기로 타협. => 랜덤으로 납품하기...?
  */
 
- // 일단은 공급자도 쓰레드를 가지고 있게 하자.
+// 일단은 공급자도 쓰레드를 가지고 있게 하자.
 package com.nhnacademy;
 
 import java.util.concurrent.ThreadLocalRandom;

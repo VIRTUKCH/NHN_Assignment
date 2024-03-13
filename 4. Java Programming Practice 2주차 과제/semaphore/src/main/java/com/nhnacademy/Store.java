@@ -33,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 // 생산자의 동작(납품, 포기 등)과 소비자의 동작(입장, 구매, 포기, 퇴장 등)을 로거를 이용해 출력하라.
 // 포기는 WARN 레벨로 출력하라.
 public class Store {
-    private static final int MAX_CUSTOMER = 5;
     private int currentCustomers;
 
     private List<Queue<Product>> productLists; // 품목을 모아서 관리하는 리스트
@@ -61,20 +60,14 @@ public class Store {
         }
     }
 
-    // TODO : 고객 메서드에서 세마포어로 구현하기.
     public void enter() throws InterruptedException {
-        while (currentCustomers >= MAX_CUSTOMER) {
-            wait();
-        }
         currentCustomers++;
         logger.info("고객 입장, 현재 고객 수: " + currentCustomers);
     }
 
-    // TODO : 고객 메서드에서 세마포어로 구현하기.
     public void exit() {
         currentCustomers--;
         logger.info("고객 퇴장, 현재 고객 수: " + currentCustomers);
-        notifyAll();
     }
 
     // 고객한테 팔기
@@ -90,16 +83,12 @@ public class Store {
         }
         semaphore.release();
 
-        // 2. 품목 별로 하나씩 사세요. / TODO: 품목 별로 세마포어가 들어갈 수 있도록 수정 요망. -> 지금은 블럭하고 다를게 없음.
-        semaphore.acquire();
-        for (int i = 0; i < productLists.size(); i++) {
-            productLists.get(i).poll();
-            logger.info(i + "번 품목을 구매하셨습니다.");
-            logger.info(i + "번 품목의 남은 물건 수는 : " + productLists.get(i).size() + "입니다.");
+        // 2. 품목 별로 하나씩 사세요. TODO : 실제로 세마포어가 품목 별로 들어갈까?
+        for (Queue<Product> queue : productLists) {
+            semaphore.acquire();
+            queue.poll();
+            semaphore.release();
         }
-
-        // 3. 주변 사람에게 알려주기
-        semaphore.release();
     }
 
     // 납품 받기

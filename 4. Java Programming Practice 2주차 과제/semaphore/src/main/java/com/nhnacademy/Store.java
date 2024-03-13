@@ -72,6 +72,7 @@ public class Store {
 
     // 고객한테 팔기
     public void buy() throws InterruptedException {
+        //TODO 질문 : 여기서는 하나만 들어가기 때문에, 블록 단위로 synchronized를 쓰면 되지 않을까?
         semaphore.acquire(); // 혼자서 확인하자
         // 1. 품목 별로 하나도 없다면 -> 기다려 보고 -> 성과가 없으면 나가세요
         while (!isExistOneItemPerCategory()) {
@@ -93,7 +94,7 @@ public class Store {
 
     // 납품 받기
     public void sell() throws InterruptedException {
-
+        //TODO 질문 : 여기서는 하나만 들어가기 때문에, 블록 단위로 synchronized를 쓰면 되지 않을까?
         semaphore.acquire(); // 혼자서 확인하자
         // 1. 종목이 하나라도 꽉 찬 게 있다면 -> 기다려 보시고 -> 성과가 없으면 나가세요
         while (isExistsFullyOccupied()) {

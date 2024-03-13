@@ -2,6 +2,7 @@
 package com.nhnacademy;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,7 +10,7 @@ import java.util.concurrent.Executors;
 public class Main {
     final static int MAX_CONSUMER_ALLOWED = 5;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("품목의 개수를 정수로 입력하십시오 : ");
         int numberOfCategory = Integer.parseInt(br.readLine());
@@ -48,7 +49,11 @@ public class Main {
         // ------------------------------------------------------------
 
         // 4. 5분 뒤 종료하기
-        Thread.sleep(300000);
+        try {
+            Thread.sleep(300000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         System.out.println("시간 초과로 서비스를 종료합니다.");
         producerThreadPool.shutdown();
         consumerThreadPool.shutdown();

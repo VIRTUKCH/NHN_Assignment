@@ -30,7 +30,7 @@ public class Consumer implements Runnable {
             try {
                 // 1. 입장하자 - 입장 컨트롤은 스토어에서 알아서 해주길 기대.
                 store.enter();
-                System.out.println("고객 입장");
+                System.out.println(this.name + "번 고객 입장");
 
                 // 2. 물건 사자
                 Thread.sleep(ThreadLocalRandom.current().nextInt(1000, 10001));
@@ -39,7 +39,7 @@ public class Consumer implements Runnable {
                 // 3. 나가자
                 store.exit();
             } catch (InterruptedException e) {
-                thread.interrupt();
+                Thread.currentThread().interrupt();
             }
         }
     }

@@ -34,6 +34,7 @@ public class Store {
     public synchronized void exit() {
         currentCustomers--;
         System.out.println("고객 퇴장, 현재 고객 수: " + currentCustomers);
+        notifyAll();
     }
 
     // 고객한테 팔기 : 한 명만 가능 + 

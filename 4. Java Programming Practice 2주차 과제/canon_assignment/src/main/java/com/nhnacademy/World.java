@@ -47,6 +47,7 @@ public class World extends JPanel {
 
     public void remove(Bounded item) {
         boundedList.remove(item);
+        ;
     }
 
     @Override

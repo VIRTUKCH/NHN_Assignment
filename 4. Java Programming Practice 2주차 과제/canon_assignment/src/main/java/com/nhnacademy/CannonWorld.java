@@ -17,28 +17,48 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     static final int BAR_WIDTH = 100;
     static final int BAR_THICKNESS = 20;
     static final int BAR_SPEED = 10;
-    static final int MIN_HEIGHT = WALL_THICKNESS * 2 + BAR_THICKNESS;
-    static final int MIN_WIDTH = WALL_THICKNESS * 2 + BAR_WIDTH;
+    static final int MIN_HEIGHT = WALL_THICKNESS * 2 + BAR_THICKNESS; // 뭐하는 데 쓰일까?
+    static final int MIN_WIDTH = WALL_THICKNESS * 2 + BAR_WIDTH; // 뭐하는 데 쓰일까?
     int blockHeight = 20;
     int blockWidth = 40;
-    Vector gravity = new Vector(0, 1);
-    Vector windSpeed = new Vector(0, 0);
+    int angle;
+
+    Vector gravity = new Vector(0, 1); // 더하는 게 좋겠다 (더해야 하니까)
+    
+    Vector windSpeed = new Vector(1, 0); // 더하는 게 좋겠다 (더해야 하니까)
+    Vector ballSpeed = new Vector(1, 1); // 1로 둬서 곱하는 게 좋겠다 (곱해야 하니까)
+    Vector angleVector = new Vector(1, 1); // 어차피 나중에 10 단위로 곱해 줄게
+
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+    public void setDT(int dt) {
+        this.dt = dt;
+    }
 
     final Box leftWall;
     final Box rightWall;
     final Box topWall;
     final Box bottomWall;
-    final BounceableBox bar;
+
+    final BounceableBox bar; // 현재 탱크 역할
+
     final List<Box> boxList = new LinkedList<>();
     final List<Ball> ballList = new LinkedList<>();
+
     ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
     final Color[] colors = { Color.YELLOW, Color.WHITE, Color.BLUE, Color.GREEN };
 
+    // 생성자 - 기본 세팅
     public CannonWorld(int x, int y, int width, int height) {
         super();
 
         setBounds(x, y, width, height);
+
+        // ------------------------- 벽 만들기 -------------------------
 
         leftWall = new PaintableBox(-WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height, Color.RED);
         rightWall = new PaintableBox(width + WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height,
@@ -53,11 +73,9 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         add(topWall);
         add(bottomWall);
 
+        // ------------------------- 바닥에 충돌하면 천천히 줄어들게 하기 -------------------------
+
         bottomWall.setHitListener(other -> {
-            // remove(other);
-            // if (other instanceof Movable) {
-            // ((Movable) other).stop();
-            // }
 
             if (other instanceof Bounceable) {
                 Vector motion = ((Movable) other).getMotion();
@@ -67,16 +85,21 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
             }
         });
 
+        // ------------------------- 바 만들기 -------------------------
+
         bar = new BounceableBox(100, height - BAR_THICKNESS / 2, BAR_WIDTH, BAR_THICKNESS, Color.BLUE);
         add(bar);
+
+        // ------------------------- 판넬에 리스너 더하기 -------------------------       
 
         setFocusable(true);
         addKeyListener(this);
         addMouseMotionListener(this);
         addComponentListener(this);
-
+        
     }
 
+    // 블럭 추가하기
     public void init() {
         int y = blockHeight / 2;
         for (int line = 0; line < 4; line++) {
@@ -93,6 +116,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         }
     }
 
+    // 공 만들기
     @Override
     public void add(Bounded object) {
         super.add(object);
@@ -101,33 +125,39 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         }
     }
 
-    public void start() {
+    // 공 발사하기
+    public void fire() {
         BounceableBall ball = new BounceableBall(bar.getX(), bar.getY() - BAR_THICKNESS / 2 - 10, 10, Color.RED);
-        ball.setMotion(20, -15);
-        ball.setDT(getDT());
+        ball.setMotion(1, 1); // 벡터는 일단 기본값으로 1, 1로 두자.
+        ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
 
+        // 대체 어디다 쓸까 감도 안 온다 - 람다에 대해 이해하지 못해서 그런 듯
         ball.addStartedActionListener(() -> {
 
         });
 
+        // 움직이는 데에 필요한 메서드는 여기에 구현한다.
         ball.addMovedActionListener(() -> {
             List<Bounded> removeList = new LinkedList<>();
 
             Vector newMotion = ball.getMotion();
-            newMotion.add(gravity);
-            newMotion.add(windSpeed);
+            newMotion.multiply(angleVector);
+            newMotion.multiply(ballSpeed);
 
-            ball.setMotion(newMotion);
+            newMotion.add(gravity); // 벡터에 중력을 더해요 (덧셈)
+            newMotion.add(windSpeed); // 벡터에 바람을 더해요 (덧셈)
 
-            if (ball instanceof Bounceable) {
-                for (int j = 0; j < getCount(); j++) {
-                    Bounded other = get(j);
+            ball.setMotion(newMotion); // 계산 결과를 적용해요
 
-                    if (ball != other && ball.isCollision(other.getBounds())) {
-                        ((Bounceable) ball).bounce(other);
+            if (ball instanceof Bounceable) { // 발사된 공이 Bounceable이라면
+                for (int j = 0; j < getCount(); j++) { // 지도 상에 있는 물체 다 뒤져가면서
+                    Bounded other = get(j); // 다른 물체와의 교집합 바운드 있는지 확인해
 
-                        if (other instanceof HitListener) {
-                            ((HitListener) other).hit(ball);
+                    if (ball != other && ball.isCollision(other.getBounds())) { // 겹치는 부분이 있다면
+                        ((Bounceable) ball).bounce(other); // 튕기자
+
+                        if (other instanceof HitListener) { // 힛 리스너의 일부라면
+                            ((HitListener) other).hit(ball); // 힛 메서드를 보여줍시다.
                         }
                     }
                 }
@@ -142,7 +172,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     }
 
     @Override
-    public void keyPressed(KeyEvent event) {
+    public void keyPressed(KeyEvent event) { // 상하좌우 이동하기
         if (event.getKeyCode() == KeyEvent.VK_LEFT) {
             bar.move(new Vector(-BAR_SPEED, 0));
             if (bar.getMinX() < 0) {
@@ -153,10 +183,10 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
             if (bar.getMaxX() > getWidth()) {
                 bar.setLocation(new Point(getWidth() - bar.getWidth() / 2, bar.getCenterY()));
             }
-        } else if (event.getKeyCode() == KeyEvent.VK_R) {
+        } else if (event.getKeyCode() == KeyEvent.VK_R) { // R키를 누르면 블록을 만들고
             init();
-        } else if (event.getKeyCode() == KeyEvent.VK_S) {
-            start();
+        } else if (event.getKeyCode() == KeyEvent.VK_S) { // S키를 누르면 공을 쏜다.
+            fire();
         }
     }
 
@@ -182,6 +212,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         logger.info("Moved");
     }
 
+    // 화면 사이즈 조정하는 메서드
     @Override
     public void componentResized(ComponentEvent event) {
         if (ballList.isEmpty() && (getWidth() > BAR_WIDTH) && (getHeight() > BAR_THICKNESS)) {
@@ -198,11 +229,13 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
     }
 
+    // 컴포넌트 보여주기?
     @Override
     public void componentShown(ComponentEvent event) {
         logger.info("Shown");
     }
 
+    // 마우스 드래그 -> 바 이동하게 만들기
     @Override
     public void mouseDragged(MouseEvent event) {
         if (event.getX() > bar.getWidth() / 2 && event.getX() < getWidth() - bar.getWidth() / 2) {
@@ -217,5 +250,36 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
     public void setWindSpeed(int speed) {
         windSpeed.setDX(speed);
+    }
+
+    public void setGravity(int speed) {
+        gravity.setDY(speed);
+    }
+
+
+    // 다시해다시해다시해
+    public void setBallSpeed(int speed) {
+        if(speed <= 3) {
+            speed = (int) (Math.E + 1);
+        }
+		this.ballSpeed.setDX((int)Math.log(speed));
+		this.ballSpeed.setDY((int)Math.log(speed));
+        logger.info((int)Math.log(speed));
+        logger.info((int)Math.log(speed));
+	}
+
+    // 다시해다시해다시해
+    public void clear() {
+        // 1. 쓰레드 풀에서 다 지우기
+        threadPool.shutdown();
+
+        // 2. 눈에 보이는 공 다 지우기
+        for (Bounded bounded : boundedList) {
+            if (bounded instanceof Ball) {
+                remove(bounded);
+            }
+        }
+
+        // 3. 쓰레드 재충전하기
     }
 }

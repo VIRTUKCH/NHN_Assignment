@@ -7,7 +7,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -67,7 +66,7 @@ public class CannonGame extends JFrame implements ComponentListener {
         fireButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                world.start();
+                world.fire();
             }
         });
 
@@ -75,7 +74,7 @@ public class CannonGame extends JFrame implements ComponentListener {
 
         // ----------------------------- Clear 버튼 -----------------------------
 
-        // TODO : 기능 구현 아직 못했음
+        // 다시해다시해다시해
         JButton clearButton = new JButton();
 
         clearButton.setBounds(140, 590, 100, 60);
@@ -83,7 +82,7 @@ public class CannonGame extends JFrame implements ComponentListener {
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                world.start();
+                world.clear();
             }
         });
 
@@ -98,8 +97,7 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(ballSpeedTexEditorPane);
 
         // 2. 슬라이더 보여주기
-        JSlider ballSpeedControSlider = new JSlider(0, 1000, 500);
-
+        JSlider ballSpeedControSlider = new JSlider(0, 1000, 0);
         ballSpeedControSlider.setBounds(50, 50, 200, 100);
 
         ballSpeedControSlider.setPaintTrack(true);
@@ -110,12 +108,10 @@ public class CannonGame extends JFrame implements ComponentListener {
         ballSpeedControSlider.setMinorTickSpacing(100);
 
         ballSpeedControSlider.addChangeListener(new ChangeListener() {
-
             @Override
             public void stateChanged(ChangeEvent e) {
-                world.setWindSpeed(ballSpeedControSlider.getValue());
+                world.setBallSpeed(ballSpeedControSlider.getValue());
             }
-
         });
 
         add(ballSpeedControSlider);
@@ -144,7 +140,7 @@ public class CannonGame extends JFrame implements ComponentListener {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                world.setWindSpeed(angleControlSlider.getValue());
+                world.setAngle(angleControlSlider.getValue());
             }
 
         });
@@ -160,7 +156,7 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(gravityControlJLabel);
 
         // 2. 슬라이더 보여주기
-        JSlider gravityControSlider = new JSlider(0, 10, 5);
+        JSlider gravityControSlider = new JSlider(0, 10, 1);
 
         gravityControSlider.setBounds(50, 240, 200, 100);
 
@@ -169,13 +165,12 @@ public class CannonGame extends JFrame implements ComponentListener {
         gravityControSlider.setPaintLabels(true);
 
         gravityControSlider.setMajorTickSpacing(2);
-        // gravityControSlider.setMinorTickSpacing(100);
 
         gravityControSlider.addChangeListener(new ChangeListener() {
 
             @Override
             public void stateChanged(ChangeEvent e) {
-                world.setWindSpeed(gravityControSlider.getValue());
+                world.setGravity(gravityControSlider.getValue());
             }
 
         });

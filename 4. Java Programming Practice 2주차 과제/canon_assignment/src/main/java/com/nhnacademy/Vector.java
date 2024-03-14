@@ -72,6 +72,10 @@ public class Vector {
         set((int) (getDX() * scale), (int) (getDY() * scale));
     }
 
+    public void multiply(Vector vector) {
+        set((int) (getDX() * vector.getDX()), (int) (getDY() * vector.getDY()));
+    }
+
     @Override
     public boolean equals(Object other) {
         return (other instanceof Vector) && (((Vector) other).getDX() == getDX())

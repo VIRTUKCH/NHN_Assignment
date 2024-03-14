@@ -12,5 +12,4 @@ public interface Movable {
 
     public void move(Vector motion);
 
-    public void moveTo(Point location);
 }

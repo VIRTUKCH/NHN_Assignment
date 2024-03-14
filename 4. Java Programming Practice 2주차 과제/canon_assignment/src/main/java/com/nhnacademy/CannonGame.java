@@ -7,7 +7,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
@@ -56,28 +58,148 @@ public class CannonGame extends JFrame implements ComponentListener {
         world.setBackground(Color.WHITE);
         add(world);
 
-        JButton button = new JButton();
+        // ----------------------------- Fire 버튼 -----------------------------
 
-        button.setBounds(50, 50, 200, 100);
-        button.addActionListener(new ActionListener() {
+        JButton fireButton = new JButton();
+
+        fireButton.setBounds(20, 590, 100, 60);
+        fireButton.setText("Fire!");
+        fireButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 world.start();
             }
         });
 
-        add(button);
+        add(fireButton);
 
+        // ----------------------------- Clear 버튼 -----------------------------
+
+        // TODO : 기능 구현 아직 못했음
+        JButton clearButton = new JButton();
+
+        clearButton.setBounds(140, 590, 100, 60);
+        clearButton.setText("Clear!");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                world.start();
+            }
+        });
+
+        add(clearButton);
+
+        // ----------------------------- 속도 슬라이더 -----------------------------
+
+        // 1. 텍스트 띄우기
+        JLabel ballSpeedTexEditorPane = new JLabel();
+        ballSpeedTexEditorPane.setBounds(30, 30, 30, 30);
+        ballSpeedTexEditorPane.setText("속도");
+        add(ballSpeedTexEditorPane);
+
+        // 2. 슬라이더 보여주기
+        JSlider ballSpeedControSlider = new JSlider(0, 1000, 500);
+
+        ballSpeedControSlider.setBounds(50, 50, 200, 100);
+
+        ballSpeedControSlider.setPaintTrack(true);
+        ballSpeedControSlider.setPaintTicks(true);
+        ballSpeedControSlider.setPaintLabels(true);
+
+        ballSpeedControSlider.setMajorTickSpacing(200);
+        ballSpeedControSlider.setMinorTickSpacing(100);
+
+        ballSpeedControSlider.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                world.setWindSpeed(ballSpeedControSlider.getValue());
+            }
+
+        });
+
+        add(ballSpeedControSlider);
+
+        // ----------------------------- 각도 슬라이더 -----------------------------
+
+        // 1. 텍스트 띄우기
+        JLabel angleControlJLabel = new JLabel();
+        angleControlJLabel.setBounds(30, 140, 30, 30);
+        angleControlJLabel.setText("각도");
+        add(angleControlJLabel);
+
+        // 2. 슬라이더 보여주기
+        JSlider angleControlSlider = new JSlider(0, 90, 45);
+
+        angleControlSlider.setBounds(50, 140, 200, 100);
+
+        angleControlSlider.setPaintTrack(true);
+        angleControlSlider.setPaintTicks(true);
+        angleControlSlider.setPaintLabels(true);
+
+        angleControlSlider.setMajorTickSpacing(20);
+        angleControlSlider.setMinorTickSpacing(5);
+
+        angleControlSlider.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                world.setWindSpeed(angleControlSlider.getValue());
+            }
+
+        });
+
+        add(angleControlSlider);
+
+        // ----------------------------- 중력 슬라이더 -----------------------------
+
+        // 1. 텍스트 띄우기
+        JLabel gravityControlJLabel = new JLabel();
+        gravityControlJLabel.setBounds(30, 230, 30, 30);
+        gravityControlJLabel.setText("중력");
+        add(gravityControlJLabel);
+
+        // 2. 슬라이더 보여주기
+        JSlider gravityControSlider = new JSlider(0, 10, 5);
+
+        gravityControSlider.setBounds(50, 240, 200, 100);
+
+        gravityControSlider.setPaintTrack(true);
+        gravityControSlider.setPaintTicks(true);
+        gravityControSlider.setPaintLabels(true);
+
+        gravityControSlider.setMajorTickSpacing(2);
+        // gravityControSlider.setMinorTickSpacing(100);
+
+        gravityControSlider.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                world.setWindSpeed(gravityControSlider.getValue());
+            }
+
+        });
+
+        add(gravityControSlider);
+
+        // ----------------------------- 바람 슬라이더 -----------------------------
+
+        // 1. 텍스트 띄우기
+        JLabel windSpeedControlJLabel = new JLabel();
+        windSpeedControlJLabel.setBounds(30, 340, 30, 30);
+        windSpeedControlJLabel.setText("바람");
+        add(windSpeedControlJLabel);
+
+        // 2. 슬라이더 보여주기
         JSlider windSpeed = new JSlider(-10, 10, 0);
 
-        windSpeed.setBounds(50, 200, 200, 100);
+        windSpeed.setBounds(50, 350, 200, 100);
 
         windSpeed.setPaintTrack(true);
         windSpeed.setPaintTicks(true);
         windSpeed.setPaintLabels(true);
 
-        windSpeed.setMajorTickSpacing(5);
-        windSpeed.setMinorTickSpacing(2);
+        windSpeed.setMajorTickSpacing(2);
 
         windSpeed.addChangeListener(new ChangeListener() {
 

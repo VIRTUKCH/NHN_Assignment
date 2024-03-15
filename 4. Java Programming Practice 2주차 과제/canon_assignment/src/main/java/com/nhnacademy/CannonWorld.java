@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CannonWorld extends MovableWorld implements MouseMotionListener, KeyListener, ComponentListener {
-    static final int WALL_THICKNESS = 200;
+    static final int WALL_THICKNESS = 500;
     static final int BAR_WIDTH = 100;
     static final int BAR_THICKNESS = 20;
     static final int BAR_SPEED = 10;
@@ -24,18 +24,47 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     int angle;
 
     Vector gravity = new Vector(0, 1); // 더하는 게 좋겠다 (더해야 하니까)
-    
-    Vector windSpeed = new Vector(1, 0); // 더하는 게 좋겠다 (더해야 하니까)
+    Vector windSpeed = new Vector(0, 0); // 더하는 게 좋겠다 (더해야 하니까)
     Vector ballSpeed = new Vector(1, 1); // 1로 둬서 곱하는 게 좋겠다 (곱해야 하니까)
-    Vector angleVector = new Vector(1, 1); // 어차피 나중에 10 단위로 곱해 줄게
-
+    Vector angleVector = new Vector(1, 1); // 5 단위로 조절
 
     public void setAngle(int angle) {
         this.angle = angle;
     }
 
-    public void setDT(int dt) {
-        this.dt = dt;
+    public void setAngleVector() {
+        angleVector.setDX((int) (5 * Math.cos(Math.toRadians(angle))));
+        angleVector.setDY((int) (5 * Math.sin(Math.toRadians(angle))));
+    }
+
+    public void setWindSpeed(int speed) {
+        windSpeed.setDX(speed);
+    }
+
+    public void setGravity(int speed) {
+        gravity.setDY(speed);
+    }
+
+    public void setBallSpeed(int speed) {
+        if (speed <= 3) {
+            speed = (int) (Math.E + 1);
+        }
+        this.ballSpeed.setDX((int) Math.log(speed) * 5);
+        this.ballSpeed.setDY((int) Math.log(speed) * 5);
+    }
+
+    public void clear() {
+        // 0. 쓰레드 끊기
+        threadPool.shutdown();
+
+        // 1. 볼 다 버리기
+        for (Ball ball : ballList) {
+            remove(ball);
+        }
+
+        // 2. 쓰레드 풀 초기화하기
+        threadPool = Executors.newFixedThreadPool(10);
+
     }
 
     final Box leftWall;
@@ -48,7 +77,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     final List<Box> boxList = new LinkedList<>();
     final List<Ball> ballList = new LinkedList<>();
 
-    ExecutorService threadPool = Executors.newFixedThreadPool(5);
+    ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
     final Color[] colors = { Color.YELLOW, Color.WHITE, Color.BLUE, Color.GREEN };
 
@@ -60,12 +89,12 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
         // ------------------------- 벽 만들기 -------------------------
 
-        leftWall = new PaintableBox(-WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height, Color.RED);
-        rightWall = new PaintableBox(width + WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height,
-                Color.BLUE);
+        leftWall = new PaintableBox(-WALL_THICKNESS / 2 + 1, height / 2, WALL_THICKNESS, height, Color.WHITE);
+        rightWall = new PaintableBox(width + WALL_THICKNESS / 2 - 50, height / 2, WALL_THICKNESS, height,
+                Color.WHITE);
         topWall = new PaintableBox(width / 2, -WALL_THICKNESS / 2, width + 2 * WALL_THICKNESS, WALL_THICKNESS,
                 Color.YELLOW);
-        bottomWall = new PaintableBox(width / 2, height + WALL_THICKNESS / 2, width + 2 * WALL_THICKNESS,
+        bottomWall = new PaintableBox(width / 2, height + WALL_THICKNESS / 2 - 1, width + 2 * WALL_THICKNESS,
                 WALL_THICKNESS, Color.GREEN);
 
         add(leftWall);
@@ -90,13 +119,13 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         bar = new BounceableBox(100, height - BAR_THICKNESS / 2, BAR_WIDTH, BAR_THICKNESS, Color.BLUE);
         add(bar);
 
-        // ------------------------- 판넬에 리스너 더하기 -------------------------       
+        // ------------------------- 판넬에 리스너 더하기 -------------------------
 
         setFocusable(true);
         addKeyListener(this);
         addMouseMotionListener(this);
         addComponentListener(this);
-        
+
     }
 
     // 블럭 추가하기
@@ -128,27 +157,26 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     // 공 발사하기
     public void fire() {
         BounceableBall ball = new BounceableBall(bar.getX(), bar.getY() - BAR_THICKNESS / 2 - 10, 10, Color.RED);
-        ball.setMotion(1, 1); // 벡터는 일단 기본값으로 1, 1로 두자.
+        ballList.add(ball); // 내가 추가했음.
+
         ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
 
         // 대체 어디다 쓸까 감도 안 온다 - 람다에 대해 이해하지 못해서 그런 듯
         ball.addStartedActionListener(() -> {
-
+            ball.setMotion(20 * angleVector.getDX() * ballSpeed.getDX(), -20 * angleVector.getDY() * ballSpeed.getDY()); // 벡터는 일단 기본값으로 20, -20으로 두자.
         });
 
         // 움직이는 데에 필요한 메서드는 여기에 구현한다.
         ball.addMovedActionListener(() -> {
             List<Bounded> removeList = new LinkedList<>();
 
+            // * 주의 : 움직일 때마다 더하는거다.
             Vector newMotion = ball.getMotion();
-            newMotion.multiply(angleVector);
-            newMotion.multiply(ballSpeed);
 
             newMotion.add(gravity); // 벡터에 중력을 더해요 (덧셈)
             newMotion.add(windSpeed); // 벡터에 바람을 더해요 (덧셈)
 
             ball.setMotion(newMotion); // 계산 결과를 적용해요
-
             if (ball instanceof Bounceable) { // 발사된 공이 Bounceable이라면
                 for (int j = 0; j < getCount(); j++) { // 지도 상에 있는 물체 다 뒤져가면서
                     Bounded other = get(j); // 다른 물체와의 교집합 바운드 있는지 확인해
@@ -162,6 +190,8 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
                     }
                 }
             }
+            logger.info("DX : " + ball.motion.getDX());
+            logger.info("DY : " + ball.motion.getDY());
 
             for (Bounded item : removeList) {
                 remove(item);
@@ -226,7 +256,6 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
                     getWidth() + WALL_THICKNESS * 2, WALL_THICKNESS));
             bar.moveTo(new Point(100, getHeight() - BAR_THICKNESS / 2));
         }
-
     }
 
     // 컴포넌트 보여주기?
@@ -248,38 +277,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         //
     }
 
-    public void setWindSpeed(int speed) {
-        windSpeed.setDX(speed);
-    }
-
-    public void setGravity(int speed) {
-        gravity.setDY(speed);
-    }
-
-
-    // 다시해다시해다시해
-    public void setBallSpeed(int speed) {
-        if(speed <= 3) {
-            speed = (int) (Math.E + 1);
-        }
-		this.ballSpeed.setDX((int)Math.log(speed));
-		this.ballSpeed.setDY((int)Math.log(speed));
-        logger.info((int)Math.log(speed));
-        logger.info((int)Math.log(speed));
-	}
-
-    // 다시해다시해다시해
-    public void clear() {
-        // 1. 쓰레드 풀에서 다 지우기
-        threadPool.shutdown();
-
-        // 2. 눈에 보이는 공 다 지우기
-        for (Bounded bounded : boundedList) {
-            if (bounded instanceof Ball) {
-                remove(bounded);
-            }
-        }
-
-        // 3. 쓰레드 재충전하기
+    public void setDT(int dt) {
+        this.dt = dt;
     }
 }

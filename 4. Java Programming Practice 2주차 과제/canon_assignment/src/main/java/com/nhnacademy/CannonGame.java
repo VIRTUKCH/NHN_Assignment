@@ -57,8 +57,7 @@ public class CannonGame extends JFrame implements ComponentListener {
         world.setBackground(Color.WHITE);
         add(world);
 
-        // ----------------------------- Fire 버튼 -----------------------------
-
+        // ----------------------------- Fire 버튼 (구현 완료) -----------------------------
         JButton fireButton = new JButton();
 
         fireButton.setBounds(20, 590, 100, 60);
@@ -72,9 +71,8 @@ public class CannonGame extends JFrame implements ComponentListener {
 
         add(fireButton);
 
-        // ----------------------------- Clear 버튼 -----------------------------
-
-        // 다시해다시해다시해
+        // ----------------------------- Clear 버튼 (구현 완료) -----------------------------
+        // 구현 완료
         JButton clearButton = new JButton();
 
         clearButton.setBounds(140, 590, 100, 60);
@@ -88,8 +86,8 @@ public class CannonGame extends JFrame implements ComponentListener {
 
         add(clearButton);
 
-        // ----------------------------- 속도 슬라이더 -----------------------------
-
+        // ----------------------------- 속도 슬라이더 (구현은 된 것 같은데 다른 요소가 작용하는 듯) -----------------------------
+        // TODO 1. 속도 구현하기
         // 1. 텍스트 띄우기
         JLabel ballSpeedTexEditorPane = new JLabel();
         ballSpeedTexEditorPane.setBounds(30, 30, 30, 30);
@@ -97,26 +95,28 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(ballSpeedTexEditorPane);
 
         // 2. 슬라이더 보여주기
-        JSlider ballSpeedControSlider = new JSlider(0, 1000, 0);
+        JSlider ballSpeedControSlider = new JSlider(0, 100, 0);
         ballSpeedControSlider.setBounds(50, 50, 200, 100);
 
         ballSpeedControSlider.setPaintTrack(true);
         ballSpeedControSlider.setPaintTicks(true);
         ballSpeedControSlider.setPaintLabels(true);
 
-        ballSpeedControSlider.setMajorTickSpacing(200);
-        ballSpeedControSlider.setMinorTickSpacing(100);
+        ballSpeedControSlider.setMajorTickSpacing(20);
+        ballSpeedControSlider.setMinorTickSpacing(10);
 
         ballSpeedControSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 world.setBallSpeed(ballSpeedControSlider.getValue());
+                logger.info(ballSpeedControSlider.getValue());
             }
         });
 
         add(ballSpeedControSlider);
 
         // ----------------------------- 각도 슬라이더 -----------------------------
+        // 했다 치자
 
         // 1. 텍스트 띄우기
         JLabel angleControlJLabel = new JLabel();
@@ -141,6 +141,8 @@ public class CannonGame extends JFrame implements ComponentListener {
             @Override
             public void stateChanged(ChangeEvent e) {
                 world.setAngle(angleControlSlider.getValue());
+                logger.info(5 * Math.cos(Math.toRadians(angleControlSlider.getValue())));
+                logger.info(5 * Math.sin(Math.toRadians(angleControlSlider.getValue())));
             }
 
         });
@@ -186,26 +188,24 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(windSpeedControlJLabel);
 
         // 2. 슬라이더 보여주기
-        JSlider windSpeed = new JSlider(-10, 10, 0);
+        JSlider windSpeedSlider = new JSlider(-10, 10, 0);
 
-        windSpeed.setBounds(50, 350, 200, 100);
+        windSpeedSlider.setBounds(50, 350, 200, 100);
 
-        windSpeed.setPaintTrack(true);
-        windSpeed.setPaintTicks(true);
-        windSpeed.setPaintLabels(true);
+        windSpeedSlider.setPaintTrack(true);
+        windSpeedSlider.setPaintTicks(true);
+        windSpeedSlider.setPaintLabels(true);
 
-        windSpeed.setMajorTickSpacing(2);
+        windSpeedSlider.setMajorTickSpacing(2);
 
-        windSpeed.addChangeListener(new ChangeListener() {
-
+        windSpeedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                world.setWindSpeed(windSpeed.getValue());
+                world.setWindSpeed(windSpeedSlider.getValue());
+                logger.info(windSpeedSlider.getValue());
             }
-
         });
-
-        add(windSpeed);
+        add(windSpeedSlider);
     }
 
     public void start() {

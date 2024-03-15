@@ -73,6 +73,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     final Box bottomWall;
 
     final BounceableBox bar; // 현재 탱크 역할
+    final Canon canon;
 
     final List<Box> boxList = new LinkedList<>();
     final List<Ball> ballList = new LinkedList<>();
@@ -118,6 +119,14 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
         bar = new BounceableBox(100, height - BAR_THICKNESS / 2, BAR_WIDTH, BAR_THICKNESS, Color.BLUE);
         add(bar);
+        // bar = null;
+
+
+        // ------------------------- 탱크 만들기 -------------------------
+
+        // TODO : 일단 움직일 수 있게 하기
+        canon = new Canon(100, 450, 100, 100, Color.black);
+        add(canon);
 
         // ------------------------- 판넬에 리스너 더하기 -------------------------
 
@@ -204,14 +213,14 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     @Override
     public void keyPressed(KeyEvent event) { // 상하좌우 이동하기
         if (event.getKeyCode() == KeyEvent.VK_LEFT) {
-            bar.move(new Vector(-BAR_SPEED, 0));
-            if (bar.getMinX() < 0) {
-                bar.setLocation(new Point(bar.getWidth() / 2, bar.getCenterY()));
+            canon.move(new Vector(-BAR_SPEED, 0));
+            if (canon.getMinX() < 0) {
+                canon.setLocation(new Point(canon.getWidth() / 2, canon.getCenterY()));
             }
         } else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-            bar.move(new Vector(BAR_SPEED, 0));
-            if (bar.getMaxX() > getWidth()) {
-                bar.setLocation(new Point(getWidth() - bar.getWidth() / 2, bar.getCenterY()));
+            canon.move(new Vector(BAR_SPEED, 0));
+            if (canon.getMaxX() > getWidth()) {
+                canon.setLocation(new Point(getWidth() - canon.getWidth() / 2, canon.getCenterY()));
             }
         } else if (event.getKeyCode() == KeyEvent.VK_R) { // R키를 누르면 블록을 만들고
             init();
@@ -258,6 +267,8 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         }
     }
 
+    // TODO : 대포 머리 좌표 추적
+
     // 컴포넌트 보여주기?
     @Override
     public void componentShown(ComponentEvent event) {
@@ -267,8 +278,8 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     // 마우스 드래그 -> 바 이동하게 만들기
     @Override
     public void mouseDragged(MouseEvent event) {
-        if (event.getX() > bar.getWidth() / 2 && event.getX() < getWidth() - bar.getWidth() / 2) {
-            bar.setLocation(new Point(event.getX(), bar.getCenterY()));
+        if (event.getX() > canon.getWidth() / 2 && event.getX() < getWidth() - canon.getWidth() / 2) {
+            canon.setLocation(new Point(event.getX(), canon.getCenterY()));
         }
     }
 

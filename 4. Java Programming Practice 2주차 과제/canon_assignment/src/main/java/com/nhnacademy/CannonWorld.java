@@ -173,7 +173,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
         // 공이 출발할 때 기본값을 적용하는 메서드
         ball.addStartedActionListener(() -> {
-            ball.setMotion((int) (20 * Math.cos(Math.toRadians(-angle))), (int) (-20 * Math.sin(Math.toRadians(-angle))));
+            ball.setMotion(5 * angleVector.getDX() * ballSpeed.getDX(), -5 * angleVector.getDY() * ballSpeed.getDY());
             logger.info((int) (20 * Math.cos(Math.toRadians(-angle))));
             logger.info((int) (-20 * Math.sin(Math.toRadians(-angle))));
         });

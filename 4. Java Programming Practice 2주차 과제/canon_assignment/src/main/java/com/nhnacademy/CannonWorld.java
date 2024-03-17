@@ -67,6 +67,10 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         // 2. 쓰레드 풀 초기화하기
         threadPool = Executors.newFixedThreadPool(10);
 
+        EnemyCanon enemyCanon = new EnemyCanon(900, 450, 100, 100, Color.black);
+        boxList.add(enemyCanon);
+        add(enemyCanon);
+        enemyCanon.setHitListener(other -> remove(enemyCanon));
     }
 
     final Box leftWall;
@@ -131,8 +135,9 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         add(canon);
 
         enemyCanon = new EnemyCanon(900, 450, 100, 100, Color.black);
+        boxList.add(enemyCanon);
         add(enemyCanon);
-
+        enemyCanon.setHitListener(other -> remove(enemyCanon));
 
         // ------------------------- 장애물 만들기 -------------------------
 
@@ -177,7 +182,8 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     // 공 발사하기
     public void fire() {
         // 공이 포의 머리에서 시작할 수 있도록 조치했음.
-        BounceableBall ball = new BounceableBall(canon.getX() + (int) (100 * Math.cos(Math.toRadians(-angle))), canon.getY() - 80 + (int) (100 * Math.sin(Math.toRadians(-angle))), 10, Color.RED);
+        BounceableBall ball = new BounceableBall(canon.getX() + (int) (100 * Math.cos(Math.toRadians(-angle))),
+                canon.getY() - 80 + (int) (100 * Math.sin(Math.toRadians(-angle))), 10, Color.RED);
         ballList.add(ball); // 내가 추가했음.
 
         ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
@@ -186,8 +192,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         ball.addStartedActionListener(() -> {
             ball.setMotion(5 * angleVector.getDX() * ballSpeed.getDX(), -5 * angleVector.getDY() * ballSpeed.getDY());
         });
-        
-        
+
         // 움직이는 데에 필요한 메서드는 여기에 구현한다.
         ball.addMovedActionListener(() -> {
             List<Bounded> removeList = new LinkedList<>();

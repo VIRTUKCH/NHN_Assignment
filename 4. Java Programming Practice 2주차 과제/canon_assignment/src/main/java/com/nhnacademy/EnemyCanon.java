@@ -3,7 +3,7 @@ package com.nhnacademy;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class EnemyCanon extends PaintableBox implements Brittle, HitInterface {
+public class EnemyCanon extends BrittleBox {
     public static final Color DEFAULT_COLOR = Color.BLACK;
 
     public EnemyCanon(int x, int y, int width, int height) {

@@ -42,12 +42,11 @@ public class BreakBricksGame extends JFrame implements ComponentListener {
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(this);
-
+        
         world = new BreakBricksWorld();
         world.setDT(DT);
 
         add(world);
-
     }
 
     public void start() {

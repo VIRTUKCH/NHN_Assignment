@@ -5,6 +5,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class Canon extends MovableBox {
+    int angle;
+
+    public int getAngle() {
+        return this.angle;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
     public static final Color DEFAULT_COLOR = Color.BLACK;
 
     public Canon(int x, int y, int width, int height, Color color) {
@@ -33,9 +43,12 @@ public class Canon extends MovableBox {
         g.drawRect(getBounds().getMinX() - 25, getBounds().getMinY(),
                 getBounds().getWidth() + 50, getBounds().getHeight());
 
+        int canonBarrelX = getCenterX();
+        int canonBarrelY = getCenterY() - 80;
         // 탱크 포 회전하기 + 그리기
-        g2d.rotate(Math.toRadians(-45), getCenterX() + getWidth() / 2, getCenterY() - 80 + getHeight() / 2);
+        g2d.rotate(Math.toRadians(-angle), canonBarrelX, canonBarrelY);
         g2d.fillRect(getCenterX(), getCenterY() - 80, 100, 20);
+        g2d.rotate(Math.toRadians(angle), canonBarrelX, canonBarrelY);
 
         // 탱크 색칠하기
         g.setColor(Color.GRAY);

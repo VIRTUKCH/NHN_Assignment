@@ -166,7 +166,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
         ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
 
-        // 대체 어디다 쓸까 감도 안 온다 - 람다에 대해 이해하지 못해서 그런 듯
+        // 공이 출발할 때 기본값을 적용하는 메서드
         ball.addStartedActionListener(() -> {
             ball.setMotion(5 * angleVector.getDX() * ballSpeed.getDX(), -5 * angleVector.getDY() * ballSpeed.getDY());
         });
@@ -189,8 +189,8 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
                     if (ball != other && ball.isCollision(other.getBounds())) { // 겹치는 부분이 있다면
                         ((Bounceable) ball).bounce(other); // 튕기자
 
-                        if (other instanceof HitListener) { // 힛 리스너의 일부라면
-                            ((HitListener) other).hit(ball); // 힛 메서드를 보여줍시다.
+                        if (other instanceof HitListener) { // 힛 리스너와 겹친 거라면
+                            ((HitListener) other).hit(ball); // 힛 메서드 실행.
                         }
                     }
                 }

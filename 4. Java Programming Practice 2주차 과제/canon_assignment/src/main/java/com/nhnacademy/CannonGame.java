@@ -141,12 +141,9 @@ public class CannonGame extends JFrame implements ComponentListener {
             @Override
             public void stateChanged(ChangeEvent e) {
                 world.setAngle(angleControlSlider.getValue());
-                logger.info(5 * Math.cos(Math.toRadians(angleControlSlider.getValue())));
-                logger.info(5 * Math.sin(Math.toRadians(angleControlSlider.getValue())));
+                world.canon.setAngle(angleControlSlider.getValue());
             }
-
         });
-
         add(angleControlSlider);
 
         // ----------------------------- 중력 슬라이더 -----------------------------

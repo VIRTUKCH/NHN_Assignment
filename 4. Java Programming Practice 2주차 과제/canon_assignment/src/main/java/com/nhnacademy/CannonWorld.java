@@ -76,6 +76,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
     final BounceableBox bar; // 현재 탱크 역할
     final Canon canon;
+    final EnemyCanon enemyCanon;
     final Obstacle obstacle;
 
     final List<Box> boxList = new LinkedList<>();
@@ -124,15 +125,18 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         add(bar);
         // bar = null;
 
-
         // ------------------------- 탱크 만들기 -------------------------
 
         canon = new Canon(100, 450, 100, 100, Color.black);
         add(canon);
 
+        enemyCanon = new EnemyCanon(900, 450, 100, 100, Color.black);
+        add(enemyCanon);
+
+
         // ------------------------- 장애물 만들기 -------------------------
 
-        obstacle = new Obstacle(600, 450, 300, 300, Color.YELLOW);
+        obstacle = new Obstacle(450, 450, 300, 300, Color.YELLOW);
         add(obstacle);
 
         // ------------------------- 판넬에 리스너 더하기 -------------------------

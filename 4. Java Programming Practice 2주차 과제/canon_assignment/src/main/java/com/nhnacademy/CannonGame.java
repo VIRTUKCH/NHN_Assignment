@@ -95,15 +95,15 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(ballSpeedTexEditorPane);
 
         // 2. 슬라이더 보여주기
-        JSlider ballSpeedControSlider = new JSlider(0, 100, 0);
+        JSlider ballSpeedControSlider = new JSlider(0, 10, 0);
         ballSpeedControSlider.setBounds(50, 50, 200, 100);
 
         ballSpeedControSlider.setPaintTrack(true);
         ballSpeedControSlider.setPaintTicks(true);
         ballSpeedControSlider.setPaintLabels(true);
 
-        ballSpeedControSlider.setMajorTickSpacing(20);
-        ballSpeedControSlider.setMinorTickSpacing(10);
+        ballSpeedControSlider.setMajorTickSpacing(2);
+        ballSpeedControSlider.setMinorTickSpacing(1);
 
         ballSpeedControSlider.addChangeListener(new ChangeListener() {
             @Override

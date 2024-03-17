@@ -46,11 +46,8 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
     }
 
     public void setBallSpeed(int speed) {
-        if (speed <= 3) {
-            speed = (int) (Math.E + 1);
-        }
-        this.ballSpeed.setDX((int) Math.log(speed) * 5);
-        this.ballSpeed.setDY((int) Math.log(speed) * 5);
+        this.ballSpeed.setDX(speed);
+        this.ballSpeed.setDY(speed);
     }
 
     public void clear() {
@@ -124,7 +121,6 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
         // ------------------------- 탱크 만들기 -------------------------
 
-        // TODO : 일단 움직일 수 있게 하기
         canon = new Canon(100, 450, 100, 100, Color.black);
         add(canon);
 
@@ -165,14 +161,14 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
     // 공 발사하기
     public void fire() {
-        BounceableBall ball = new BounceableBall(bar.getX(), bar.getY() - BAR_THICKNESS / 2 - 10, 10, Color.RED);
+        BounceableBall ball = new BounceableBall(canon.getX() + 100, canon.getY() - 80, 10, Color.RED);
         ballList.add(ball); // 내가 추가했음.
 
         ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
 
         // 대체 어디다 쓸까 감도 안 온다 - 람다에 대해 이해하지 못해서 그런 듯
         ball.addStartedActionListener(() -> {
-            ball.setMotion(20 * angleVector.getDX() * ballSpeed.getDX(), -20 * angleVector.getDY() * ballSpeed.getDY()); // 벡터는 일단 기본값으로 20, -20으로 두자.
+            ball.setMotion(5 * angleVector.getDX() * ballSpeed.getDX(), -5 * angleVector.getDY() * ballSpeed.getDY());
         });
 
         // 움직이는 데에 필요한 메서드는 여기에 구현한다.
@@ -266,8 +262,6 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
             bar.moveTo(new Point(100, getHeight() - BAR_THICKNESS / 2));
         }
     }
-
-    // TODO : 대포 머리 좌표 추적
 
     // 컴포넌트 보여주기?
     @Override

@@ -86,7 +86,8 @@ public class CannonGame extends JFrame implements ComponentListener {
 
         add(clearButton);
 
-        // ----------------------------- 속도 슬라이더 (구현은 된 것 같은데 다른 요소가 작용하는 듯) -----------------------------
+        // ----------------------------- 속도 슬라이더 (구현은 된 것 같은데 다른 요소가 작용하는 듯)
+        // -----------------------------
         // 1. 텍스트 띄우기
         JLabel ballSpeedTexEditorPane = new JLabel();
         ballSpeedTexEditorPane.setBounds(30, 30, 30, 30);
@@ -103,6 +104,9 @@ public class CannonGame extends JFrame implements ComponentListener {
 
         ballSpeedControSlider.setMajorTickSpacing(2);
         ballSpeedControSlider.setMinorTickSpacing(1);
+
+        // 수정 전 기본 조치
+        world.setBallSpeed(ballSpeedControSlider.getValue());
 
         ballSpeedControSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -124,7 +128,7 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(angleControlJLabel);
 
         // 2. 슬라이더 보여주기
-        JSlider angleControlSlider = new JSlider(0, 90, 45);
+        JSlider angleControlSlider = new JSlider(0, 90, 0);
 
         angleControlSlider.setBounds(50, 140, 200, 100);
 
@@ -135,14 +139,18 @@ public class CannonGame extends JFrame implements ComponentListener {
         angleControlSlider.setMajorTickSpacing(20);
         angleControlSlider.setMinorTickSpacing(5);
 
-        angleControlSlider.addChangeListener(new ChangeListener() {
+        // 기본 조치
+        world.setAngle(angleControlSlider.getValue());
+        world.canon.setAngle(angleControlSlider.getValue());
+        world.setAngleVector(angleControlSlider.getValue());
 
+        angleControlSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 world.setAngle(angleControlSlider.getValue());
                 world.canon.setAngle(angleControlSlider.getValue());
                 world.setAngleVector(angleControlSlider.getValue());
-            }
+            }// 지금 할 거 : 대포 초기 각도 맞추기
         });
         add(angleControlSlider);
 

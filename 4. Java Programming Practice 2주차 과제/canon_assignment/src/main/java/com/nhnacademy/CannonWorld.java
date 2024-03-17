@@ -1,5 +1,6 @@
 /* 
- * TODO 1. 공 발사 시, 공의 진행하는 기본적인 벡터가 포의 각도와 일치하도록 조치
+ * TODO 1. 시작 각도도 안 맞고
+ * TODO 2. 시작 속도도 좀 달라
  */
 
 package com.nhnacademy;
@@ -171,13 +172,12 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
         ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
 
-        // 공이 출발할 때 기본값을 적용하는 메서드
+        // 얘는 그냥 코드 나누는 정도의 역할 외에는 수행하지 못하는 듯.
         ball.addStartedActionListener(() -> {
             ball.setMotion(5 * angleVector.getDX() * ballSpeed.getDX(), -5 * angleVector.getDY() * ballSpeed.getDY());
-            logger.info((int) (20 * Math.cos(Math.toRadians(-angle))));
-            logger.info((int) (-20 * Math.sin(Math.toRadians(-angle))));
         });
-
+        
+        
         // 움직이는 데에 필요한 메서드는 여기에 구현한다.
         ball.addMovedActionListener(() -> {
             List<Bounded> removeList = new LinkedList<>();
@@ -186,6 +186,9 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
             Vector newMotion = ball.getMotion();
             newMotion.add(gravity); // 벡터에 중력을 더해요 (덧셈)
             newMotion.add(windSpeed); // 벡터에 바람을 더해요 (덧셈)
+
+            logger.info(ball.getMotion().getDX());
+            logger.info(ball.getMotion().getDY());
 
             ball.setMotion(newMotion); // 계산 결과를 적용해요
             if (ball instanceof Bounceable) { // 발사된 공이 Bounceable이라면

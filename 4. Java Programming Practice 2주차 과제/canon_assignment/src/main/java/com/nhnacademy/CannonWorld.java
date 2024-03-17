@@ -1,8 +1,3 @@
-/* 
- * TODO 1. 시작 각도도 안 맞고
- * TODO 2. 시작 속도도 좀 달라
- */
-
 package com.nhnacademy;
 
 import java.awt.Color;

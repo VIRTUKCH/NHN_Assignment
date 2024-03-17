@@ -87,7 +87,6 @@ public class CannonGame extends JFrame implements ComponentListener {
         add(clearButton);
 
         // ----------------------------- 속도 슬라이더 (구현은 된 것 같은데 다른 요소가 작용하는 듯) -----------------------------
-        // TODO 1. 속도 구현하기
         // 1. 텍스트 띄우기
         JLabel ballSpeedTexEditorPane = new JLabel();
         ballSpeedTexEditorPane.setBounds(30, 30, 30, 30);
@@ -142,6 +141,7 @@ public class CannonGame extends JFrame implements ComponentListener {
             public void stateChanged(ChangeEvent e) {
                 world.setAngle(angleControlSlider.getValue());
                 world.canon.setAngle(angleControlSlider.getValue());
+                world.setAngleVector(angleControlSlider.getValue());
             }
         });
         add(angleControlSlider);

@@ -45,6 +45,7 @@ public class Canon extends MovableBox {
 
         int canonBarrelX = getCenterX();
         int canonBarrelY = getCenterY() - 80;
+        
         // 탱크 포 회전하기 + 그리기
         g2d.rotate(Math.toRadians(-angle), canonBarrelX, canonBarrelY);
         g2d.fillRect(getCenterX(), getCenterY() - 80, 100, 20);

@@ -1,3 +1,7 @@
+/* 
+ * TODO 1. 공 발사 시, 공의 진행하는 기본적인 벡터가 포의 각도와 일치하도록 조치
+ */
+
 package com.nhnacademy;
 
 import java.awt.Color;
@@ -32,7 +36,7 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
         this.angle = angle;
     }
 
-    public void setAngleVector() {
+    public void setAngleVector(int angle) {
         angleVector.setDX((int) (5 * Math.cos(Math.toRadians(angle))));
         angleVector.setDY((int) (5 * Math.sin(Math.toRadians(angle))));
     }
@@ -161,14 +165,17 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
     // 공 발사하기
     public void fire() {
-        BounceableBall ball = new BounceableBall(canon.getX() + 100, canon.getY() - 80, 10, Color.RED);
+        // 공이 포의 머리에서 시작할 수 있도록 조치했음.
+        BounceableBall ball = new BounceableBall(canon.getX() + (int) (100 * Math.cos(Math.toRadians(-angle))), canon.getY() - 80 + (int) (100 * Math.sin(Math.toRadians(-angle))), 10, Color.RED);
         ballList.add(ball); // 내가 추가했음.
 
         ball.setDT(getDT()); // 속도 정하기 -> 작아질수록 속도가 빨라짐.
 
         // 공이 출발할 때 기본값을 적용하는 메서드
         ball.addStartedActionListener(() -> {
-            ball.setMotion(5 * angleVector.getDX() * ballSpeed.getDX(), -5 * angleVector.getDY() * ballSpeed.getDY());
+            ball.setMotion((int) (20 * Math.cos(Math.toRadians(-angle))), (int) (-20 * Math.sin(Math.toRadians(-angle))));
+            logger.info((int) (20 * Math.cos(Math.toRadians(-angle))));
+            logger.info((int) (-20 * Math.sin(Math.toRadians(-angle))));
         });
 
         // 움직이는 데에 필요한 메서드는 여기에 구현한다.
@@ -177,7 +184,6 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
 
             // * 주의 : 움직일 때마다 더하는거다.
             Vector newMotion = ball.getMotion();
-
             newMotion.add(gravity); // 벡터에 중력을 더해요 (덧셈)
             newMotion.add(windSpeed); // 벡터에 바람을 더해요 (덧셈)
 
@@ -190,13 +196,11 @@ public class CannonWorld extends MovableWorld implements MouseMotionListener, Ke
                         ((Bounceable) ball).bounce(other); // 튕기자
 
                         if (other instanceof HitListener) { // 힛 리스너와 겹친 거라면
-                            ((HitListener) other).hit(ball); // 힛 메서드 실행.
+                            ((HitListener) other).hit(ball); // 힛 메서드 실행. + 지금은 딱히 뭘 하진 않음.
                         }
                     }
                 }
             }
-            logger.info("DX : " + ball.motion.getDX());
-            logger.info("DY : " + ball.motion.getDY());
 
             for (Bounded item : removeList) {
                 remove(item);

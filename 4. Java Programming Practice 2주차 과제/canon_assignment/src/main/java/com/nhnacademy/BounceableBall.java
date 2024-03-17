@@ -57,6 +57,5 @@ public class BounceableBall extends MovableBall implements Bounceable {
                 setMotion(newMotion);
             }
         }
-
     }
 }

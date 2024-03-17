@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+// obstacle = new Obstacle(600, 450, 300, 300, Color.YELLOW);
 public class Obstacle extends BounceableBox {
     public static final Color DEFAULT_COLOR = Color.YELLOW;
 
@@ -15,6 +16,7 @@ public class Obstacle extends BounceableBox {
         super(x, y, width, height, color);
     }
 
+    // 보정 필요
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -25,14 +27,13 @@ public class Obstacle extends BounceableBox {
         Color originalColor = g.getColor();
         g.setColor(getColor());
 
-
-        g2d.fillRect(getCenterX(), getCenterY() - 80, 100, 20);
+        g.fillRect(getCenterX(), getCenterY() - 150, 300, 300);
         g.fillRect(getBounds().getMinX() - 25, getBounds().getMinY(),
         getBounds().getWidth() + 50, getBounds().getHeight());
         
         // 테두리 그리기
         g.drawRect(getBounds().getMinX() - 25, getBounds().getMinY(),
-        getBounds().getWidth() + 50, getBounds().getHeight());
+        getBounds().getWidth() + 150, getBounds().getHeight());
         
         System.out.println(getCenterX());
         System.out.println(getCenterY());

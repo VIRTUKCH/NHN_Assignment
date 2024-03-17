@@ -20,25 +20,26 @@ public class Canon extends MovableBox {
 
         Color originalColor = g.getColor();
 
-        g2d.setColor(getColor());
+        g.setColor(getColor());
 
         // 탱크 아래 사각형
-        g2d.fillRect(getBounds().getMinX() - 25, getBounds().getMinY(),
+        g.fillRect(getBounds().getMinX() - 25, getBounds().getMinY(),
                 getBounds().getWidth() + 50, getBounds().getHeight());
 
         // 탱크 머리 원
-        g2d.fillOval(getCenterX() - 50, getCenterY() - 100, getWidth(), getHeight());
-
-        // 탱크 포
-        g2d.fillRect(getCenterX(), getCenterY() - 80, 100, 20);
-
-        g2d.setColor(Color.GRAY);
+        g.fillOval(getCenterX() - 50, getCenterY() - 100, getWidth(), getHeight());
 
         // 테두리 그리기
-        g2d.drawRect(getBounds().getMinX() - 25, getBounds().getMinY(),
+        g.drawRect(getBounds().getMinX() - 25, getBounds().getMinY(),
                 getBounds().getWidth() + 50, getBounds().getHeight());
 
-        g2d.setColor(originalColor);
+        // 탱크 포 회전하기 + 그리기
+        g2d.rotate(Math.toRadians(-45), getCenterX() + getWidth() / 2, getCenterY() - 80 + getHeight() / 2);
+        g2d.fillRect(getCenterX(), getCenterY() - 80, 100, 20);
+
+        // 탱크 색칠하기
+        g.setColor(Color.GRAY);
+        g.setColor(originalColor);
     }
 
     @Override

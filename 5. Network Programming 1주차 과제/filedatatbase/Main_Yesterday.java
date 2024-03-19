@@ -61,7 +61,6 @@ public class Main_Yesterday {
                     JSONObject userObject = new JSONObject(user); // user의 데이터를 관리하기 위해 JSONObject에 넣었다.
                     userArray.put(userObject); // 다음에 Object를 JSONArray에 넣었음.
                     System.out.println("사용자 " + userObject.getString("name") + "가 추가되었습니다.");
-
                 }
 
                 // 유저 데이터 삭제

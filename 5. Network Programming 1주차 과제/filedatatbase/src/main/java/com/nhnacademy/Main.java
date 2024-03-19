@@ -1,5 +1,7 @@
 package com.nhnacademy;
 
+import java.io.IOException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -7,24 +9,42 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        JSONObject userObject = new JSONObject();
+        JSONObject itemObject = new JSONObject();
+        JSONObject recordObject = new JSONObject();
+
+        JSONArray userObjectArray = new JSONArray();
+        JSONArray itemObjectArray = new JSONArray();
+        JSONArray recordObjectArray = new JSONArray();
+
+        JSONObject dataObject = new JSONObject(); // 데이터 오브젝트 내에는 유저, 아이템, 레코드 등이 있음.
+
+        JSONObject data = new JSONObject(); // 데이터는 그냥 컨벤션 때문에 묶어 봤음.
+
         // 1. Options 설정
         Options options = new Options();
 
         // 2. Option들 정의하기
-        Option addOption = new Option("a", false, "Add");   //데이터 추가
-        Option typeOption = new Option("t", false, "Type"); //데이터 종류
-        Option idOption = new Option("i", false, "ID");     //아이디
-        Option nameOption = new Option("n", false, "Name"); //이름
-        Option listOption = new Option("l", false, "List"); //목록을 보여줌
-        Option countOption = new Option("c", false, "Count"); //대전 횟수
-        Option winOption = new Option("W", false, "Win"); //승리 횟수
-        Option helpOption = new Option("h", false, "Help"); //도움말
-        Option energyOption = new Option("e", false, "Energy"); //체력
-        Option attackOption = new Option("at", false, "Attack"); //공격력
-        // 방어력부터 나중에 추가하기
+        Option addOption = new Option("a", false, "Add"); // 데이터 추가
+        Option typeOption = new Option("t", false, "Type"); // 데이터 종류
+        Option idOption = new Option("i", false, "ID"); // 아이디
+        Option nameOption = new Option("n", false, "Name"); // 이름
+        Option listOption = new Option("l", false, "List"); // 목록을 보여줌
+        Option countOption = new Option("c", false, "Count"); // 대전 횟수
+        Option winOption = new Option("W", false, "Win"); // 승리 횟수
+        Option helpOption = new Option("h", false, "Help"); // 도움말
+        Option energyOption = new Option("e", false, "Energy"); // 체력
+        Option attackOption = new Option("at", false, "Attack"); // 공격력
+        Option defenceOption = new Option("d", false, "Defence"); // 방어력
+        Option movingSpeedOption = new Option("m", false, "MovingSpeed"); // 이동 속도
+        Option attackSppedOption = new Option("A", false, "AttackSpeed"); // 공격 속도
+        Option historyOption = new Option("L", false, "History"); // 변경 이력
+        Option dbFileOption = new Option("f", false, "DB_File"); // 데이터 저장 파일
 
         options.addOption(addOption);
         options.addOption(typeOption);
@@ -36,25 +56,93 @@ public class Main {
         options.addOption(helpOption);
         options.addOption(energyOption);
         options.addOption(attackOption);
+        options.addOption(defenceOption);
+        options.addOption(movingSpeedOption);
+        options.addOption(attackSppedOption);
+        options.addOption(historyOption);
+        options.addOption(dbFileOption);
 
         // 3. 커맨드 라인에서 찢기
         CommandLineParser parser = new DefaultParser(); // 커맨드 라인을 찢자
         try {
-            CommandLine commandLine = parser.parse(options, args); // 애플리케이션에서 인식할 수 있는 모든 옵션들을 정의 + parse 메소드를 사용하여, 프로그램에 전달된 커맨드 라인 인자(args)들을 파싱
+            // 애플리케이션에서 인식할 수 있는 모든 옵션들을 정의 + parse 메소드를 사용하여, 프로그램에 전달된 커맨드 라인 인자(args)들을
+            // 파싱
+            CommandLine commandLine = parser.parse(options, args);
+
+            // 0. 헬프 옵션이 들어왔을 경우에
             if (commandLine.hasOption(helpOption.getOpt())) { // 혹시 헬프 옵션 있나요?
                 HelpFormatter formatter = new HelpFormatter(); // 출력하기 위한 객체 생성
-                formatter.printHelp("recoder", options); // 첫 번째 인수 "recoder"는 프로그램의 이름을 나타내고, 두 번째 인수 options는 사용 가능한 모든 커맨드 라인 옵션들을 포함하고 있습니다.
+                // 첫 번째 인수 "recoder"는 프로그램의 이름을 나타내고,
+                // 두 번째 인수 options는 사용 가능한 모든 커맨드 라인 옵션들을 포함하고 있습니다.
+                formatter.printHelp("recoder", options);
+                return;
             }
 
-            // 예시 1 : java -jar recorder -a -t user -i 1234 --name "xtra" -f ./recorder.json
-            // 예시 2 : java -jar recorder -a -t user -i 1234 --name "xtra" --attack 1234 -f ./recorder.json // 사용자 추가 시 공격력이 필요하지 않습니다.
-            // 예시 3 : java -jar recorder -l -t user -f ./recorder.json
+            // 1. -a 옵션으로 데이터를 추가한 경우
+            if (commandLine.hasOption(addOption.getOpt())) {
+                // 타입 받기
+                if (commandLine.hasOption(typeOption)) {
+                    String type = commandLine.getOptionValue("t");
 
-            /*
-             * 크게 나누면
-             * 1. a
-             * 2. l
-             */
+                    // 타입이 유저
+                    if (type.equals("user")) {
+                        if (commandLine.hasOption(idOption) && commandLine.hasOption(nameOption)) {
+                            String id = commandLine.getOptionValue("i"); // id에는 id가 들어가있음
+                            String name = commandLine.getOptionValue("n"); // name에는 이름이 들어가 있음.
+
+                            User user = new User(id, name);
+                            userObjectArray.put(user);
+                            userObject.put("user", userObjectArray);
+                        } 
+                    }
+
+                    // 타입이 아이템
+                    if (type.equals("item")) {
+                        System.out.println("아싸 아이템~!");
+                    }
+
+                    // 타입이 전적
+                    if (type.equals("record")) {
+                        System.out.println("아싸 전적~!");
+                    }
+                }
+            }
+
+            // 예시 3 : java -jar recorder -l -t user -f ./recorder.json
+            // => 유저 타입만 골라서 보여주기
+
+            // 2. -l 옵션을 넣어서 목록을 보여 주는 경우.
+            if (commandLine.hasOption(listOption)) {
+                // 타입을 받아야 함.
+                if (commandLine.hasOption(typeOption)) {
+                    String type = commandLine.getOptionValue("t");
+
+                    // 타입이 유저
+                    if (type.equals("user")) {
+                        // 유저만 보여주기
+                    }
+
+                    // 타입이 아이템
+                    if (type.equals("item")) {
+                        // 아이템만 보여주기
+                    }
+
+                    // 타입이 전적
+                    if (type.equals("record")) {
+                        // 전적만 보여주기
+                    }
+                }
+            }
+
+            // 3. 파일에 저장하기
+            if (commandLine.hasOption(dbFileOption)) {
+                
+                System.out.println("파일 덮어쓰기 성공 ><");
+            }
+            
+
+            // 예시 1 : java -jar recorder -a -t user -i 1234 --name "xtra" -f ./recorder.json
+            // 예시 3 : java -jar recorder -l -t user -f ./recorder.json
 
 
         } catch (ParseException e) {

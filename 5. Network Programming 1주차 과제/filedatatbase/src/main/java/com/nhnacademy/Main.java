@@ -8,7 +8,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-// java -jar recorder -a -t user -i 1234 --name "xtra" -f ./recorder.json
 public class Main {
     public static void main(String[] args) {
         // 1. Options 설정
@@ -22,9 +21,10 @@ public class Main {
         Option listOption = new Option("l", false, "List"); //목록을 보여줌
         Option countOption = new Option("c", false, "Count"); //대전 횟수
         Option winOption = new Option("W", false, "Win"); //승리 횟수
-        Option energyOption = new Option("e", false, "Energy"); //체력
         Option helpOption = new Option("h", false, "Help"); //도움말
+        Option energyOption = new Option("e", false, "Energy"); //체력
         Option attackOption = new Option("at", false, "Attack"); //공격력
+        // 방어력부터 나중에 추가하기
 
         options.addOption(addOption);
         options.addOption(typeOption);
@@ -37,7 +37,7 @@ public class Main {
         options.addOption(energyOption);
         options.addOption(attackOption);
 
-        // 3. 커맨드 라인에서 찢어서 받아 오기
+        // 3. 커맨드 라인에서 찢기
         CommandLineParser parser = new DefaultParser(); // 커맨드 라인을 찢자
         try {
             CommandLine commandLine = parser.parse(options, args); // 애플리케이션에서 인식할 수 있는 모든 옵션들을 정의 + parse 메소드를 사용하여, 프로그램에 전달된 커맨드 라인 인자(args)들을 파싱
@@ -45,6 +45,18 @@ public class Main {
                 HelpFormatter formatter = new HelpFormatter(); // 출력하기 위한 객체 생성
                 formatter.printHelp("recoder", options); // 첫 번째 인수 "recoder"는 프로그램의 이름을 나타내고, 두 번째 인수 options는 사용 가능한 모든 커맨드 라인 옵션들을 포함하고 있습니다.
             }
+
+            // 예시 1 : java -jar recorder -a -t user -i 1234 --name "xtra" -f ./recorder.json
+            // 예시 2 : java -jar recorder -a -t user -i 1234 --name "xtra" --attack 1234 -f ./recorder.json // 사용자 추가 시 공격력이 필요하지 않습니다.
+            // 예시 3 : java -jar recorder -l -t user -f ./recorder.json
+
+            /*
+             * 크게 나누면
+             * 1. a
+             * 2. l
+             */
+
+
         } catch (ParseException e) {
             System.err.println(e.getMessage());
             System.exit(0);

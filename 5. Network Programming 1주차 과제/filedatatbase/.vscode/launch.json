@@ -16,8 +16,8 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "com.nhnacademy.Main",
-            "projectName": "filedatatbase",
-            "args": "-h"
+            "projectName": "filedatatbase"
+            // ,"args": "-h"
         }
     ]
 }

@@ -4,6 +4,11 @@ public class Record {
     int totalCount;
     int winCount;
 
+    public Record(int totalCount, int winCount) {
+        this.totalCount = totalCount;
+        this.winCount = winCount;
+    }
+
     public int getTotalCount() {
         return this.totalCount;
     }

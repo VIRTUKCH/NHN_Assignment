@@ -9,6 +9,16 @@ public class Item {
     int moveSpeed;
     int attackSpeed;
 
+    public Item(String id, String model, int hp, int offensePower, int defensePower, int moveSpeed, int attackSpeed) {
+        this.id = id;
+        this.model = model;
+        this.hp = hp;
+        this.offensePower = offensePower;
+        this.defensePower = defensePower;
+        this.moveSpeed = moveSpeed;
+        this.attackSpeed = attackSpeed;
+    }
+
     public String getId() {
         return this.id;
     }

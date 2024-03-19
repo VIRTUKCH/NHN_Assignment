@@ -1,82 +1,53 @@
 package com.nhnacademy;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+// java -jar recorder -a -t user -i 1234 --name "xtra" -f ./recorder.json
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        String[] strings = new String[10];
+    public static void main(String[] args) {
+        // 1. Options 설정
+        Options options = new Options();
 
-        /*
-         * [형식]
-         * 1. 추가
-         * user add <id> <name>
-         * ex) user add 0002 tiger
-         * -> sout("사용자 tiger가 추가되었습니다.")
-         * 
-         * 2. 삭제
-         * user del <id>
-         * -> sout("사용자 tiger가 삭제되었습니다.")
-         * 
-         * 3. 목록
-         * user list
-         * -> 유저 리스트에 있는 객체 싹 다 알려줌
-         */
+        // 2. Option들 정의하기
+        Option addOption = new Option("a", false, "Add");   //데이터 추가
+        Option typeOption = new Option("t", false, "Type"); //데이터 종류
+        Option idOption = new Option("i", false, "ID");     //아이디
+        Option nameOption = new Option("n", false, "Name"); //이름
+        Option listOption = new Option("l", false, "List"); //목록을 보여줌
+        Option countOption = new Option("c", false, "Count"); //대전 횟수
+        Option winOption = new Option("W", false, "Win"); //승리 횟수
+        Option energyOption = new Option("e", false, "Energy"); //체력
+        Option helpOption = new Option("h", false, "Help"); //도움말
+        Option attackOption = new Option("at", false, "Attack"); //공격력
 
-        // JSONArray에 삽입, 삭제, 조회를 어떻게 할 것이냐.
-        JSONArray userArray = new JSONArray();
+        options.addOption(addOption);
+        options.addOption(typeOption);
+        options.addOption(idOption);
+        options.addOption(nameOption);
+        options.addOption(listOption);
+        options.addOption(countOption);
+        options.addOption(winOption);
+        options.addOption(helpOption);
+        options.addOption(energyOption);
+        options.addOption(attackOption);
 
-        while (true) {
-            st = new StringTokenizer(br.readLine());
-
-            int i = 0;
-            while (st.hasMoreTokens()) {
-                strings[i] = st.nextToken();
-                i++;
+        // 3. 커맨드 라인에서 찢어서 받아 오기
+        CommandLineParser parser = new DefaultParser(); // 커맨드 라인을 찢자
+        try {
+            CommandLine commandLine = parser.parse(options, args); // 애플리케이션에서 인식할 수 있는 모든 옵션들을 정의 + parse 메소드를 사용하여, 프로그램에 전달된 커맨드 라인 인자(args)들을 파싱
+            if (commandLine.hasOption(helpOption.getOpt())) { // 혹시 헬프 옵션 있나요?
+                HelpFormatter formatter = new HelpFormatter(); // 출력하기 위한 객체 생성
+                formatter.printHelp("recoder", options); // 첫 번째 인수 "recoder"는 프로그램의 이름을 나타내고, 두 번째 인수 options는 사용 가능한 모든 커맨드 라인 옵션들을 포함하고 있습니다.
             }
-
-            // 종료하기
-            if (strings[0].equals("q") || strings[0].equals("quit")) {
-                break;
-            }
-
-            // 유저 데이터
-            if (strings[0].equals("user")) {
-                // 유저 데이터 추가
-                if (strings[1].equals("add")) {
-                    User user = new User(strings[2], strings[3]);
-                    JSONObject userObject = new JSONObject(user); // user의 데이터를 관리하기 위해 JSONObject에 넣었다.
-                    userArray.put(userObject); // 다음에 Object를 JSONArray에 넣었음.
-                    System.out.println("사용자 " + userObject.getString("name") + "가 추가되었습니다.");
-                }
-
-                // 유저 데이터 삭제
-                else if (strings[1].equals("del")) {
-                    // id가 일치하면 삭제
-                    for (int j = 0; j < userArray.length(); j++) {
-                        JSONObject object = (JSONObject) userArray.get(j);
-                        if(strings[2].equals(object.getString("id"))) {
-                            // 삭제하기 코드 짜야 함. 
-                        }
-                    }
-                }
-
-                // 유저 데이터 조회
-                else if (strings[1].equals("list")) {
-                    System.out.println("ID\tName");
-                    for (int j = 0; j < userArray.length(); j++) {
-                        JSONObject object = (JSONObject) userArray.get(j);
-                        System.out.println(object.getString("id") + "\t" + object.getString("name"));
-                    }
-                }
-            }
+        } catch (ParseException e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
         }
     }
 }

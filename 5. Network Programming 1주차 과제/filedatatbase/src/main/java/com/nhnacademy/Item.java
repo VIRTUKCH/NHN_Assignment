@@ -64,5 +64,4 @@ public class Item {
     public void setAttackSpeed(int attackSpeed) {
         this.attackSpeed = attackSpeed;
     }
-
 }

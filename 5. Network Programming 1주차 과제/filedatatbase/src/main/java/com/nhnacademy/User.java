@@ -2,7 +2,12 @@ package com.nhnacademy;
 
 public class User {
     String id;
-    String nickName;
+    String name;
+    
+    public User(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public String getId() {
         return this.id;
@@ -12,12 +17,11 @@ public class User {
         this.id = id;
     }
 
-    public String getNickName() {
-        return this.nickName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
-
 }

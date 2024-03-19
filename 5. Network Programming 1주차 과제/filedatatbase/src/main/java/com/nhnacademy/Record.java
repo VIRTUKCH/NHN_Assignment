@@ -19,5 +19,4 @@ public class Record {
     public void setWinCount(int winCount) {
         this.winCount = winCount;
     }
-
 }

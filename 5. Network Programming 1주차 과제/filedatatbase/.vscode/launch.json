@@ -6,18 +6,30 @@
     "configurations": [
         {
             "type": "java",
+            "name": "JsonTest",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.JsonTest",
+            "projectName": "filedatatbase"
+        },
+        {
+            "type": "java",
+            "name": "Main2",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Main2",
+            "projectName": "filedatatbase"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
         },
-        
         {
             "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.nhnacademy.Main",
             "projectName": "filedatatbase"
-            // ,"args": "-h"
         }
     ]
 }

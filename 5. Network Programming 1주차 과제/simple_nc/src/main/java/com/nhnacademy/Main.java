@@ -28,7 +28,7 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
         try {
             CommandLine commandLine = parser.parse(options, args);
-            // 1-1) -l 옵션 -> Server로 동작하게 만들기 -> 내가 서버를 열었다. ex) -l 1234 == 내가 서버다
+            // 1-1) -l 옵션 -> listen Mode -> Server로 동작하게 만들기 -> 내가 서버를 열었다. ex) -l 1234 == 내가 서버다
             if (commandLine.hasOption(serverOption.getOpt())) {
                 int portNumberOfServer = Integer.parseInt(commandLine.getOptionValue(serverOption.getOpt()));
 

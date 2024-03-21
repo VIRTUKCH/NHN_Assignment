@@ -2,21 +2,16 @@
 
 package com.nhnacademy;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Server implements Runnable {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
-    static Set<ClientHandler> clients = Collections.synchronizedSet(new HashSet<>());
     static int indexOfClient = 0;
 
+    @Override
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("서버가 " + PORT + " 포트에서 대기중입니다.");

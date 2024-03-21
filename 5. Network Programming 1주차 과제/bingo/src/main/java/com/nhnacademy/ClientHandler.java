@@ -25,7 +25,7 @@ public class ClientHandler extends Thread {
 
     @Override
     public void run() {
-        // 클라이언트와의 통신 처리
+        // 클라이언트에게 듣기
         try {
             String msgOfClient;
             while ((msgOfClient = br.readLine()) != null) {
@@ -35,6 +35,9 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // 클라이언트에게 말하기
+        
     }
 
     public void sendMessage(String msg) {

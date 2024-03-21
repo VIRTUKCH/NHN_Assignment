@@ -12,11 +12,24 @@
         },
         {
             "type": "java",
+            "name": "JsonTest",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.JsonTest",
+            "projectName": "filedatatbase"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.nhnacademy.Main",
-            "projectName": "filedatatbase",
-            "args": "user add 0002 tiger"
+            "projectName": "filedatatbase"
+        },
+        {
+            "type": "java",
+            "name": "Main(1)",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.Main",
+            "projectName": "simple_nc"
         }
     ]
 }

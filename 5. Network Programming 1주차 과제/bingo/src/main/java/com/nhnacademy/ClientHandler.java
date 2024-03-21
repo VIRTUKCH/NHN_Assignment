@@ -8,12 +8,12 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class ClientHandler extends Thread {
-    private Socket clientSocket;
+    int index;
     private BufferedReader br;
     private BufferedWriter bw;
 
-    public ClientHandler(Socket clientSocket) {
-        this.clientSocket = clientSocket;
+    public ClientHandler(Socket clientSocket, int index) {
+        this.index = index;
         try {
             br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             bw = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -29,7 +29,7 @@ public class ClientHandler extends Thread {
             String msgOfClient;
             while ((msgOfClient = br.readLine()) != null) {
                 // 클라이언트로부터 메시지를 받아서 처리하는 로직을 구현
-                System.out.println("클라이언트로부터 받은 메세지: " + msgOfClient);
+                System.out.println("클라이언트 " + index + "의 메세지: " + msgOfClient);
             }
         } catch (IOException e) {
             e.printStackTrace();

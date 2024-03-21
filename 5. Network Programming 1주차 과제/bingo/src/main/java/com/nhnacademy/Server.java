@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-// 서버 -> 클라이언트 연결
-public class Server {
+public class Server implements Runnable {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
     static int indexOfClient = 0;
 
-    public static void main(String[] args) {
+    @Override
+    public void run() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("서버가 " + PORT + " 포트에서 대기중입니다.");
 
@@ -23,7 +23,8 @@ public class Server {
 
                 // 클라이언트 핸들러 생성 및 실행
                 ClientHandler clientHandler = new ClientHandler(clientSocket, indexOfClient++);
-                clientHandler.run();
+                Thread clientThread = new Thread(clientHandler);
+                clientThread.start();
 
                 currentClient++;
             }

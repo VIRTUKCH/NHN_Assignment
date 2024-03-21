@@ -40,31 +40,31 @@ public class Client {
                 }
             });
 
-            // 서버로부터 메세지를 받는 쓰레드
-            Thread receiveThread = new Thread(() -> {
-                try {
-                    String receivedMessageFromServer;
-                    while (true) {
-                        receivedMessageFromServer = serverMessageReader.readLine();
-                        if(receivedMessageFromServer.equals("exit") || receivedMessageFromServer == null) {
-                            socket.close();
-                            break;
-                        }
-                        clientMessageWriter.write(receivedMessageFromServer + "\n");
-                        clientMessageWriter.flush();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            // // 서버로부터 메세지를 받는 쓰레드
+            // Thread receiveThread = new Thread(() -> {
+            //     try {
+            //         String receivedMessageFromServer;
+            //         while (true) {
+            //             receivedMessageFromServer = serverMessageReader.readLine();
+            //             if(receivedMessageFromServer.equals("exit") || receivedMessageFromServer == null) {
+            //                 socket.close();
+            //                 break;
+            //             }
+            //             clientMessageWriter.write(receivedMessageFromServer + "\n");
+            //             clientMessageWriter.flush();
+            //         }
+            //     } catch (IOException e) {
+            //         e.printStackTrace();
+            //     }
+            // });
 
             sendThread.start();
-            receiveThread.start();
+            // receiveThread.start();
 
             // 모든 쓰레드가 종료될 때까지 기다립니다.
             try {
                 sendThread.join();
-                receiveThread.join();
+                // receiveThread.join();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // 현재 쓰레드에 대한 인터럽트 상태를 설정
                 e.printStackTrace();

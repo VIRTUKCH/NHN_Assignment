@@ -6,23 +6,25 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
     static int indexOfClient = 0;
 
-    public Server() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) { // 서버는 하나의 소켓을 가지고 있음
+    @Override
+    public void run() {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("서버가 " + PORT + " 포트에서 대기중입니다.");
 
             int currentClient = 0;
             while (currentClient < MAX_CLIENT) {
-                Socket clientSocket = serverSocket.accept(); // 클라이언트의 연결 요청을 수락
+                Socket clientSocket = serverSocket.accept();
                 System.out.println("클라이언트가 연결 되었습니다.");
 
                 // 클라이언트 핸들러 생성 및 실행
-                ClientHandler clientHandler = new ClientHandler(clientSocket, ++indexOfClient);
-                clientHandler.start();
+                ClientHandler clientHandler = new ClientHandler(clientSocket, indexOfClient++);
+                Thread clientThread = new Thread(clientHandler);
+                clientThread.start();
 
                 currentClient++;
             }

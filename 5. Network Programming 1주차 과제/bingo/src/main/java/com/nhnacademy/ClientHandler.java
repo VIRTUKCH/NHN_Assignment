@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 // 서버 -> 클라이언트 주고 받기
-public class ClientHandler extends Thread {
+public class ClientHandler {
     int index;
     private BufferedReader clientMessageReader;
     private BufferedWriter clientMessageWriter;
@@ -24,8 +24,6 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
-
-    @Override
     public void run() {
         // 클라이언트에게 듣기
         try {
@@ -38,4 +36,5 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
+
 }

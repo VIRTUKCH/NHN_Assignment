@@ -23,8 +23,7 @@ public class Server {
 
                 // 클라이언트 핸들러 생성 및 실행
                 ClientHandler clientHandler = new ClientHandler(clientSocket, indexOfClient++);
-                Thread clientThread = new Thread(clientHandler);
-                clientThread.start();
+                clientHandler.run();
 
                 currentClient++;
             }

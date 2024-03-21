@@ -7,13 +7,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 // 서버 -> 클라이언트 연결
-public class Server implements Runnable {
+public class Server {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
     static int indexOfClient = 0;
 
-    @Override
-    public void run() {
+    public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("서버가 " + PORT + " 포트에서 대기중입니다.");
 

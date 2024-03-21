@@ -1,36 +1,31 @@
 package com.nhnacademy;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 
 public class Main {
     public static void main(String[] args) {
         Options options = new Options();
-        Option serverOption = new Option("s", false, "ServerOption"); // -l 옵션은 뒤에 값이 이어서 온다.
+
+        Option serverOption = new Option("s", false, "Run as server");
+        Option clientOption = new Option("c", false, "Run as client");
+
         options.addOption(serverOption);
+        options.addOption(clientOption);
 
         CommandLineParser parser = new DefaultParser();
-
-        CommandLine commandLine;
         try {
-            commandLine = parser.parse(options, args);
-            if (commandLine.hasOption(serverOption.getOpt())) {
+            CommandLine commandLine = parser.parse(options, args);
+
+            if (commandLine.hasOption("s")) {
                 Server server = new Server();
                 Thread serverThread = new Thread(server);
                 serverThread.start();
+            } else if (commandLine.hasOption("c")) {
+                Client client = new Client();
+                client.communicate();
             }
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println("Parsing failed. Reason: " + e.getMessage());
         }
-
-        // 1. 서버 역할로 들어가려면 -s 옵션 붙이고
-
-        // 2. 클라이언트 역할로 들어가려면 -c 옵션 붙이라고 해야겠다.
-
     }
 }

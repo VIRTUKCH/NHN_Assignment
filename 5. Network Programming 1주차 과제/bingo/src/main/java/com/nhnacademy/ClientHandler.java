@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+// 서버 -> 클라이언트 주고 받기
 public class ClientHandler extends Thread {
     int index;
     private BufferedReader br;

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+// 서버 -> 클라이언트 연결
 public class Server implements Runnable {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;

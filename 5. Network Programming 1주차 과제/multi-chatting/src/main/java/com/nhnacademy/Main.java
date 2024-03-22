@@ -21,7 +21,7 @@ public class Main {
                 server.runServer();
             } else if (commandLine.hasOption("c")) {
                 Client client = new Client();
-                client.communicate();
+                client.runClient();
             }
         } catch (ParseException e) {
             System.err.println("Parsing failed. Reason: " + e.getMessage());

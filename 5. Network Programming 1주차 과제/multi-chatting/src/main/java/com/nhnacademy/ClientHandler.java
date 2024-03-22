@@ -7,9 +7,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-// 서버와 클라이언트의 일대일 통신으로 넘어가게 됨
+// 서버 -> 클라이언트 1:1 처럼 처리하면 됨.
 public class ClientHandler extends Thread {
     int index;
+
     BufferedReader clientMessageReader;
     BufferedWriter clientMessageWriter;
     BufferedReader serverMessageReader;
@@ -27,18 +28,44 @@ public class ClientHandler extends Thread {
         }
     }
 
+    // 클라이언트 -> 서버 메시지 수신
+    private class ReceiveMessageFromClient_Thread extends Thread {
+        public void run() {
+            try {
+                String msgOfClient;
+                while ((msgOfClient = clientMessageReader.readLine()) != null) {
+                    // 클라이언트로부터 메시지를 받아서 처리하는 로직을 구현
+                    serverMessageWriter.write("클라이언트 " + index + "의 메세지: " + msgOfClient + "\n");
+                    serverMessageWriter.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 서버 -> 클라이언트 메시지 발신
+    private class SendMessageToClient_Thread extends Thread {
+        public void run() {
+            try {
+                String messageToSever;
+                while ((messageToSever = serverMessageReader.readLine()) != null) {
+                    // 클라이언트로부터 메시지를 받아서 처리하는 로직을 구현
+                    clientMessageWriter.write("서버로부터 온 메세지 : " + messageToSever + "\n");
+                    clientMessageWriter.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void run() {
-        // 클라이언트의 메시지 받기
-        try {
-            String msgOfClient;
-            while ((msgOfClient = clientMessageReader.readLine()) != null) {
-                // 클라이언트로부터 메시지를 받아서 처리하는 로직을 구현
-                serverMessageWriter.write("클라이언트 " + index + "의 메세지: " + msgOfClient + "\n");
-                serverMessageWriter.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ReceiveMessageFromClient_Thread receiveThread = new ReceiveMessageFromClient_Thread();
+        SendMessageToClient_Thread sendThread = new SendMessageToClient_Thread();
+
+        receiveThread.start();
+        sendThread.start();
     }
 }

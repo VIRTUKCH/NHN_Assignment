@@ -12,12 +12,13 @@ public class Client {
     static final String HOST = "localhost";
     static final int PORT = 1234;
 
-    public void communicate() {
+    // I/O(Reader, Writer, Socket)의 try-catch-resource문의 사용을 위해 하나의 메서드로 묶었음.
+    public void runClient() {
         try (Socket socket = new Socket(HOST, PORT);
-             BufferedReader serverMessageReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             BufferedWriter serverMessageWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-             BufferedReader clientMessageReader = new BufferedReader(new InputStreamReader(System.in));
-             BufferedWriter clientMessageWriter = new BufferedWriter(new OutputStreamWriter(System.out))) {
+            BufferedReader serverMessageReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedWriter serverMessageWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            BufferedReader clientMessageReader = new BufferedReader(new InputStreamReader(System.in));
+            BufferedWriter clientMessageWriter = new BufferedWriter(new OutputStreamWriter(System.out))) {
 
             clientMessageWriter.write("서버에 연결되었습니다.\n");
             clientMessageWriter.flush();
@@ -36,6 +37,7 @@ public class Client {
                         serverMessageWriter.flush();
                     }
                 } catch (IOException e) {
+                    Thread.currentThread().interrupt();
                     e.printStackTrace();
                 }
             });
@@ -54,6 +56,7 @@ public class Client {
                         clientMessageWriter.flush();
                     }
                 } catch (IOException e) {
+                    Thread.currentThread().interrupt();
                     e.printStackTrace();
                 }
             });
@@ -66,7 +69,7 @@ public class Client {
                 sendThread.join();
                 receiveThread.join();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // 현재 쓰레드에 대한 인터럽트 상태를 설정
+                Thread.currentThread().interrupt();
                 e.printStackTrace();
             }
         } catch (IOException e) {

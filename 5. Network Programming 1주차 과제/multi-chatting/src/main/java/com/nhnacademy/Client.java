@@ -23,7 +23,7 @@ public class Client {
             clientMessageWriter.write("서버에 연결되었습니다.\n");
             clientMessageWriter.flush();
 
-            // 서버에게 메세지를 보내는 쓰레드
+            // 클라이언트 -> 서버 메시지 발신 (발신에는 메세지만 적어 두기. "서버로부터 온 메세지" 이런 거 X)
             Thread sendThread = new Thread(() -> {
                 try {
                     String sendMessage;
@@ -33,7 +33,7 @@ public class Client {
                             socket.close();
                             break;
                         }
-                        serverMessageWriter.write(sendMessage + "\n");
+                        serverMessageWriter.write(sendMessage + "\n"); // 줄바꿈은 꼭 붙여야 함 - readLine() 메서드 때문
                         serverMessageWriter.flush();
                     }
                 } catch (IOException e) {

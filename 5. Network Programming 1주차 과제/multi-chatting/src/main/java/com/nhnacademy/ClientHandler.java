@@ -34,7 +34,6 @@ public class ClientHandler extends Thread {
             try {
                 String msgOfClient;
                 while ((msgOfClient = clientMessageReader.readLine()) != null) {
-                    // 클라이언트로부터 메시지를 받아서 처리하는 로직을 구현
                     serverMessageWriter.write("클라이언트 " + index + "의 메세지: " + msgOfClient + "\n");
                     serverMessageWriter.flush();
                 }
@@ -44,14 +43,13 @@ public class ClientHandler extends Thread {
         }
     }
 
-    // 서버 -> 클라이언트 메시지 발신
+    // 서버 -> 클라이언트 메시지 발신 (발신에는 메세지만 적어 두기. "서버로부터 온 메세지" 이런 거 X)
     private class SendMessageToClient_Thread extends Thread {
         public void run() {
             try {
                 String messageToSever;
                 while ((messageToSever = serverMessageReader.readLine()) != null) {
-                    // 클라이언트로부터 메시지를 받아서 처리하는 로직을 구현
-                    clientMessageWriter.write("서버로부터 온 메세지 : " + messageToSever + "\n");
+                    clientMessageWriter.write(messageToSever + "\n"); // 줄바꿈은 꼭 붙여야 함 - readLine() 메서드 때문
                     clientMessageWriter.flush();
                 }
             } catch (IOException e) {

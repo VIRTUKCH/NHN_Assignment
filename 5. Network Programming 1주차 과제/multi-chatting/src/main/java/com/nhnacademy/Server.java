@@ -10,7 +10,7 @@ import java.net.Socket;
 public class Server {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
-    static int indexOfClient = 0;
+    static int indexOfClient = 0; // 클라이언트의 번호는 서버가 결정한다.
 
     public void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -23,7 +23,8 @@ public class Server {
 
                 // 클라이언트 핸들러 생성 및 실행
                 ClientHandler clientHandler = new ClientHandler(clientSocket, indexOfClient++);
-                Thread clientThread = new Thread(clientHandler); // 이래야 프로그램이 안 끝남. 구조를 개선하면 쓰레드가 필요없을 것 같기도 한데...
+                // 클라이언트 한 명 당 서버의 쓰레드 하나씩 더 만들기
+                Thread clientThread = new Thread(clientHandler);
                 clientThread.start();
 
                 currentClient++;

@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-// 서버 -> 클라이언트 주고 받기
+// 서버와 클라이언트의 일대일 통신으로 넘어가게 됨
 public class ClientHandler extends Thread {
     int index;
     BufferedReader clientMessageReader;

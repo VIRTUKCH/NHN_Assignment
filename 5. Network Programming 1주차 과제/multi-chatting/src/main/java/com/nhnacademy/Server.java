@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server implements Runnable {
+// Server 클래스의 역할 : 클라이언트가 한 명 늘어날 때마다 
+public class Server {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
     static int indexOfClient = 0;
 
-    @Override
-    public void run() {
+    public void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("서버가 " + PORT + " 포트에서 대기중입니다.");
 

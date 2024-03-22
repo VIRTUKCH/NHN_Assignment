@@ -18,8 +18,7 @@ public class Main {
 
             if (commandLine.hasOption("s")) {
                 Server server = new Server();
-                Thread serverThread = new Thread(server);
-                serverThread.start(); // 이래야 프로그램이 안 끝남
+                server.runServer();
             } else if (commandLine.hasOption("c")) {
                 Client client = new Client();
                 client.communicate();

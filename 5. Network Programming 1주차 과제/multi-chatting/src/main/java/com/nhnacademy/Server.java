@@ -13,10 +13,10 @@ public class Server {
     static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
     static int indexOfClient = 0; // 클라이언트의 번호는 서버가 결정한다.
-    List<Socket> clientSocketList;
+    static List<Socket> clientSocketList;
 
-    public List<Socket> getClientSocketList() {
-        return this.clientSocketList;
+    public static List<Socket> getClientSocketList() {
+        return clientSocketList;
     }
 
     public void runServer() {

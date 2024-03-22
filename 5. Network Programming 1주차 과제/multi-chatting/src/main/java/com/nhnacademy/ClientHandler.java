@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.List;
 
 // 서버 -> 클라이언트 1:1 처럼 처리하면 됨.
 public class ClientHandler extends Thread {
@@ -15,6 +16,8 @@ public class ClientHandler extends Thread {
     BufferedWriter clientMessageWriter;
     BufferedReader serverMessageReader;
     BufferedWriter serverMessageWriter;
+
+    List<Socket> clientSocketList;
 
     public ClientHandler(Socket clientSocket, int index) {
         this.index = index;
@@ -47,10 +50,19 @@ public class ClientHandler extends Thread {
     private class SendMessageToClient_Thread extends Thread {
         public void run() {
             try {
-                String messageToSever;
-                while ((messageToSever = serverMessageReader.readLine()) != null) {
-                    clientMessageWriter.write(messageToSever + "\n"); // 줄바꿈은 꼭 붙여야 함 - readLine() 메서드 때문
-                    clientMessageWriter.flush();
+                clientSocketList = Server.getClientSocketList();
+                
+                String messageToServer;
+                while ((messageToServer = serverMessageReader.readLine()) != null) {
+                    // 연결된 모든 클라이언트에게 메시지 전송
+                    for (Socket clientSocket : clientSocketList) {
+                        if (!clientSocket.isClosed()) {
+                            // 각 클라이언트 소켓에 대한 출력 스트림 생성
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                            writer.write(messageToServer + "\n");
+                            writer.flush();
+                        }
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -62,7 +74,6 @@ public class ClientHandler extends Thread {
     public void run() {
         ReceiveMessageFromClient_Thread receiveThread = new ReceiveMessageFromClient_Thread();
         SendMessageToClient_Thread sendThread = new SendMessageToClient_Thread();
-
         receiveThread.start();
         sendThread.start();
     }

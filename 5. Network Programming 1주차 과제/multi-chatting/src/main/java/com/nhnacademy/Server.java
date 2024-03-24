@@ -10,15 +10,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Server {
-    static final int PORT = 1234;
     static final int MAX_CLIENT = 2;
     static int indexOfClient = 0; // 클라이언트의 번호는 서버가 결정한다.
     static List<Socket> clientSocketList;
+    int portNumber;
+
+    Server(int portNumber) {
+        this.portNumber = portNumber;
+    }
 
     public void runServer() {
         clientSocketList = new LinkedList<>();
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("서버가 " + PORT + " 포트에서 대기중입니다.");
+        try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+            System.out.println("서버가 " + portNumber + " 포트에서 대기중입니다.");
 
             int currentClient = 0;
             while (currentClient < MAX_CLIENT) {
@@ -34,6 +38,8 @@ public class Server {
 
                 currentClient++;
             }
+
+            // 서버의 메시지가 모두에게 전송되도록 하자.
             while (currentClient == MAX_CLIENT) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 String messageToClient = br.readLine();

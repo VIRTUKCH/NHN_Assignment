@@ -26,6 +26,8 @@ public class ClientHandler extends Thread {
             clientMessageWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             serverMessageReader = new BufferedReader(new InputStreamReader(System.in));
             serverMessageWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+            clientMessageWriter.write("고객님의 ID는 " + this.index + "입니다.\n");
+            clientMessageWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,10 @@
 package com.nhnacademy;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -39,5 +43,34 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    // 모든 클라이언트에게 메시지를 브로드캐스트하는 메서드
+    public void broadcastMessage(String message) {
+        for (Socket clientSocket : this.clientSocketList) { // clientSocketList는 연결된 모든 클라이언트 소켓을 저장하는 리스트
+            try {
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                writer.write(message + "\n");
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.runServer();
+        
+        new Thread(() -> {
+            try (BufferedReader serverInput = new BufferedReader(new InputStreamReader(System.in))) {
+                String inputMessage;
+                while ((inputMessage = serverInput.readLine()) != null) {
+                    server.broadcastMessage(inputMessage); // 모든 클라이언트에게 메시지 브로드캐스트
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

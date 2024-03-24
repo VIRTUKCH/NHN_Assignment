@@ -1,5 +1,3 @@
-// TODO : 목표 - 다대일 소켓 통신으로 메세지 주고 받기만 일단 해보자.
-
 package com.nhnacademy;
 
 import java.io.IOException;

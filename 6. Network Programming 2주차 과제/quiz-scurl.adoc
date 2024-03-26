@@ -280,6 +280,3 @@ Note: Unnecessary use of -X or --request, GET is already inferred.
 ~$ java scurl -F "upload=@file_path" http://httpbin.org/post
 ----
 * file_path에 저정된 파일을 multipart/form-data로 전송한다.
---
-+
-

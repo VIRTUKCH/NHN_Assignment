@@ -79,8 +79,6 @@ public class Main {
             if (commandLine.hasOption("v")) {
                 System.out.println("-v 옵션 들어있음");
                 hasVervoseOption = true;
-                // hasVervoseOption이 true라면 -> 요청 헤더와 응답 헤더를 동시에 출력
-                // hasVervoseOption이 false라면 -> 응답 헤더만 출력
             }
 
             // POST, GET 등과 같은 커맨드
@@ -123,7 +121,6 @@ public class Main {
                 String host = url.getHost(); // naver.com
 
                 try (Socket socket = new Socket(host, HTTP_PORT)) { // host(주소 - naver.com), 80
-                    System.out.println("========== 소켓 통신 시작 ==========");
                     PrintStream writer = new PrintStream(socket.getOutputStream());
 
                     writer.printf("%s %s %s\r\n", command, location, version);

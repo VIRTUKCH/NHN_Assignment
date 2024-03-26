@@ -1,7 +1,8 @@
 package com.nhnacademy;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Arrays;
@@ -128,20 +129,23 @@ public class Main {
                 String purePath = url.getPath();
                 String pureHost = url.getHost();
 
-                Socket socket = new Socket(pureHost, HTTP_PORT); // host(주소), port
-                System.out.println("pureHost : " + pureHost);
-                System.out.println("purePath : " + purePath);
-                System.out.println("Inet Address : " + socket.getInetAddress());
-                System.out.println("Host Name : " + socket.getInetAddress().getHostName());
-                System.out.println("Address : " + Arrays.toString(socket.getInetAddress().getAddress())); // 마이너스 형태의 배열
-                System.out.println("Port Number : " + socket.getPort());
+                try (Socket socket = new Socket(pureHost, HTTP_PORT)) { // host(주소), port
+                    System.out.println("pureHost : " + pureHost);
+                    System.out.println("purePath : " + purePath);
+                    System.out.println("Inet Address : " + socket.getInetAddress());
+                    System.out.println("Host Name : " + socket.getInetAddress().getHostName());
+                    // 마이너스 형태의 배열
+                    System.out.println("Address : " + Arrays.toString(socket.getInetAddress().getAddress()));
+                    System.out.println("Port Number : " + socket.getPort());
 
-                Thread receiver = new Thread(() -> {
+                    Thread receiver = new Thread(() -> {
+                        System.out.println("Thread 작동 중");
+                    });
+                    receiver.start();
 
-                });
-
-                PrintStream writer = new PrintStream(socket.getOutputStream());
-                writer.printf("%s %s %s\r\n", commandLine, location, version);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             } else {
                 System.err.println("URL이 필요합니다.");

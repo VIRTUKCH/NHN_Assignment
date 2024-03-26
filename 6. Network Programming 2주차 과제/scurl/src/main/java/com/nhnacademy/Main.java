@@ -3,6 +3,8 @@ package com.nhnacademy;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.URL;
+import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -13,6 +15,7 @@ import org.apache.commons.cli.ParseException;
 
 public class Main {
     static final int HTTP_PORT = 80;
+
     public static void main(String[] args) {
         Options options = new Options();
         String version = "HTTP/1.1";
@@ -64,20 +67,21 @@ public class Main {
         options.addOption(fileOption);
 
         CommandLineParser parser = new DefaultParser();
-        
+
         try {
             CommandLine commandLine = parser.parse(options, args);
 
             if (commandLine.hasOption("v")) {
                 System.out.println("-v 옵션 들어있음");
                 // 1. 요청 헤더 출력
-                
+
                 // 2. 응답 헤더 출력
             }
 
             if (commandLine.hasOption("H")) {
                 System.out.println("-H 옵션 들어있음");
                 String h_OptionValue = commandLine.getOptionValue("H");
+
                 int line = Integer.parseInt(h_OptionValue);
                 // 헤더의 line을 출력
             }
@@ -91,14 +95,15 @@ public class Main {
             if (commandLine.hasOption("X")) {
                 System.out.println("-X 옵션 들어있음");
                 String x_OptionValue = commandLine.getOptionValue("X");
+
                 if (x_OptionValue.equals("GET")) {
-                    
+                    System.out.println("GET Option");
                 } else if (x_OptionValue.equals("POST")) {
-                    
+                    System.out.println("POST Option");
                 } else if (x_OptionValue.equals("PUT")) {
-                    
+                    System.out.println("PUT Option");
                 } else if (x_OptionValue.equals("DELETE")) {
-                    
+                    System.out.println("DELETE Option");
                 } else {
                     System.out.println("잘못된 값입니다.");
                 }
@@ -115,21 +120,27 @@ public class Main {
                 System.out.println("filePath : " + filePath);
             }
 
+            // 옵션 다 제끼고 URL/get 이런 것만 남음.
             if (commandLine.getArgs().length > 0) {
-                Socket socket = new Socket(commandLine.getArgs()[0], HTTP_PORT); // host(주소), port
-                System.out.println(commandLine.getArgs()[0] + "에 연결 되었습니다.");
+                String urlString = commandLine.getArgs()[0];
+
+                URL url = new URL(urlString);
+                String purePath = url.getPath();
+                String pureHost = url.getHost();
+
+                Socket socket = new Socket(pureHost, HTTP_PORT); // host(주소), port
+                System.out.println("pureHost : " + pureHost);
+                System.out.println("purePath : " + purePath);
                 System.out.println("Inet Address : " + socket.getInetAddress());
                 System.out.println("Host Name : " + socket.getInetAddress().getHostName());
-                System.out.println("Address : " + socket.getInetAddress().getAddress());
+                System.out.println("Address : " + Arrays.toString(socket.getInetAddress().getAddress())); // 마이너스 형태의 배열
                 System.out.println("Port Number : " + socket.getPort());
-
 
                 Thread receiver = new Thread(() -> {
 
                 });
 
                 PrintStream writer = new PrintStream(socket.getOutputStream());
-
                 writer.printf("%s %s %s\r\n", commandLine, location, version);
 
             } else {

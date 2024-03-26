@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URL;
@@ -14,15 +15,15 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 
 public class Main {
     static final int HTTP_PORT = 80;
-    static final String HTTP_VERSION = "HTTP/1.1";
-    static String location = "GET";
-    // static String request;
 
     public static void main(String[] args) {
+        String version = "HTTP/1.1";
+        String command = "GET";
+        String location = "/get";
+        boolean hasVervoseOption = false;
         Options options = new Options();
 
         // 1. -v 옵션
@@ -77,83 +78,72 @@ public class Main {
 
             if (commandLine.hasOption("v")) {
                 System.out.println("-v 옵션 들어있음");
-                // 1. 요청 헤더 출력
-
-                // 2. 응답 헤더 출력
+                hasVervoseOption = true;
+                // hasVervoseOption이 true라면 -> 요청 헤더와 응답 헤더를 동시에 출력
+                // hasVervoseOption이 false라면 -> 응답 헤더만 출력
             }
 
+            // POST, GET 등과 같은 커맨드
+            if (commandLine.hasOption("X")) {
+                String x_OptionValue = commandLine.getOptionValue("X");
+                command = x_OptionValue;
+            }
+
+            // 미구현
             if (commandLine.hasOption("H")) {
                 System.out.println("-H 옵션 들어있음");
                 String h_OptionValue = commandLine.getOptionValue("H");
-
-                int line = Integer.parseInt(h_OptionValue);
                 // 헤더의 line을 출력
             }
 
+            // 미구현
             if (commandLine.hasOption("d")) {
                 System.out.println("-d 옵션 들어있음");
                 String d_OptionValue = commandLine.getOptionValue("d");
                 // POST, PUT 등에 데이터를 전달함.
             }
 
-            if (commandLine.hasOption("X")) {
-                System.out.println("-X 옵션 들어있음");
-                String x_OptionValue = commandLine.getOptionValue("X");
-
-                if (x_OptionValue.equals("GET")) {
-                    location = "GET";
-                    System.out.println("GET Option");
-                } else if (x_OptionValue.equals("POST")) {
-                    location = "POST";
-                    System.out.println("POST Option");
-                } else if (x_OptionValue.equals("PUT")) {
-                    location = "PUT";
-                    System.out.println("PUT Option");
-                } else if (x_OptionValue.equals("DELETE")) {
-                    location = "DELETE";
-                    System.out.println("DELETE Option");
-                } else {
-                    System.out.println("잘못된 값입니다.");
-                }
-            }
-
+            // 미구현
             if (commandLine.hasOption("L")) {
                 System.out.println("-L 옵션 들어있음");
                 // 서버의 응답이 30x 계열이면 다음 응답을 따라 간다.
             }
 
+            // 미구현
             if (commandLine.hasOption("F")) {
                 System.out.println("-F 옵션 들어있음");
                 String filePath = commandLine.getOptionValue("F");
                 System.out.println("filePath : " + filePath);
             }
 
-            // 옵션 다 제끼고 URL/get 이런 것만 남음.
+            // 옵션 외 URL
             if (commandLine.getArgs().length > 0) {
                 String urlString = commandLine.getArgs()[0];
                 URL url = new URL(urlString);
-                String purePath = url.getPath(); // /get 같은 것들
-                String pureHost = url.getHost(); // naver.com
+                String host = url.getHost(); // naver.com
 
-                
-                try (Socket socket = new Socket(pureHost, HTTP_PORT)) { // host(주소 - naver.com), 80
-                    System.out.println("-----------------내가 출력-----------------");
-                    System.out.println("Inet Address : " + socket.getInetAddress()); // naver.com/223.130.192.248
-                    System.out.println("Port Number : " + socket.getPort());
-                    System.out.println("-----------------내가 출력-----------------");
+                try (Socket socket = new Socket(host, HTTP_PORT)) { // host(주소 - naver.com), 80
+                    System.out.println("========== 소켓 통신 시작 ==========");
+                    PrintStream writer = new PrintStream(socket.getOutputStream());
+
+                    writer.printf("%s %s %s\r\n", command, location, version);
+                    writer.printf("Host: %s\r\n", host);
+                    writer.printf("\r\n");
 
                     Thread receiver = new Thread(() -> {
                         try (BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                            BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                        ) {
-                            String request = location + " / " + HTTP_VERSION + "\r\n" +
-                                    "Host: " + pureHost + "\r\n" +
-                                    "\r\n";
-                            socketWriter.write(request);
-                            socketWriter.flush();
+                            BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));) {
                             String line;
+                            boolean isBody = false;
+
                             while ((line = socketReader.readLine()) != null) {
-                                System.out.println(line);
+                                if (line.isEmpty()) {
+                                    isBody = true; // 첫 번째 빈 줄을 만나면, 이후의 내용은 응답 본문임
+                                    continue; // 본문의 첫 줄부터 출력하기 위해 현재의 빈 줄은 건너뜀
+                                }
+                                if (isBody) {
+                                    System.out.println(line); // 응답 본문만 출력
+                                }
                             }
                         } catch (SocketException e) { // BufferedReader에서의 Exception
                             System.out.println("소켓이 닫혔습니다.");
@@ -162,24 +152,14 @@ public class Main {
                         }
                     });
                     receiver.start();
-
-                    // 소켓 닫힘 방지
-                    try {
-                        Thread.currentThread().join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                } catch (IOException e) { // Socket에서의 Exceptio
+                    receiver.join();
+                } catch (IOException e) { // Socket에서의 Exception
                     e.printStackTrace();
                 }
-
             } else {
                 System.err.println("URL이 필요합니다.");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

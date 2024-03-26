@@ -23,7 +23,6 @@ public class Main {
         String version = "HTTP/1.1";
         String command = "GET";
         String location = "/get";
-        boolean hasVervoseOption = false;
         Options options = new Options();
 
         // 1. -v 옵션
@@ -76,9 +75,9 @@ public class Main {
         try {
             CommandLine commandLine = parser.parse(options, args);
 
+            // 구현 완료
             if (commandLine.hasOption("v")) {
-                System.out.println("-v 옵션 들어있음");
-                hasVervoseOption = true;
+                
             }
 
             // POST, GET 등과 같은 커맨드
@@ -132,14 +131,17 @@ public class Main {
                             BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));) {
                             String line;
                             boolean isBody = false;
-
                             while ((line = socketReader.readLine()) != null) {
-                                if (line.isEmpty()) {
-                                    isBody = true; // 첫 번째 빈 줄을 만나면, 이후의 내용은 응답 본문임
-                                    continue; // 본문의 첫 줄부터 출력하기 위해 현재의 빈 줄은 건너뜀
-                                }
-                                if (isBody) {
-                                    System.out.println(line); // 응답 본문만 출력
+                                if (commandLine.hasOption("v")) { // 1. 옵션이 있는 경우
+                                    System.out.println(line);
+                                } else { // 2. 옵션이 없는 경우.
+                                    if (line.isEmpty()) {
+                                        isBody = true; // 첫 번째 빈 줄을 만나면, 이후의 내용은 응답 본문임
+                                        continue; // 본문의 첫 줄부터 출력하기 위해 현재의 빈 줄은 건너뜀
+                                    }
+                                    if (isBody) {
+                                        System.out.println(line); // 응답 본문만 출력
+                                    }
                                 }
                             }
                         } catch (SocketException e) { // BufferedReader에서의 Exception

@@ -1,11 +1,13 @@
 package com.nhnacademy;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
-import java.util.Arrays;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -16,11 +18,12 @@ import org.apache.commons.cli.ParseException;
 
 public class Main {
     static final int HTTP_PORT = 80;
+    static final String HTTP_VERSION = "HTTP/1.1";
+    static String location = "GET";
+    // static String request;
 
     public static void main(String[] args) {
         Options options = new Options();
-        String version = "HTTP/1.1";
-        String location = "/get";
 
         // 1. -v 옵션
         Option verboseOption = Option.builder("v")
@@ -98,12 +101,16 @@ public class Main {
                 String x_OptionValue = commandLine.getOptionValue("X");
 
                 if (x_OptionValue.equals("GET")) {
+                    location = "GET";
                     System.out.println("GET Option");
                 } else if (x_OptionValue.equals("POST")) {
+                    location = "POST";
                     System.out.println("POST Option");
                 } else if (x_OptionValue.equals("PUT")) {
+                    location = "PUT";
                     System.out.println("PUT Option");
                 } else if (x_OptionValue.equals("DELETE")) {
+                    location = "DELETE";
                     System.out.println("DELETE Option");
                 } else {
                     System.out.println("잘못된 값입니다.");
@@ -124,26 +131,46 @@ public class Main {
             // 옵션 다 제끼고 URL/get 이런 것만 남음.
             if (commandLine.getArgs().length > 0) {
                 String urlString = commandLine.getArgs()[0];
-
                 URL url = new URL(urlString);
-                String purePath = url.getPath();
-                String pureHost = url.getHost();
+                String purePath = url.getPath(); // /get 같은 것들
+                String pureHost = url.getHost(); // naver.com
 
-                try (Socket socket = new Socket(pureHost, HTTP_PORT)) { // host(주소), port
-                    System.out.println("pureHost : " + pureHost);
-                    System.out.println("purePath : " + purePath);
-                    System.out.println("Inet Address : " + socket.getInetAddress());
-                    System.out.println("Host Name : " + socket.getInetAddress().getHostName());
-                    // 마이너스 형태의 배열
-                    System.out.println("Address : " + Arrays.toString(socket.getInetAddress().getAddress()));
+                
+                try (Socket socket = new Socket(pureHost, HTTP_PORT)) { // host(주소 - naver.com), 80
+                    System.out.println("-----------------내가 출력-----------------");
+                    System.out.println("Inet Address : " + socket.getInetAddress()); // naver.com/223.130.192.248
                     System.out.println("Port Number : " + socket.getPort());
+                    System.out.println("-----------------내가 출력-----------------");
 
                     Thread receiver = new Thread(() -> {
-                        System.out.println("Thread 작동 중");
+                        try (BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                            BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                        ) {
+                            String request = location + " / " + HTTP_VERSION + "\r\n" +
+                                    "Host: " + pureHost + "\r\n" +
+                                    "\r\n";
+                            socketWriter.write(request);
+                            socketWriter.flush();
+                            String line;
+                            while ((line = socketReader.readLine()) != null) {
+                                System.out.println(line);
+                            }
+                        } catch (SocketException e) { // BufferedReader에서의 Exception
+                            System.out.println("소켓이 닫혔습니다.");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     });
                     receiver.start();
 
-                } catch (IOException e) {
+                    // 소켓 닫힘 방지
+                    try {
+                        Thread.currentThread().join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) { // Socket에서의 Exceptio
                     e.printStackTrace();
                 }
 

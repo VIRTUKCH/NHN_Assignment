@@ -12,10 +12,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 public class Main {
+    static final int HTTP_PORT = 80;
     public static void main(String[] args) {
         Options options = new Options();
         String version = "HTTP/1.1";
-        int port = 80;
         String location = "/get";
 
         // 1. -v 옵션
@@ -112,10 +112,17 @@ public class Main {
             if (commandLine.hasOption("F")) {
                 System.out.println("-F 옵션 들어있음");
                 String filePath = commandLine.getOptionValue("F");
+                System.out.println("filePath : " + filePath);
             }
 
             if (commandLine.getArgs().length > 0) {
-                Socket socket = new Socket(commandLine.getArgs()[0], port);
+                Socket socket = new Socket(commandLine.getArgs()[0], HTTP_PORT); // host(주소), port
+                System.out.println(commandLine.getArgs()[0] + "에 연결 되었습니다.");
+                System.out.println("Inet Address : " + socket.getInetAddress());
+                System.out.println("Host Name : " + socket.getInetAddress().getHostName());
+                System.out.println("Address : " + socket.getInetAddress().getAddress());
+                System.out.println("Port Number : " + socket.getPort());
+
 
                 Thread receiver = new Thread(() -> {
 

@@ -12,11 +12,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class SimpleHttpServer extends Thread {
     Logger log;
-    int port;
+    int port = 8080;
 
-    public SimpleHttpServer(int port) {
+    public SimpleHttpServer() {
         log = LogManager.getLogger(this.getClass().getSimpleName());
-        this.port = port;
     }
 
     @Override
@@ -50,14 +49,10 @@ public class SimpleHttpServer extends Thread {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        int port;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        } else {
-            port = 80;
-        }
-        SimpleHttpServer server = new SimpleHttpServer(port);
+        SimpleHttpServer server = new SimpleHttpServer();
+
         server.start();
+
         server.join();
     }
 }

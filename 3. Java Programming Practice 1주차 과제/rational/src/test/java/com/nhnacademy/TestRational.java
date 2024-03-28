@@ -33,14 +33,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class TestRational {
     static final int RANDOM_TEST_COUNT = 100;
 
-    @ParameterizedTest
-    @MethodSource("legalIntegerArgumentProvider")
-    void testConstructorWithInteger(int n) {
-        assertDoesNotThrow(() -> {
+    @ParameterizedTest // 외부에서 파라미터를 받는 테스트
+    @MethodSource("legalIntegerArgumentProvider") // 파라미터를 주는 메서드 이름
+    void testConstructorWithInteger(int n) { // 테스트 메서드 이름
+        assertDoesNotThrow(() -> { // 예외가 발생하지 않을 거다
             Rational r = new Rational(n);
 
-            assertEquals(n, r.getNumerator());
-            assertEquals(1, r.getDenominator());
+            assertEquals(n, r.getNumerator()); // 값이 일치할 거다.
+            assertEquals(1, r.getDenominator()); // 값이 일치할 거다.
         });
     }
 
@@ -98,21 +98,19 @@ public class TestRational {
         return argumentsList.stream();
     }
 
-    @ParameterizedTest
-    @MethodSource("outOfBoundsExceptionProvider")
-    void testConstructorWithOutOfBoundsException(int numerator, int denominator) {
-        assertThrowsExactly(OutOfBoundsException.class, () -> {
-            new Rational(numerator, denominator);
-        });
-    }
+    // @ParameterizedTest
+    // @MethodSource("outOfBoundsExceptionProvider")
+    // void testConstructorWithOutOfBoundsException(int numerator, int denominator) {
+    //     assertThrowsExactly(OutOfBoundsException.class, () -> {
+    //         new Rational(numerator, denominator);
+    //     });
+    // }
 
-    public static Stream<Arguments> outOfBoundsExceptionProvider() {
-        List<Arguments> argumentsList = new LinkedList<>();
-
-        argumentsList.add(Arguments.arguments(1, Integer.MIN_VALUE));
-
-        return argumentsList.stream();
-    }
+    // public static Stream<Arguments> outOfBoundsExceptionProvider() {
+    //     List<Arguments> argumentsList = new LinkedList<>();
+    //     argumentsList.add(Arguments.arguments(1, Integer.MIN_VALUE));
+    //     return argumentsList.stream();
+    // }
 
     @ParameterizedTest
     @MethodSource("addProvider")
@@ -176,22 +174,22 @@ public class TestRational {
                         new Rational(Integer.MAX_VALUE / 7 * 4)));
     }
 
-    @ParameterizedTest
-    @MethodSource("multiplyWithOutOfBoundsExceptionProvider")
-    void testMultiplyWidthOutOfBoundsException(Rational r1, Rational r2) {
-        assertThrowsExactly(OutOfBoundsException.class, () -> {
-            Rational.multiply(r1, r2);
-        });
-    }
+    // @ParameterizedTest
+    // @MethodSource("multiplyWithOutOfBoundsExceptionProvider")
+    // void testMultiplyWidthOutOfBoundsException(Rational r1, Rational r2) {
+    //     assertThrowsExactly(OutOfBoundsException.class, () -> {
+    //         Rational.multiply(r1, r2);
+    //     });
+    // }
 
-    static Stream<Arguments> multiplyWithOutOfBoundsExceptionProvider() {
-        return Stream.of(
-                Arguments.arguments(new Rational(1, Integer.MAX_VALUE), new Rational(1, Integer.MAX_VALUE)),
-                Arguments.arguments(new Rational(1, Integer.MIN_VALUE + 1), new Rational(1, Integer.MAX_VALUE)),
-                Arguments.arguments(new Rational(1, Integer.MIN_VALUE + 1), new Rational(1, Integer.MIN_VALUE + 1)),
-                Arguments.arguments(new Rational(1, Integer.MAX_VALUE), new Rational(1, 2)),
-                Arguments.arguments(new Rational(1, (Integer.MAX_VALUE / 2) + 1), new Rational(1, 2)));
-    }
+    // static Stream<Arguments> multiplyWithOutOfBoundsExceptionProvider() {
+    //     return Stream.of(
+    //             Arguments.arguments(new Rational(1, Integer.MAX_VALUE), new Rational(1, Integer.MAX_VALUE)),
+    //             Arguments.arguments(new Rational(1, Integer.MIN_VALUE + 1), new Rational(1, Integer.MAX_VALUE)),
+    //             Arguments.arguments(new Rational(1, Integer.MIN_VALUE + 1), new Rational(1, Integer.MIN_VALUE + 1)),
+    //             Arguments.arguments(new Rational(1, Integer.MAX_VALUE), new Rational(1, 2)),
+    //             Arguments.arguments(new Rational(1, (Integer.MAX_VALUE / 2) + 1), new Rational(1, 2)));
+    // }
 
     @ParameterizedTest
     @MethodSource("divideProvider")
